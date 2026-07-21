@@ -65,10 +65,21 @@
 
 .map-subtitle {
     margin-top: 12px;
-    font-size: 18px;
-    letter-spacing: 3px;
+    font-size: clamp(12px, 2.5vw, 18px);
+    letter-spacing: clamp(1px, 0.6vw, 3px);
     text-transform: uppercase;
     opacity: 0.85;
+    padding: 0 16px;
+}
+
+.map-overlay {
+    padding: 0 16px;
+}
+
+@media (max-width: 575.98px) {
+    .global-map {
+        height: 80vh;
+    }
 }
 
 @keyframes fadeUp {
@@ -118,6 +129,4 @@
     >
 </section>
 
-
-<
 @include('layouts.footer')

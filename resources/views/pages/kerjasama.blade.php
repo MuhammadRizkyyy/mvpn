@@ -17,7 +17,7 @@
 
 .partnership-title {
     text-align: center;
-    font-size: 38px;
+    font-size: clamp(1.6rem, 5vw, 38px);
     font-weight: 700;
     margin-bottom: 10px;
 }
@@ -26,6 +26,21 @@
     text-align: center;
     color: #666;
     margin-bottom: 40px;
+}
+
+@media (max-width: 767.98px) {
+    .partnership-wrapper {
+        margin: 90px auto;
+        padding: 0 16px;
+    }
+
+    .partnership-card {
+        padding: 22px;
+    }
+
+    .partnership-subtitle {
+        margin-bottom: 28px;
+    }
 }
 
 .form-control {

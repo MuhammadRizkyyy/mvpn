@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'MVP.N' }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/mvpn.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/img/mvpn.png') }}">
     <link rel="stylesheet" href="/css/style.css">
 
 
 
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         .navbar-custom {
@@ -77,10 +80,37 @@
             min-width: 10rem;
         }
 
-
         .navbar-brand img {
             width: 50px;
             height: auto;
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-nav {
+                justify-content: flex-start;
+                row-gap: 0;
+            }
+
+            .lang-nav {
+                margin-top: 10px;
+                padding-top: 10px;
+                border-top: 1px solid rgba(0,0,0,0.08);
+            }
+
+            .nav-link:not(.dropdown-toggle)::after {
+                display: none;
+            }
+
+            .nav-link:not(.dropdown-toggle) {
+                border-radius: 8px;
+                border-left: 3px solid transparent;
+            }
+
+            .nav-link.active:not(.dropdown-toggle) {
+                background: #f1f1f1;
+                border-left-color: #000;
+                font-weight: 700;
+            }
         }
     </style>
 </head>

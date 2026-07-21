@@ -11,11 +11,22 @@
 }
 
 .kemitraan h1 {
-    font-size: 32px;
+    font-size: clamp(1.5rem, 5vw, 32px);
     margin-bottom: 40px;
     position: relative;
     text-align: center;
     font-weight: bold;
+}
+
+@media (max-width: 575.98px) {
+    .kemitraan {
+        padding: 40px 16px;
+    }
+
+    .partner-row img {
+        height: 60px;
+        max-width: 120px;
+    }
 }
 
 .partner-section {

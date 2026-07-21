@@ -9,6 +9,12 @@
             background: #fff;
         }
 
+        @media (max-width: 575.98px) {
+            .gallery-section {
+                padding: 50px 0;
+            }
+        }
+
         .gallery-container {
             max-width: 1100px;
             margin: auto;
@@ -34,6 +40,13 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 28px;
+        }
+
+        @media (max-width: 400px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
         }
 
         .gallery-card {

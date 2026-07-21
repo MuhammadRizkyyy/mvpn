@@ -10,8 +10,15 @@
 
 .title {
     text-align: center;
-    font-size: 3rem;
+    font-size: clamp(1.8rem, 5vw, 3rem);
     font-weight: 700;
+}
+
+@media (max-width: 575.98px) {
+    .page-wrapper {
+        margin: 50px auto;
+        padding: 0 16px;
+    }
 }
 
 .title-line {
@@ -23,8 +30,9 @@
 
 .tab-header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 30px;
+    gap: 16px 30px;
     margin-bottom: 40px;
 }
 
@@ -33,6 +41,17 @@
     font-weight: 600;
     position: relative;
     padding-bottom: 6px;
+}
+
+@media (max-width: 575.98px) {
+    .tab-header {
+        gap: 12px 20px;
+        margin-bottom: 28px;
+    }
+
+    .tab-btn {
+        font-size: 0.9rem;
+    }
 }
 
 .tab-btn::after {
