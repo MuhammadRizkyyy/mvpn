@@ -1,0 +1,127 @@
+<?php
+
+return [
+
+    'nav' => [
+        'beranda' => 'Home',
+        'tentang' => 'About Us',
+        'visi_misi' => 'Vision & Mission',
+        'struktur' => 'Community Structure',
+        'proker' => 'Work Programs',
+        'galeri' => 'Gallery',
+        'kemitraan' => 'Partnership',
+        'kerjasama' => 'Collaboration',
+        'alih_bahasa' => 'Change Language',
+    ],
+
+    'footer' => [
+        'copyright' => '© :year MVP.N – All Rights Reserved',
+    ],
+
+    'home' => [
+        'hero_title' => 'MUDA VISIONER PENGGERAK NASIONAL',
+        'hero_subtitle' => 'FLY HIGH & TOUCH THE SKY',
+    ],
+
+    'tentang' => [
+        'title' => 'About Us',
+        'p1' => 'Muda Visioner Penggerak Nasional is a non-profit community established to empower young people to contribute to regional development and progress.',
+        'p2' => 'Our programs include training, education, and providing a platform for young people to develop creative and innovative ideas. Founded in Sukabumi in 2023, MVP.N was born from the vision of local sons and daughters as well as diaspora alumni, as a form of dedication to future generations.',
+        'p3' => 'We exist independently to answer the needs of Indonesian youth to be actively involved in the development process and become agents of change for the nation\'s future.',
+    ],
+
+    'visimisi' => [
+        'title' => 'VISION & MISSION',
+        'visi_label' => 'Vision',
+        'visi_text' => 'To become the leading force in facilitating the active participation of Indonesian youth in sustainable national development.',
+        'misi_label' => 'Mission',
+        'misi_1' => 'Encourage young people to innovate and contribute across various fields.',
+        'misi_2' => 'Provide a platform and leadership skills development',
+        'misi_3' => 'Build cooperation with various organizations, government, and the private sector.',
+    ],
+
+    'struktur' => [
+        'title' => 'Community Structure',
+        'bod' => 'Board Of Director',
+        'president' => 'President',
+        'vice_president' => 'Vice President',
+        'sekretaris_section' => 'Secretary',
+        'sekretaris' => 'Secretary',
+        'wakil_sekretaris' => 'Vice Secretary',
+        'ekonomi_section' => 'Directorate of Economic & Regional Affairs',
+        'direktorat' => 'Director',
+        'wakil_direktorat' => 'Vice Director',
+        'internasional_section' => 'Directorate of International Affairs',
+        'hi_asean' => 'ASEAN International Affairs',
+        'hi_timteng' => 'Middle East International Affairs',
+        'itdev_section' => 'IT Development',
+        'frontend_dev' => 'Frontend Web Developer',
+        'instagram' => 'Instagram',
+    ],
+
+    'proker' => [
+        'title' => 'Work Programs',
+        'tab_pendidikan' => 'Education',
+        'tab_wirausaha' => 'Entrepreneurship',
+        'tab_sdm' => 'Human Resource Development',
+        'pendidikan_title' => 'Education',
+        'pkbm' => 'PKBM Classes (Package A, B, C Equivalency Program)',
+        'self_improvement' => 'Self Improvement / Public Speaking',
+        'bahasa_asing' => 'Foreign Language Training:',
+        'lang_inggris' => 'English',
+        'lang_jerman' => 'German',
+        'lang_prancis' => 'French',
+        'lang_mandarin' => 'Mandarin',
+        'lang_arab' => 'Arabic',
+        'lang_turki' => 'Turkish',
+        'lang_korea' => 'Korean',
+        'lang_thailand' => 'Thai',
+        'lang_isyarat' => 'Sign Language',
+        'lang_urdu' => 'Urdu',
+        'coming_soon' => '(coming soon)',
+        'wirausaha_title' => 'Entrepreneurship',
+        'umkm_export' => 'MSME Go Export',
+        'business_matching' => 'Business Matching with Domestic & International Buyers',
+        'sdm_title' => 'Human Resource Development',
+        'sdm_1' => 'Technical Skills Training',
+        'sdm_2' => 'Entrepreneurship Training',
+        'sdm_3' => 'Soft Skills Training',
+        'sdm_4' => 'Literacy Training',
+        'sdm_5' => 'Social Empowerment Training',
+        'sdm_6' => 'Local Leadership',
+        'sdm_7' => 'Human Resource Development Program',
+        'sdm_8' => 'Program Final Goal',
+    ],
+
+    'dokumentasi' => [
+        'title' => 'Activity Gallery',
+        'default_title' => 'Documentation',
+    ],
+
+    'mitra' => [
+        'title' => 'Our Partnerships',
+        'media' => 'Media Partnership',
+        'community' => 'Community Partnership',
+        'government' => 'Government Partnership',
+        'hospitality_campus' => 'Hospitality & Campus Partnership',
+        'hotel' => 'Hotel Partnership',
+        'brand' => 'Brand Partnership',
+        'law' => 'Law Partnership',
+        'ip_trade' => 'International Promotion Trade Center Partnership',
+    ],
+
+    'kerjasama' => [
+        'title' => 'Collaboration Form',
+        'subtitle' => 'Let\'s build an impactful and professional collaboration.',
+        'nama_institusi' => 'Institution Name',
+        'nama_pic' => 'Contact Person Name',
+        'email' => 'Email',
+        'rangkuman' => 'Collaboration Summary',
+        'proposal' => 'Proposal / Company Profile',
+        'submit' => 'Submit Collaboration Request',
+        'success_title' => 'Submission Sent',
+        'success_text' => 'Thank you, your proposal has been sent successfully 🚀',
+        'close' => 'Close',
+    ],
+
+];

@@ -1,0 +1,127 @@
+<?php
+
+return [
+
+    'nav' => [
+        'beranda' => 'Inicio',
+        'tentang' => 'Sobre Nosotros',
+        'visi_misi' => 'Visión & Misión',
+        'struktur' => 'Estructura de la Comunidad',
+        'proker' => 'Programas de Trabajo',
+        'galeri' => 'Galería',
+        'kemitraan' => 'Alianzas',
+        'kerjasama' => 'Colaboración',
+        'alih_bahasa' => 'Cambiar Idioma',
+    ],
+
+    'footer' => [
+        'copyright' => '© :year MVP.N – Todos los Derechos Reservados',
+    ],
+
+    'home' => [
+        'hero_title' => 'MUDA VISIONER PENGGERAK NASIONAL',
+        'hero_subtitle' => 'VUELA ALTO & TOCA EL CIELO',
+    ],
+
+    'tentang' => [
+        'title' => 'Sobre Nosotros',
+        'p1' => 'Muda Visioner Penggerak Nasional es una comunidad sin fines de lucro creada para empoderar a los jóvenes a contribuir al desarrollo y progreso regional.',
+        'p2' => 'Nuestros programas incluyen capacitación, educación y la provisión de un espacio para que los jóvenes desarrollen ideas creativas e innovadoras. Fundada en Sukabumi en 2023, MVP.N nació del pensamiento de hijos e hijas de la región y de alumnos de la diáspora, como una forma de dedicación a las generaciones futuras.',
+        'p3' => 'Existimos de forma independiente para responder a la necesidad de los jóvenes indonesios de involucrarse activamente en el proceso de desarrollo y convertirse en agentes de cambio para el futuro de la nación.',
+    ],
+
+    'visimisi' => [
+        'title' => 'VISIÓN & MISIÓN',
+        'visi_label' => 'Visión',
+        'visi_text' => 'Convertirnos en la vanguardia en facilitar la participación activa de los jóvenes indonesios en el desarrollo nacional sostenible.',
+        'misi_label' => 'Misión',
+        'misi_1' => 'Animar a los jóvenes a innovar y contribuir en diversos campos.',
+        'misi_2' => 'Ofrecer una plataforma y desarrollo de habilidades de liderazgo',
+        'misi_3' => 'Construir cooperación con diversas organizaciones, el gobierno y el sector privado.',
+    ],
+
+    'struktur' => [
+        'title' => 'Estructura de la Comunidad',
+        'bod' => 'Junta Directiva',
+        'president' => 'Presidente',
+        'vice_president' => 'Vicepresidente',
+        'sekretaris_section' => 'Secretaría',
+        'sekretaris' => 'Secretaria',
+        'wakil_sekretaris' => 'Vicesecretaria',
+        'ekonomi_section' => 'Dirección de Relaciones Económicas y Regionales',
+        'direktorat' => 'Director',
+        'wakil_direktorat' => 'Vicedirector',
+        'internasional_section' => 'Dirección de Relaciones Internacionales',
+        'hi_asean' => 'Relaciones Internacionales ASEAN',
+        'hi_timteng' => 'Relaciones Internacionales Medio Oriente',
+        'itdev_section' => 'Desarrollo de TI',
+        'frontend_dev' => 'Desarrollador Web Frontend',
+        'instagram' => 'Instagram',
+    ],
+
+    'proker' => [
+        'title' => 'Programas de Trabajo',
+        'tab_pendidikan' => 'Educación',
+        'tab_wirausaha' => 'Emprendimiento',
+        'tab_sdm' => 'Desarrollo de Recursos Humanos',
+        'pendidikan_title' => 'Educación',
+        'pkbm' => 'Clases PKBM (Programa de Equivalencia Paquete A, B, C)',
+        'self_improvement' => 'Desarrollo Personal / Oratoria',
+        'bahasa_asing' => 'Capacitación en Idiomas Extranjeros:',
+        'lang_inggris' => 'Inglés',
+        'lang_jerman' => 'Alemán',
+        'lang_prancis' => 'Francés',
+        'lang_mandarin' => 'Mandarín',
+        'lang_arab' => 'Árabe',
+        'lang_turki' => 'Turco',
+        'lang_korea' => 'Coreano',
+        'lang_thailand' => 'Tailandés',
+        'lang_isyarat' => 'Lengua de Señas',
+        'lang_urdu' => 'Urdu',
+        'coming_soon' => '(próximamente)',
+        'wirausaha_title' => 'Emprendimiento',
+        'umkm_export' => 'PYME Go Export',
+        'business_matching' => 'Encuentro de Negocios con Compradores Nacionales e Internacionales',
+        'sdm_title' => 'Desarrollo de Recursos Humanos',
+        'sdm_1' => 'Capacitación en Habilidades Técnicas',
+        'sdm_2' => 'Capacitación en Emprendimiento',
+        'sdm_3' => 'Capacitación en Habilidades Blandas',
+        'sdm_4' => 'Capacitación en Alfabetización',
+        'sdm_5' => 'Capacitación en Empoderamiento Social',
+        'sdm_6' => 'Liderazgo Local',
+        'sdm_7' => 'Programa de Desarrollo de Recursos Humanos',
+        'sdm_8' => 'Objetivo Final del Programa',
+    ],
+
+    'dokumentasi' => [
+        'title' => 'Galería de Actividades',
+        'default_title' => 'Documentación',
+    ],
+
+    'mitra' => [
+        'title' => 'Nuestras Alianzas',
+        'media' => 'Alianza de Medios',
+        'community' => 'Alianza Comunitaria',
+        'government' => 'Alianza Gubernamental',
+        'hospitality_campus' => 'Alianza de Hospitalidad y Campus',
+        'hotel' => 'Alianza Hotelera',
+        'brand' => 'Alianza de Marca',
+        'law' => 'Alianza Legal',
+        'ip_trade' => 'Alianza del Centro de Promoción de Comercio Internacional',
+    ],
+
+    'kerjasama' => [
+        'title' => 'Formulario de Colaboración',
+        'subtitle' => 'Construyamos una colaboración impactante y profesional.',
+        'nama_institusi' => 'Nombre de la Institución',
+        'nama_pic' => 'Nombre de la Persona de Contacto',
+        'email' => 'Correo Electrónico',
+        'rangkuman' => 'Resumen de la Colaboración',
+        'proposal' => 'Propuesta / Perfil de la Empresa',
+        'submit' => 'Enviar Solicitud de Colaboración',
+        'success_title' => 'Solicitud Enviada',
+        'success_text' => 'Gracias, tu propuesta se envió correctamente 🚀',
+        'close' => 'Cerrar',
+    ],
+
+];
