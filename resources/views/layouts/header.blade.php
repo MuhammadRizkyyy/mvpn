@@ -65,8 +65,12 @@
             width: calc(100% - 20px);
         }
 
+        .nav-link.active:not(.dropdown-toggle) {
+            color: #000 !important;
+        }
+
         .nav-link.active:not(.dropdown-toggle)::after {
-            width: 0;
+            width: calc(100% - 20px);
         }
 
         .lang-dropdown .dropdown-menu {
@@ -99,35 +103,35 @@
             <ul class="navbar-nav mx-auto">
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('index1') ? 'active' : '' }}" href="/">{{ __('site.nav.beranda') }}</a>
+                    <a class="nav-link {{ request()->routeIs('index1') ? 'active' : '' }}" href="/">{{ __('site.nav.beranda') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('tentang') ? 'active' : '' }}" href="/tentang">{{ __('site.nav.tentang') }}</a>
+                    <a class="nav-link {{ request()->routeIs('tentang') ? 'active' : '' }}" href="/tentang">{{ __('site.nav.tentang') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('visimisi') ? 'active' : '' }}" href="/visimisi">{{ __('site.nav.visi_misi') }}</a>
+                    <a class="nav-link {{ request()->routeIs('visimisi') ? 'active' : '' }}" href="/visimisi">{{ __('site.nav.visi_misi') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('struktur') ? 'active' : '' }}" href="/struktur">{{ __('site.nav.struktur') }}</a>
+                    <a class="nav-link {{ request()->routeIs('struktur') ? 'active' : '' }}" href="/struktur">{{ __('site.nav.struktur') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('proker') ? 'active' : '' }}" href="/proker">{{ __('site.nav.proker') }}</a>
+                    <a class="nav-link {{ request()->routeIs('proker') ? 'active' : '' }}" href="/proker">{{ __('site.nav.proker') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('dokumentasi') ? 'active' : '' }}" href="/dokumentasi">{{ __('site.nav.galeri') }}</a>
+                    <a class="nav-link {{ request()->routeIs('dokumentasi') ? 'active' : '' }}" href="/dokumentasi">{{ __('site.nav.galeri') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('mitra') ? 'active' : '' }}" href="/mitra">{{ __('site.nav.kemitraan') }}</a>
+                    <a class="nav-link {{ request()->routeIs('kemitraan') ? 'active' : '' }}" href="/mitra">{{ __('site.nav.kemitraan') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('kerjasama') ? 'active' : '' }}" href="/kerjasama">{{ __('site.nav.kerjasama') }}</a>
+                    <a class="nav-link {{ request()->routeIs('kerjasama') ? 'active' : '' }}" href="/kerjasama">{{ __('site.nav.kerjasama') }}</a>
                 </li>
             </ul>
 

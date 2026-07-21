@@ -33,11 +33,35 @@
     padding: 14px 16px;
 }
 
+.form-col {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.form-field {
+    margin-bottom: 20px;
+}
+
+.form-field-grow {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    margin-bottom: 20px;
+}
+
+.form-field-grow textarea.form-control {
+    flex: 1 1 auto;
+    min-height: 160px;
+    resize: none;
+}
+
 .btn-submit {
     padding: 16px;
     border-radius: 14px;
     font-weight: 600;
     transition: 0.25s;
+    margin-top: 8px;
 }
 
 .btn-submit:hover {
@@ -146,42 +170,42 @@
         <div class="partnership-card">
             <div class="row g-4">
 
-                {{-- KIRI --}}
-                <div class="col-md-6">
-                    <div class="mb-3">
+                {{-- KIRI: informasi identitas --}}
+                <div class="col-md-6 form-col">
+                    <div class="form-field">
                         <label class="form-label fw-semibold">{{ __('site.kerjasama.nama_institusi') }}</label>
                         <input type="text" name="institution_name" class="form-control" required>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="form-field">
                         <label class="form-label fw-semibold">{{ __('site.kerjasama.nama_pic') }}</label>
                         <input type="text" name="pic_name" class="form-control" required>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="form-field">
                         <label class="form-label fw-semibold">{{ __('site.kerjasama.email') }}</label>
                         <input type="email" name="email" class="form-control" required>
                     </div>
-                </div>
 
-                {{-- KANAN --}}
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">{{ __('site.kerjasama.rangkuman') }}</label>
-                        <textarea name="summary" rows="6" class="form-control" required></textarea>
-                    </div>
-
-                    <div class="mb-3">
+                    <div class="form-field">
                         <label class="form-label fw-semibold">{{ __('site.kerjasama.proposal') }}</label>
                         <input type="file" name="proposal_file" class="form-control">
                     </div>
+                </div>
 
-                    <button class="btn btn-primary w-100 btn-submit mt-2">
-                        {{ __('site.kerjasama.submit') }}
-                    </button>
+                {{-- KANAN: detail kerjasama --}}
+                <div class="col-md-6 form-col">
+                    <div class="form-field-grow">
+                        <label class="form-label fw-semibold">{{ __('site.kerjasama.rangkuman') }}</label>
+                        <textarea name="summary" class="form-control" required></textarea>
+                    </div>
                 </div>
 
             </div>
+
+            <button class="btn btn-primary w-100 btn-submit">
+                {{ __('site.kerjasama.submit') }}
+            </button>
         </div>
     </form>
 </div>
