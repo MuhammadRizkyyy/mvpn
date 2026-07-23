@@ -27,13 +27,15 @@ Route::get('/lang/{locale}', function (string $locale) {
 |--------------------------------------------------------------------------
 */
 Route::view('/', 'pages.index1')->name('index1');
-Route::view('/tentang', 'pages.tentang')->name('tentang');
-Route::view('/visimisi', 'pages.visimisi')->name('visimisi');
-Route::view('/struktur', 'pages.struktur')->name('struktur');
-Route::view('/proker', 'pages.proker')->name('proker');
-Route::view('/dokumentasi', 'pages.dokumentasi')->name('dokumentasi');
-Route::view('/mitra', 'pages.mitra')->name('kemitraan');
-Route::view('/kerjasama', 'pages.kerjasama')->name('kerjasama');
+
+// Halaman-halaman lama sekarang jadi section di satu halaman (scroll, bukan pindah halaman)
+Route::redirect('/tentang', '/#tentang')->name('tentang');
+Route::redirect('/visimisi', '/#visimisi')->name('visimisi');
+Route::redirect('/struktur', '/#struktur')->name('struktur');
+Route::redirect('/proker', '/#proker')->name('proker');
+Route::redirect('/dokumentasi', '/#dokumentasi')->name('dokumentasi');
+Route::redirect('/mitra', '/#mitra')->name('kemitraan');
+Route::redirect('/kerjasama', '/#kerjasama')->name('kerjasama');
 
 /*
 |--------------------------------------------------------------------------

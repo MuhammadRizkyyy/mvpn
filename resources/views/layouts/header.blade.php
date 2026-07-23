@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'MVP.N' }}</title>
+    <script>
+        // Halaman ini sekarang satu halaman panjang (semua section jadi satu URL "/").
+        // Setiap kali halaman dibuka/reload harus selalu mulai dari Beranda (atas),
+        // jangan ikut lompat ke section lain gara-gara browser mengingat scroll
+        // terakhir atau menyisakan "#section" lama di address bar.
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        if (location.hash) {
+            history.replaceState(null, '', location.pathname + location.search);
+        }
+        window.scrollTo(0, 0);
+        window.addEventListener('load', () => window.scrollTo(0, 0));
+    </script>
     <link rel="icon" type="image/png" href="{{ asset('assets/img/mvpn.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('assets/img/mvpn.png') }}">
     <link rel="stylesheet" href="/css/style.css">
@@ -133,35 +147,35 @@
             <ul class="navbar-nav mx-auto">
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('index1') ? 'active' : '' }}" href="/">{{ __('site.nav.beranda') }}</a>
+                    <a class="nav-link {{ request()->routeIs('index1') ? 'active' : '' }}" data-section="beranda" href="{{ request()->routeIs('index1') ? '#beranda' : '/#beranda' }}">{{ __('site.nav.beranda') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('tentang') ? 'active' : '' }}" href="/tentang">{{ __('site.nav.tentang') }}</a>
+                    <a class="nav-link" data-section="tentang" href="{{ request()->routeIs('index1') ? '#tentang' : '/#tentang' }}">{{ __('site.nav.tentang') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('visimisi') ? 'active' : '' }}" href="/visimisi">{{ __('site.nav.visi_misi') }}</a>
+                    <a class="nav-link" data-section="visimisi" href="{{ request()->routeIs('index1') ? '#visimisi' : '/#visimisi' }}">{{ __('site.nav.visi_misi') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('struktur') ? 'active' : '' }}" href="/struktur">{{ __('site.nav.struktur') }}</a>
+                    <a class="nav-link" data-section="struktur" href="{{ request()->routeIs('index1') ? '#struktur' : '/#struktur' }}">{{ __('site.nav.struktur') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('proker') ? 'active' : '' }}" href="/proker">{{ __('site.nav.proker') }}</a>
+                    <a class="nav-link" data-section="proker" href="{{ request()->routeIs('index1') ? '#proker' : '/#proker' }}">{{ __('site.nav.proker') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('dokumentasi') ? 'active' : '' }}" href="/dokumentasi">{{ __('site.nav.galeri') }}</a>
+                    <a class="nav-link" data-section="dokumentasi" href="{{ request()->routeIs('index1') ? '#dokumentasi' : '/#dokumentasi' }}">{{ __('site.nav.galeri') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('kemitraan') ? 'active' : '' }}" href="/mitra">{{ __('site.nav.kemitraan') }}</a>
+                    <a class="nav-link" data-section="mitra" href="{{ request()->routeIs('index1') ? '#mitra' : '/#mitra' }}">{{ __('site.nav.kemitraan') }}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('kerjasama') ? 'active' : '' }}" href="/kerjasama">{{ __('site.nav.kerjasama') }}</a>
+                    <a class="nav-link" data-section="kerjasama" href="{{ request()->routeIs('index1') ? '#kerjasama' : '/#kerjasama' }}">{{ __('site.nav.kerjasama') }}</a>
                 </li>
             </ul>
 
