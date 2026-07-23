@@ -168,6 +168,10 @@
 
 <body>
 
+@if(request()->routeIs('index1'))
+    @include('layouts.splash')
+@endif
+
 <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container-fluid px-3 px-lg-4">
 
