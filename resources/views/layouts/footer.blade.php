@@ -1,10 +1,21 @@
-<footer class="bg-white text-dark py-4 mt-auto shadow-sm">
+<footer class="footer-brand py-4 mt-auto">
     <div class="container text-center">
     <p class="mb-0">{{ __('site.footer.copyright', ['year' => date('Y')]) }}</p>
 </footer>
 <style>
     footer {
         margin-top: auto;
+    }
+
+    .footer-brand {
+        background: var(--color-navy-900);
+        color: #fff;
+        border-top: 3px solid var(--color-gold-500);
+    }
+
+    .footer-brand p {
+        opacity: 0.85;
+        font-size: 0.9rem;
     }
 
     body, html {

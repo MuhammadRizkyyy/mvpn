@@ -27,11 +27,48 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --color-primary-50: #FDECEC;
+            --color-primary-100: #F9C7C7;
+            --color-primary-300: #E4696B;
+            --color-primary-500: #CE1126;
+            --color-primary-600: #B00E20;
+            --color-primary-700: #8C0B19;
+            --color-primary-900: #4E0610;
+
+            --color-navy-50: #EAF0F6;
+            --color-navy-100: #C3D3E3;
+            --color-navy-300: #5C7A9B;
+            --color-navy-500: #12233B;
+            --color-navy-700: #0A1526;
+            --color-navy-900: #05090F;
+
+            --color-gold-100: #FBEFD2;
+            --color-gold-400: #E8B84B;
+            --color-gold-500: #D4A017;
+            --color-gold-600: #B3830D;
+
+            --color-success: #1E8E5A;
+
+            --font-display: 'Poppins', sans-serif;
+            --font-body: 'Figtree', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+        }
+
+        h1, h2, h3, h4, h5, h6, .font {
+            font-family: var(--font-display);
+        }
+
         .navbar-custom {
             background: #ffffff;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-bottom: 3px solid var(--color-primary-500);
         }
 
         .navbar-nav {
@@ -74,7 +111,7 @@
             bottom: 6px;
             width: 0;
             height: 2px;
-            background: #000;
+            background: var(--color-primary-500);
             transition: .3s;
         }
 
@@ -83,7 +120,7 @@
         }
 
         .nav-link.active:not(.dropdown-toggle) {
-            color: #000 !important;
+            color: var(--color-primary-500) !important;
         }
 
         .nav-link.active:not(.dropdown-toggle)::after {
@@ -121,8 +158,8 @@
             }
 
             .nav-link.active:not(.dropdown-toggle) {
-                background: #f1f1f1;
-                border-left-color: #000;
+                background: var(--color-primary-50);
+                border-left-color: var(--color-primary-500);
                 font-weight: 700;
             }
         }

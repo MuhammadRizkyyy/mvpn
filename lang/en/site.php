@@ -21,6 +21,14 @@ return [
     'home' => [
         'hero_title' => 'MUDA VISIONER PENGGERAK NASIONAL',
         'hero_subtitle' => 'FLY HIGH & TOUCH THE SKY',
+        'cta_primary' => 'Propose a Partnership',
+        'cta_secondary' => 'View Work Programs',
+        'stat_1_value' => '2023',
+        'stat_1_label' => 'Founded',
+        'stat_2_value' => '3',
+        'stat_2_label' => 'Program Focus Areas',
+        'stat_3_value' => '8+',
+        'stat_3_label' => 'Partnership Categories',
     ],
 
     'tentang' => [
@@ -64,6 +72,10 @@ return [
         'tab_pendidikan' => 'Education',
         'tab_wirausaha' => 'Entrepreneurship',
         'tab_sdm' => 'Human Resource Development',
+        'card_pendidikan_desc' => 'Equivalency classes, self improvement, and foreign language training.',
+        'card_wirausaha_desc' => 'MSME go export and business matching with domestic & international buyers.',
+        'card_sdm_desc' => 'Technical skills training, local leadership, and social empowerment.',
+        'card_cta' => 'View Details',
         'pendidikan_title' => 'Education',
         'pkbm' => 'PKBM Classes (Package A, B, C Equivalency Program)',
         'self_improvement' => 'Self Improvement / Public Speaking',

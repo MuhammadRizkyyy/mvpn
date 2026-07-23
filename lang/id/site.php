@@ -21,6 +21,14 @@ return [
     'home' => [
         'hero_title' => 'MUDA VISIONER PENGGERAK NASIONAL',
         'hero_subtitle' => 'TERBANG TINGGI & SENTUH LANGIT',
+        'cta_primary' => 'Ajukan Kerjasama',
+        'cta_secondary' => 'Lihat Program Kerja',
+        'stat_1_value' => '2023',
+        'stat_1_label' => 'Tahun Berdiri',
+        'stat_2_value' => '3',
+        'stat_2_label' => 'Bidang Program Kerja',
+        'stat_3_value' => '8+',
+        'stat_3_label' => 'Kategori Kemitraan',
     ],
 
     'tentang' => [
@@ -64,6 +72,10 @@ return [
         'tab_pendidikan' => 'Pendidikan',
         'tab_wirausaha' => 'Kewirausahaan',
         'tab_sdm' => 'Pengembangan SDM',
+        'card_pendidikan_desc' => 'Kelas kejar paket, self improvement, dan pelatihan bahasa asing.',
+        'card_wirausaha_desc' => 'UMKM go export dan business matching dengan buyer dalam & luar negeri.',
+        'card_sdm_desc' => 'Pelatihan keterampilan teknis, kepemimpinan lokal, dan pemberdayaan sosial.',
+        'card_cta' => 'Lihat Detail',
         'pendidikan_title' => 'Pendidikan',
         'pkbm' => 'Kelas PKBM (Kejar Paket A,B,C)',
         'self_improvement' => 'Self Improvement / Public Speaking',

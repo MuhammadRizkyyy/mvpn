@@ -21,6 +21,14 @@ return [
     'home' => [
         'hero_title' => 'MUDA VISIONER PENGGERAK NASIONAL',
         'hero_subtitle' => 'VOLE HAUT & TOUCHE LE CIEL',
+        'cta_primary' => 'Proposer une Collaboration',
+        'cta_secondary' => 'Voir les Programmes',
+        'stat_1_value' => '2023',
+        'stat_1_label' => 'Fondée en',
+        'stat_2_value' => '3',
+        'stat_2_label' => 'Domaines de Programme',
+        'stat_3_value' => '8+',
+        'stat_3_label' => 'Catégories de Partenariat',
     ],
 
     'tentang' => [
@@ -64,6 +72,10 @@ return [
         'tab_pendidikan' => 'Éducation',
         'tab_wirausaha' => 'Entrepreneuriat',
         'tab_sdm' => 'Développement des Ressources Humaines',
+        'card_pendidikan_desc' => 'Classes d\'équivalence, développement personnel et formation en langues étrangères.',
+        'card_wirausaha_desc' => 'PME Go Export et mise en relation commerciale avec des acheteurs nationaux et internationaux.',
+        'card_sdm_desc' => 'Formation aux compétences techniques, leadership local et autonomisation sociale.',
+        'card_cta' => 'Voir les Détails',
         'pendidikan_title' => 'Éducation',
         'pkbm' => 'Classes PKBM (Programme d\'Équivalence Package A, B, C)',
         'self_improvement' => 'Développement Personnel / Prise de Parole en Public',

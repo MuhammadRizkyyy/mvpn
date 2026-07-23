@@ -45,7 +45,7 @@ html {
 .global-map {
     position: relative;
     height: 100vh;
-    background: #000;
+    background: linear-gradient(180deg, var(--color-navy-900) 0%, var(--color-navy-700) 100%);
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -84,6 +84,78 @@ html {
     padding: 0 16px;
 }
 
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: clamp(24px, 6vw, 64px);
+    margin-top: clamp(32px, 5vw, 48px);
+    padding-top: clamp(24px, 4vw, 32px);
+    border-top: 1px solid rgba(255,255,255,0.18);
+}
+
+.hero-stat-value {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: var(--color-gold-500);
+    line-height: 1;
+}
+
+.hero-stat-label {
+    margin-top: 6px;
+    font-size: clamp(0.65rem, 1.4vw, 0.8rem);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+.hero-cta {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: clamp(28px, 4vw, 40px);
+}
+
+.btn-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: 0.25s ease;
+}
+
+.btn-hero-primary {
+    background: var(--color-primary-500);
+    color: #fff;
+    border: 1.5px solid var(--color-primary-500);
+}
+
+.btn-hero-primary:hover {
+    background: var(--color-primary-600);
+    border-color: var(--color-primary-600);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.btn-hero-secondary {
+    background: transparent;
+    color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.55);
+}
+
+.btn-hero-secondary:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: #fff;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
 @media (max-width: 575.98px) {
     .global-map {
         height: 80vh;
@@ -95,9 +167,9 @@ html {
     position: absolute;
     width: 14px;
     height: 14px;
-    background: white;
+    background: var(--color-gold-500);
     border-radius: 50%;
-    box-shadow: 0 0 25px rgba(255,255,255,0.9);
+    box-shadow: 0 0 25px rgba(212,160,23,0.9);
     bottom: 38%;
     right: 22%;
     animation: pulse 2s infinite;
@@ -119,6 +191,26 @@ html {
     <div class="map-overlay">
         <h1 class="map-title">{{ __('site.home.hero_title') }}</h1>
         <p class="map-subtitle">{{ __('site.home.hero_subtitle') }}</p>
+
+        <div class="hero-cta">
+            <a href="{{ request()->routeIs('index1') ? '#kerjasama' : '/#kerjasama' }}" class="btn-hero btn-hero-primary">{{ __('site.home.cta_primary') }} <i class="bi bi-arrow-right"></i></a>
+            <a href="{{ request()->routeIs('index1') ? '#proker' : '/#proker' }}" class="btn-hero btn-hero-secondary">{{ __('site.home.cta_secondary') }}</a>
+        </div>
+
+        <div class="hero-stats">
+            <div>
+                <div class="hero-stat-value">{{ __('site.home.stat_1_value') }}</div>
+                <div class="hero-stat-label">{{ __('site.home.stat_1_label') }}</div>
+            </div>
+            <div>
+                <div class="hero-stat-value">{{ __('site.home.stat_2_value') }}</div>
+                <div class="hero-stat-label">{{ __('site.home.stat_2_label') }}</div>
+            </div>
+            <div>
+                <div class="hero-stat-value">{{ __('site.home.stat_3_value') }}</div>
+                <div class="hero-stat-label">{{ __('site.home.stat_3_label') }}</div>
+            </div>
+        </div>
     </div>
 
     <img
@@ -209,6 +301,15 @@ html {
     display: flex;
     flex-direction: column;
     justify-content: start;
+    border-left: 4px solid transparent;
+}
+
+.visimisi-box.visi {
+    border-left-color: var(--color-primary-500);
+}
+
+.visimisi-box.misi {
+    border-left-color: var(--color-navy-500);
 }
 
 .visimisi-heading {
@@ -255,7 +356,7 @@ html {
 
         <!-- Visi -->
         <div class="col-md-6 d-flex">
-            <div class="visimisi-box" style="cursor: pointer; opacity: 0; animation: fadeInLeft 1s ease forwards;">
+            <div class="visimisi-box visi" style="cursor: pointer; opacity: 0; animation: fadeInLeft 1s ease forwards;">
                 <h3 class="fw-bold mb-3 visimisi-heading">{{ __('site.visimisi.visi_label') }}</h3>
                 <p class="visimisi-text">
                     {{ __('site.visimisi.visi_text') }}
@@ -265,7 +366,7 @@ html {
 
         <!-- Misi -->
         <div class="col-md-6 d-flex">
-            <div class="visimisi-box" style="cursor: pointer; opacity: 0; animation: fadeInRight 1s ease forwards;">
+            <div class="visimisi-box misi" style="cursor: pointer; opacity: 0; animation: fadeInRight 1s ease forwards;">
                 <h3 class="fw-bold mb-3 visimisi-heading">{{ __('site.visimisi.misi_label') }}</h3>
                 <ul class="visimisi-text" style="padding-left: 1.2rem;">
                     <li>{{ __('site.visimisi.misi_1') }}</li>
@@ -324,8 +425,8 @@ html {
 }
 
 .accordion-button:not(.collapsed) {
-    background: #f8f9fa;
-    color: #000;
+    background: var(--color-navy-50);
+    color: var(--color-navy-900);
 }
 
 .accordion-body {
@@ -334,15 +435,26 @@ html {
 
 .member-card {
     background: #fff;
+    border: 1px solid #e4e4e4;
     border-radius: 14px;
     overflow: hidden;
     transition: 0.35s ease;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
 }
 
 .member-card:hover {
+    border-color: var(--color-primary-300);
     transform: translateY(-6px);
-    box-shadow: 0 14px 30px rgba(0,0,0,0.15);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.1);
+}
+
+.member-info::before {
+    content: "";
+    display: block;
+    width: 36px;
+    height: 3px;
+    background: var(--color-gold-500);
+    margin: 0 auto 12px;
 }
 
 .member-photo {
@@ -600,49 +712,62 @@ html {
 .proker-title-line {
     width: 80px;
     height: 4px;
-    background: #000;
+    background: var(--color-primary-500);
     margin: 15px auto 40px;
 }
 
-.tab-header {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px 30px;
-    margin-bottom: 40px;
+.proker-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
 }
 
-.tab-btn {
+.proker-card {
     cursor: pointer;
+    text-align: left;
+    background: #fff;
+    border: 1px solid #e4e4e4;
+    border-radius: 14px;
+    padding: 28px 24px;
+    transition: 0.25s ease;
+}
+
+.proker-card:hover {
+    border-color: var(--color-primary-300);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    transform: translateY(-4px);
+}
+
+.proker-card.active {
+    border-color: var(--color-primary-500);
+    box-shadow: 0 10px 25px rgba(206,17,38,0.12);
+}
+
+.proker-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.proker-card p {
+    color: #555;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin-bottom: 14px;
+}
+
+.proker-card .card-cta {
+    color: var(--color-primary-500);
     font-weight: 600;
-    position: relative;
-    padding-bottom: 6px;
+    font-size: 0.88rem;
 }
 
-@media (max-width: 575.98px) {
-    .tab-header {
-        gap: 12px 20px;
-        margin-bottom: 28px;
+@media (max-width: 767.98px) {
+    .proker-cards {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 32px;
     }
-
-    .tab-btn {
-        font-size: 0.9rem;
-    }
-}
-
-.tab-btn::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 0;
-    height: 2px;
-    background: #000;
-    transition: .3s;
-}
-
-.tab-btn.active::after {
-    width: 100%;
 }
 
 .tab-wrapper {
@@ -674,7 +799,7 @@ html {
     position: absolute;
     left: 0;
     top: 0;
-    color: #000;
+    color: var(--color-primary-500);
     font-weight: bold;
 }
 
@@ -719,10 +844,22 @@ html {
     <h1 class="proker-title">{{ __('site.proker.title') }}</h1>
     <div class="proker-title-line"></div>
 
-    <div class="tab-header">
-        <span class="tab-btn active" data-tab="pendidikan">{{ __('site.proker.tab_pendidikan') }}</span>
-        <span class="tab-btn" data-tab="wirausaha">{{ __('site.proker.tab_wirausaha') }}</span>
-        <span class="tab-btn" data-tab="sdm">{{ __('site.proker.tab_sdm') }}</span>
+    <div class="proker-cards">
+        <div class="proker-card tab-btn active" data-tab="pendidikan">
+            <h3>{{ __('site.proker.tab_pendidikan') }}</h3>
+            <p>{{ __('site.proker.card_pendidikan_desc') }}</p>
+            <span class="card-cta">{{ __('site.proker.card_cta') }} &rarr;</span>
+        </div>
+        <div class="proker-card tab-btn" data-tab="wirausaha">
+            <h3>{{ __('site.proker.tab_wirausaha') }}</h3>
+            <p>{{ __('site.proker.card_wirausaha_desc') }}</p>
+            <span class="card-cta">{{ __('site.proker.card_cta') }} &rarr;</span>
+        </div>
+        <div class="proker-card tab-btn" data-tab="sdm">
+            <h3>{{ __('site.proker.tab_sdm') }}</h3>
+            <p>{{ __('site.proker.card_sdm_desc') }}</p>
+            <span class="card-cta">{{ __('site.proker.card_cta') }} &rarr;</span>
+        </div>
     </div>
 
     <div class="tab-wrapper">
@@ -1160,11 +1297,15 @@ html {
     font-weight: 600;
     transition: 0.25s;
     margin-top: 8px;
+    background-color: var(--color-primary-500);
+    border-color: var(--color-primary-500);
 }
 
 .btn-submit:hover {
+    background-color: var(--color-primary-600);
+    border-color: var(--color-primary-600);
     transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(13,110,253,0.35);
+    box-shadow: 0 12px 28px rgba(206,17,38,0.35);
 }
 
 @keyframes fadeUpKerjasama {
@@ -1204,7 +1345,7 @@ html {
 }
 
 .success-card button {
-    background: #0d6efd;
+    background: var(--color-primary-500);
     color: #fff;
     border: none;
     padding: 12px 20px;
@@ -1216,7 +1357,7 @@ html {
 .checkmark svg {
     width: 72px;
     height: 72px;
-    stroke: #0d6efd;
+    stroke: var(--color-success);
     stroke-width: 4;
     stroke-linecap: round;
     stroke-linejoin: round;

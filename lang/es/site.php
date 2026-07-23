@@ -21,6 +21,14 @@ return [
     'home' => [
         'hero_title' => 'MUDA VISIONER PENGGERAK NASIONAL',
         'hero_subtitle' => 'VUELA ALTO & TOCA EL CIELO',
+        'cta_primary' => 'Proponer una Colaboración',
+        'cta_secondary' => 'Ver Programas de Trabajo',
+        'stat_1_value' => '2023',
+        'stat_1_label' => 'Fundada en',
+        'stat_2_value' => '3',
+        'stat_2_label' => 'Áreas de Programa',
+        'stat_3_value' => '8+',
+        'stat_3_label' => 'Categorías de Alianza',
     ],
 
     'tentang' => [
@@ -64,6 +72,10 @@ return [
         'tab_pendidikan' => 'Educación',
         'tab_wirausaha' => 'Emprendimiento',
         'tab_sdm' => 'Desarrollo de Recursos Humanos',
+        'card_pendidikan_desc' => 'Clases de equivalencia, desarrollo personal y capacitación en idiomas extranjeros.',
+        'card_wirausaha_desc' => 'PYME Go Export y encuentros de negocios con compradores nacionales e internacionales.',
+        'card_sdm_desc' => 'Capacitación en habilidades técnicas, liderazgo local y empoderamiento social.',
+        'card_cta' => 'Ver Detalles',
         'pendidikan_title' => 'Educación',
         'pkbm' => 'Clases PKBM (Programa de Equivalencia Paquete A, B, C)',
         'self_improvement' => 'Desarrollo Personal / Oratoria',
