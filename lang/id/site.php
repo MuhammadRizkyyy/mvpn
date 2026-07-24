@@ -131,8 +131,11 @@ return [
         'rangkuman' => 'Rangkuman Kerjasama',
         'proposal' => 'Proposal / Company Profile',
         'submit' => 'Kirim Pengajuan Kerjasama',
+        'error_title' => 'Pengajuan gagal, mohon periksa kembali data berikut:',
+        'toast_error_title' => 'Pengajuan Gagal',
+        'toast_upload_title' => 'Upload Proposal Gagal',
         'success_title' => 'Pengajuan Terkirim',
-        'success_text' => 'Terima kasih, proposal kamu berhasil dikirim 🚀',
+        'success_text' => 'Terima kasih, proposal kamu berhasil dikirim',
         'close' => 'Tutup',
     ],
 

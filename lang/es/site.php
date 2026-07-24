@@ -131,8 +131,11 @@ return [
         'rangkuman' => 'Resumen de la Colaboración',
         'proposal' => 'Propuesta / Perfil de la Empresa',
         'submit' => 'Enviar Solicitud de Colaboración',
+        'error_title' => 'Envío fallido, por favor revisa los siguientes campos:',
+        'toast_error_title' => 'Envío Fallido',
+        'toast_upload_title' => 'Error al Subir la Propuesta',
         'success_title' => 'Solicitud Enviada',
-        'success_text' => 'Gracias, tu propuesta se envió correctamente 🚀',
+        'success_text' => 'Gracias, tu propuesta se envió correctamente',
         'close' => 'Cerrar',
     ],
 

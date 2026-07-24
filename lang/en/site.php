@@ -131,8 +131,11 @@ return [
         'rangkuman' => 'Collaboration Summary',
         'proposal' => 'Proposal / Company Profile',
         'submit' => 'Submit Collaboration Request',
+        'error_title' => 'Submission failed, please check the following fields:',
+        'toast_error_title' => 'Submission Failed',
+        'toast_upload_title' => 'Proposal Upload Failed',
         'success_title' => 'Submission Sent',
-        'success_text' => 'Thank you, your proposal has been sent successfully 🚀',
+        'success_text' => 'Thank you, your proposal has been sent successfully',
         'close' => 'Close',
     ],
 

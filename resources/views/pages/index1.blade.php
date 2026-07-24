@@ -1392,6 +1392,92 @@ html {
     from { opacity: 0; }
     to { opacity: 1; }
 }
+
+.error-toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    left: 24px;
+    margin-left: auto;
+    max-width: 380px;
+    background: #fff;
+    border-left: 4px solid var(--color-primary-500);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+    padding: 16px 44px 16px 16px;
+    z-index: 9999;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    animation: toastIn 0.4s cubic-bezier(.22,.9,.3,1) forwards;
+}
+
+.error-toast.error-toast-hide {
+    animation: toastOut 0.35s ease forwards;
+}
+
+.error-toast-icon {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--color-primary-50);
+    color: var(--color-primary-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.error-toast-body h6 {
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.error-toast-body p {
+    margin: 0;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.4;
+}
+
+.error-toast-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    border: none;
+    background: none;
+    color: #999;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.error-toast-close:hover {
+    color: #333;
+}
+
+@keyframes toastIn {
+    from { opacity: 0; transform: translateY(-16px) scale(.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes toastOut {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to { opacity: 0; transform: translateY(-16px) scale(.97); }
+}
+
+@media (max-width: 575.98px) {
+    .error-toast {
+        top: 14px;
+        right: 14px;
+        left: 14px;
+        max-width: none;
+    }
+}
 </style>
 
 <section id="kerjasama" class="partnership-wrapper">
@@ -1405,6 +1491,17 @@ html {
       enctype="multipart/form-data">
     @csrf
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <strong>{{ __('site.kerjasama.error_title') }}</strong>
+                <ul class="mb-0 mt-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="partnership-card">
             <div class="row g-4">
 
@@ -1412,22 +1509,36 @@ html {
                 <div class="col-md-6 form-col">
                     <div class="form-field">
                         <label class="form-label fw-semibold">{{ __('site.kerjasama.nama_institusi') }}</label>
-                        <input type="text" name="institution_name" class="form-control" required>
+                        <input type="text" name="institution_name" value="{{ old('institution_name') }}" class="form-control @error('institution_name') is-invalid @enderror" required>
+                        @error('institution_name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="form-field">
                         <label class="form-label fw-semibold">{{ __('site.kerjasama.nama_pic') }}</label>
-                        <input type="text" name="pic_name" class="form-control" required>
+                        <input type="text" name="pic_name" value="{{ old('pic_name') }}" class="form-control @error('pic_name') is-invalid @enderror" required>
+                        @error('pic_name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="form-field">
                         <label class="form-label fw-semibold">{{ __('site.kerjasama.email') }}</label>
-                        <input type="email" name="email" class="form-control" required>
+                        <input type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" required>
+                        @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="form-field">
                         <label class="form-label fw-semibold">{{ __('site.kerjasama.proposal') }}</label>
-                        <input type="file" name="proposal_file" class="form-control">
+                        <input type="file" name="proposal_file" class="form-control @error('proposal_file') is-invalid @enderror">
+                        @error('proposal_file')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @else
+                            <small class="text-muted">PDF, DOC, atau DOCX. Maks 5MB.</small>
+                        @enderror
                     </div>
                 </div>
 
@@ -1435,7 +1546,10 @@ html {
                 <div class="col-md-6 form-col">
                     <div class="form-field-grow">
                         <label class="form-label fw-semibold">{{ __('site.kerjasama.rangkuman') }}</label>
-                        <textarea name="summary" class="form-control" required></textarea>
+                        <textarea name="summary" class="form-control @error('summary') is-invalid @enderror" required>{{ old('summary') }}</textarea>
+                        @error('summary')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -1463,10 +1577,39 @@ html {
 </div>
 @endif
 
+@if ($errors->any())
+<div class="error-toast" id="errorToast">
+    <div class="error-toast-icon">!</div>
+    <div class="error-toast-body">
+        @if ($errors->has('proposal_file'))
+            <h6>{{ __('site.kerjasama.toast_upload_title') }}</h6>
+            <p>{{ $errors->first('proposal_file') }}</p>
+        @else
+            <h6>{{ __('site.kerjasama.toast_error_title') }}</h6>
+            <p>{{ $errors->first() }}</p>
+        @endif
+    </div>
+    <button type="button" class="error-toast-close" onclick="closeErrorToast()" aria-label="Close">&times;</button>
+</div>
+@endif
+
 <script>
 function closeSuccess() {
     document.getElementById('successOverlay').remove();
 }
+
+function closeErrorToast() {
+    var toast = document.getElementById('errorToast');
+    if (!toast) return;
+    toast.classList.add('error-toast-hide');
+    setTimeout(function () { toast.remove(); }, 350);
+}
+
+(function () {
+    var toast = document.getElementById('errorToast');
+    if (!toast) return;
+    setTimeout(closeErrorToast, 6000);
+})();
 </script>
 
 {{-- Tab switching (Proker) --}}
