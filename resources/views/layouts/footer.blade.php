@@ -1,6 +1,38 @@
-<footer class="footer-brand py-4 mt-auto">
-    <div class="container text-center">
-    <p class="mb-0">{{ __('site.footer.copyright', ['year' => date('Y')]) }}</p>
+<footer class="footer-brand pt-5 pb-4 mt-auto">
+    <div class="container">
+        <div class="row gy-4 align-items-start">
+            <div class="col-12 col-md-5">
+                <a href="/" class="d-inline-flex align-items-center text-white text-decoration-none mb-3">
+                    <img src="{{ asset('assets/img/mvpn.png') }}" width="40" class="me-2" alt="MVP.N">
+                    <span class="fw-bold fs-5 font">MVP.N</span>
+                </a>
+                <p class="footer-tagline mb-0">{{ __('site.home.hero_subtitle') }}</p>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <h6 class="footer-heading">{{ __('site.nav.beranda') }}</h6>
+                <ul class="footer-links list-unstyled">
+                    <li><a href="{{ request()->routeIs('index1') ? '#tentang' : '/#tentang' }}">{{ __('site.nav.tentang') }}</a></li>
+                    <li><a href="{{ request()->routeIs('index1') ? '#visimisi' : '/#visimisi' }}">{{ __('site.nav.visi_misi') }}</a></li>
+                    <li><a href="{{ request()->routeIs('index1') ? '#struktur' : '/#struktur' }}">{{ __('site.nav.struktur') }}</a></li>
+                    <li><a href="{{ request()->routeIs('index1') ? '#proker' : '/#proker' }}">{{ __('site.nav.proker') }}</a></li>
+                </ul>
+            </div>
+
+            <div class="col-6 col-md-4">
+                <h6 class="footer-heading">{{ __('site.nav.kemitraan') }}</h6>
+                <ul class="footer-links list-unstyled">
+                    <li><a href="{{ request()->routeIs('index1') ? '#dokumentasi' : '/#dokumentasi' }}">{{ __('site.nav.galeri') }}</a></li>
+                    <li><a href="{{ request()->routeIs('index1') ? '#mitra' : '/#mitra' }}">{{ __('site.nav.kemitraan') }}</a></li>
+                    <li><a href="{{ request()->routeIs('index1') ? '#kerjasama' : '/#kerjasama' }}">{{ __('site.nav.kerjasama') }}</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <hr class="footer-divider">
+
+        <p class="mb-0 text-center text-md-start footer-copy">{{ __('site.footer.copyright', ['year' => date('Y')]) }}</p>
+    </div>
 </footer>
 <style>
     footer {
@@ -13,9 +45,51 @@
         border-top: 3px solid var(--color-gold-500);
     }
 
-    .footer-brand p {
-        opacity: 0.85;
+    .footer-tagline {
+        color: rgba(255,255,255,0.6);
+        font-size: 0.88rem;
+        max-width: 320px;
+        line-height: 1.6;
+    }
+
+    .footer-heading {
+        color: #fff;
+        font-weight: 700;
         font-size: 0.9rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+    }
+
+    .footer-links {
+        margin: 0;
+        padding: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: 10px;
+    }
+
+    .footer-links a {
+        color: rgba(255,255,255,0.65);
+        text-decoration: none;
+        font-size: 0.92rem;
+        transition: color .2s, padding-left .2s;
+    }
+
+    .footer-links a:hover {
+        color: var(--color-gold-500);
+        padding-left: 4px;
+    }
+
+    .footer-divider {
+        border-color: rgba(255,255,255,0.12);
+        margin: 32px 0 20px;
+    }
+
+    .footer-copy {
+        opacity: 0.6;
+        font-size: 0.85rem;
     }
 
     body, html {
@@ -29,6 +103,52 @@
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const navbar = document.querySelector('.navbar-custom');
+    if (navbar) {
+        const hasOverlay = navbar.classList.contains('navbar-transparent');
+        const threshold = hasOverlay ? 80 : 8;
+        const toggleScrolled = () => {
+            const scrolled = window.scrollY > threshold;
+            navbar.classList.toggle('navbar-scrolled', scrolled);
+            if (hasOverlay) {
+                navbar.classList.toggle('navbar-transparent', !scrolled);
+            }
+        };
+        toggleScrolled();
+        window.addEventListener('scroll', toggleScrolled, { passive: true });
+    }
+
+    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    if (revealEls.length) {
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-in');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+        revealEls.forEach(el => revealObserver.observe(el));
+    }
+
+    const staggerEls = document.querySelectorAll('.reveal-stagger');
+    if (staggerEls.length) {
+        const staggerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('stagger-in');
+                    staggerObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.4 });
+
+        staggerEls.forEach(el => staggerObserver.observe(el));
+    }
+});
+</script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const navMenu = document.getElementById('navMenu');

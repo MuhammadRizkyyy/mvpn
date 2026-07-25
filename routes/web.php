@@ -46,6 +46,7 @@ Route::get('/partnership', [PartnershipController::class, 'create'])
     ->name('partnership.form');
 
 Route::post('/partnership', [PartnershipController::class, 'store'])
+    ->middleware('throttle:5,1')
     ->name('partnership.store');
 
 /*

@@ -112,6 +112,8 @@ return [
 
     'mitra' => [
         'title' => 'Nuestras Alianzas',
+        'description' => 'Nuestras colaboraciones abarcan varios sectores — medios, comunidad, gobierno — para ampliar nuestro impacto en la juventud indonesia.',
+        'partner_unit' => 'Socios',
         'media' => 'Alianza de Medios',
         'community' => 'Alianza Comunitaria',
         'government' => 'Alianza Gubernamental',
@@ -123,8 +125,11 @@ return [
     ],
 
     'kerjasama' => [
-        'title' => 'Formulario de Colaboración',
+        'title' => 'Colaboremos',
         'subtitle' => 'Construyamos una colaboración impactante y profesional.',
+        'point_1' => 'Alcance a jóvenes en toda Indonesia',
+        'point_2' => 'Proceso de envío rápido y transparente',
+        'point_3' => 'Abierto a socios y organizaciones intersectoriales',
         'nama_institusi' => 'Nombre de la Institución',
         'nama_pic' => 'Nombre de la Persona de Contacto',
         'email' => 'Correo Electrónico',

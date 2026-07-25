@@ -70,9 +70,10 @@ html {
 }
 
 .map-title {
-    font-size: clamp(36px, 6vw, 64px);
+    font-size: clamp(40px, 7vw, 76px);
     font-weight: 800;
     letter-spacing: 1px;
+    line-height: 1.05;
 }
 
 .map-subtitle {
@@ -84,30 +85,59 @@ html {
     padding: 0 16px;
 }
 
+.hero-stats-strip {
+    position: relative;
+    z-index: 5;
+    max-width: 980px;
+    margin: -64px auto 0;
+    padding: 0 20px;
+}
+
+@media (max-width: 767.98px) {
+    .hero-stats-strip {
+        margin-top: -40px;
+    }
+}
+
 .hero-stats {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: clamp(24px, 6vw, 64px);
-    margin-top: clamp(32px, 5vw, 48px);
-    padding-top: clamp(24px, 4vw, 32px);
-    border-top: 1px solid rgba(255,255,255,0.18);
+    gap: clamp(12px, 3vw, 20px);
+    background: #fff;
+    border-radius: var(--radius-lg, 22px);
+    box-shadow: var(--shadow-lg);
+    padding: clamp(20px, 4vw, 32px);
+}
+
+.hero-stat {
+    flex: 1 1 140px;
+    text-align: center;
+    padding: clamp(10px, 2vw, 16px) clamp(12px, 2vw, 20px);
+    border-radius: var(--radius-md, 16px);
+    transition: transform .3s var(--ease-material, ease), background .3s;
+}
+
+.hero-stat:hover {
+    transform: translateY(-4px);
+    background: var(--color-primary-50);
 }
 
 .hero-stat-value {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    color: var(--color-gold-500);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    color: var(--color-primary-500);
     line-height: 1;
 }
 
 .hero-stat-label {
-    margin-top: 6px;
-    font-size: clamp(0.65rem, 1.4vw, 0.8rem);
+    margin-top: 8px;
+    font-size: clamp(0.7rem, 1.4vw, 0.82rem);
     text-transform: uppercase;
     letter-spacing: 1px;
-    opacity: 0.8;
+    color: var(--color-navy-500);
+    font-weight: 600;
 }
 
 .hero-cta {
@@ -118,42 +148,16 @@ html {
     margin-top: clamp(28px, 4vw, 40px);
 }
 
-.btn-hero {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 14px 28px;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    text-decoration: none;
-    transition: 0.25s ease;
-}
-
-.btn-hero-primary {
-    background: var(--color-primary-500);
-    color: #fff;
-    border: 1.5px solid var(--color-primary-500);
-}
-
-.btn-hero-primary:hover {
-    background: var(--color-primary-600);
-    border-color: var(--color-primary-600);
-    color: #fff;
-    transform: translateY(-2px);
-}
-
-.btn-hero-secondary {
-    background: transparent;
+.hero-cta .btn-outline-material {
     color: #fff;
     border: 1.5px solid rgba(255,255,255,0.55);
 }
 
-.btn-hero-secondary:hover {
-    background: rgba(255,255,255,0.1);
+.hero-cta .btn-outline-material:hover {
+    background: rgba(255,255,255,0.12);
     border-color: #fff;
     color: #fff;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
 }
 
 @media (max-width: 575.98px) {
@@ -189,27 +193,12 @@ html {
 
 <section id="beranda" class="global-map">
     <div class="map-overlay">
-        <h1 class="map-title">{{ __('site.home.hero_title') }}</h1>
+        <h1 class="map-title reveal-stagger"><x-stagger-words :text="__('site.home.hero_title')" /></h1>
         <p class="map-subtitle">{{ __('site.home.hero_subtitle') }}</p>
 
         <div class="hero-cta">
-            <a href="{{ request()->routeIs('index1') ? '#kerjasama' : '/#kerjasama' }}" class="btn-hero btn-hero-primary">{{ __('site.home.cta_primary') }} <i class="bi bi-arrow-right"></i></a>
-            <a href="{{ request()->routeIs('index1') ? '#proker' : '/#proker' }}" class="btn-hero btn-hero-secondary">{{ __('site.home.cta_secondary') }}</a>
-        </div>
-
-        <div class="hero-stats">
-            <div>
-                <div class="hero-stat-value">{{ __('site.home.stat_1_value') }}</div>
-                <div class="hero-stat-label">{{ __('site.home.stat_1_label') }}</div>
-            </div>
-            <div>
-                <div class="hero-stat-value">{{ __('site.home.stat_2_value') }}</div>
-                <div class="hero-stat-label">{{ __('site.home.stat_2_label') }}</div>
-            </div>
-            <div>
-                <div class="hero-stat-value">{{ __('site.home.stat_3_value') }}</div>
-                <div class="hero-stat-label">{{ __('site.home.stat_3_label') }}</div>
-            </div>
+            <a href="{{ request()->routeIs('index1') ? '#kerjasama' : '/#kerjasama' }}" class="btn-gradient">{{ __('site.home.cta_primary') }} <i class="bi bi-arrow-right"></i></a>
+            <a href="{{ request()->routeIs('index1') ? '#proker' : '/#proker' }}" class="btn-outline-material">{{ __('site.home.cta_secondary') }}</a>
         </div>
     </div>
 
@@ -219,6 +208,23 @@ html {
         class="map-image"
     >
 </section>
+
+<div class="hero-stats-strip">
+    <div class="hero-stats">
+        <div class="hero-stat">
+            <div class="hero-stat-value">{{ __('site.home.stat_1_value') }}</div>
+            <div class="hero-stat-label">{{ __('site.home.stat_1_label') }}</div>
+        </div>
+        <div class="hero-stat">
+            <div class="hero-stat-value">{{ __('site.home.stat_2_value') }}</div>
+            <div class="hero-stat-label">{{ __('site.home.stat_2_label') }}</div>
+        </div>
+        <div class="hero-stat">
+            <div class="hero-stat-value">{{ __('site.home.stat_3_value') }}</div>
+            <div class="hero-stat-label">{{ __('site.home.stat_3_label') }}</div>
+        </div>
+    </div>
+</div>
 
 {{-- ======================= TENTANG ======================= --}}
 <style>
@@ -241,26 +247,36 @@ html {
     }
 }
 
+.tentang-logo-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(30px, 6vw, 60px);
+}
+
+.tentang-logo-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, var(--color-primary-50) 0%, rgba(253,236,236,0) 72%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
 .tentang-logo {
+    position: relative;
+    z-index: 1;
     max-width: 100%;
     height: auto;
-    width: 550px;
+    width: 420px;
+    filter: drop-shadow(0 20px 40px rgba(18,35,59,0.14));
 }
 
 @media (max-width: 575.98px) {
     .tentang-logo {
-        width: 260px;
+        width: 220px;
     }
-}
-
-@keyframes fadeInLeft {
-    0% { opacity: 0; transform: translateX(-50px); }
-    100% { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes fadeInUp {
-    0% { opacity: 0; transform: translateY(50px); }
-    100% { opacity: 1; transform: translateY(0); }
 }
 </style>
 
@@ -268,18 +284,20 @@ html {
     <div class="container">
         <div class="row align-items-center">
 
-            <div class="col-md-7" style="animation: fadeInLeft 1.5s ease forwards; opacity: 0;">
-                <h1 class="tentang-title mb-4">{{ __('site.tentang.title') }}</h1>
+            <div class="col-md-7 reveal">
+                <span class="section-eyebrow">{{ __('site.nav.tentang') }}</span>
+                <h1 class="tentang-title mb-4 reveal-stagger"><x-stagger-words :text="__('site.tentang.title')" /></h1>
                 <p class="tentang-text">{{ __('site.tentang.p1') }}</p>
                 <p class="tentang-text">{{ __('site.tentang.p2') }}</p>
                 <p class="tentang-text">{{ __('site.tentang.p3') }}</p>
             </div>
 
-            <div class="col-md-5 text-center"
-                 style="animation: fadeInUp 1.5s ease forwards; opacity: 0;">
-                <img src="{{ asset('assets/img/mvpn.png') }}"
-                     alt="Logo"
-                     class="tentang-logo">
+            <div class="col-md-5 text-center reveal reveal-delay-2">
+                <div class="tentang-logo-wrap">
+                    <img src="{{ asset('assets/img/mvpn.png') }}"
+                         alt="Logo"
+                         class="tentang-logo">
+                </div>
             </div>
 
         </div>
@@ -292,90 +310,157 @@ html {
     font-size: clamp(1.8rem, 5vw, 3rem);
 }
 
-.visimisi-box {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    padding: 2rem;
-    flex: 1;
+/* Contrast-block pairing: dark Visi panel + light Misi panel, same scale */
+.vm-panel {
+    height: 100%;
+    border-radius: var(--radius-lg, 22px);
+    padding: clamp(2rem, 4vw, 2.75rem);
+    transition: transform .35s var(--ease-material, ease), box-shadow .35s var(--ease-material, ease);
+}
+
+.vm-panel:hover {
+    transform: translateY(-6px);
+}
+
+.vm-label {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+
+/* Visi panel: dark gradient, single decorative glow, no clutter */
+.visi-panel {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(155deg, var(--color-navy-700), var(--color-navy-900));
+    color: #fff;
+    box-shadow: 0 20px 44px rgba(5,9,15,0.28);
     display: flex;
     flex-direction: column;
-    justify-content: start;
-    border-left: 4px solid transparent;
+    justify-content: center;
 }
 
-.visimisi-box.visi {
-    border-left-color: var(--color-primary-500);
+.visi-panel::after {
+    content: '';
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,160,23,0.22), rgba(212,160,23,0) 70%);
+    top: -60px;
+    right: -60px;
+    pointer-events: none;
 }
 
-.visimisi-box.misi {
-    border-left-color: var(--color-navy-500);
+.visi-panel .vm-label {
+    color: var(--color-gold-500);
 }
 
-.visimisi-heading {
-    font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+.visi-panel-text {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0;
 }
 
-.visimisi-text {
-    text-align: justify;
-    font-size: clamp(0.95rem, 2vw, 1.1rem);
-    line-height: 1.6;
+/* Misi panel: light card with numbered checklist */
+.misi-panel {
+    background-color: #fff;
+    box-shadow: var(--shadow-sm);
 }
 
-@media (max-width: 575.98px) {
-    .visimisi-box {
-        padding: 1.4rem;
-    }
-
-    .visimisi-text {
-        text-align: left;
-    }
+.misi-panel:hover {
+    box-shadow: var(--shadow-lg);
 }
 
-@keyframes fadeInRight {
-    0% { opacity: 0; transform: translateX(50px); }
-    100% { opacity: 1; transform: translateX(0); }
+.misi-panel .vm-label {
+    color: var(--color-primary-600);
 }
 
-@keyframes fadeInDown {
-    0% { opacity: 0; transform: translateY(-30px); }
-    100% { opacity: 1; transform: translateY(0); }
+.misi-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: misi-counter;
 }
 
-.visimisi-box:hover {
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    transform: translateY(-5px);
-    transition: transform 0.3s, box-shadow 0.3s;
+.misi-list li {
+    counter-increment: misi-counter;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 4px;
+    border-radius: 10px;
+    font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+    line-height: 1.55;
+    color: #444;
+    transition: background .25s var(--ease-material, ease), padding-left .25s var(--ease-material, ease);
+}
+
+.misi-list li + li {
+    border-top: 1px solid #eee;
+}
+
+.misi-list li:hover {
+    background: var(--color-primary-50);
+    padding-left: 10px;
+}
+
+.misi-list li::before {
+    content: counter(misi-counter);
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--color-primary-500);
 }
 </style>
 
-<section id="visimisi" class="container py-5" style="min-height: 70vh;">
-    <h2 class="text-center fw-bold mb-5 visimisi-title" style="animation: fadeInDown 1s ease forwards; opacity: 0;">{{ __('site.visimisi.title') }}</h2>
-
-    <div class="row justify-content-center g-4 d-flex align-items-stretch">
-
-        <!-- Visi -->
-        <div class="col-md-6 d-flex">
-            <div class="visimisi-box visi" style="cursor: pointer; opacity: 0; animation: fadeInLeft 1s ease forwards;">
-                <h3 class="fw-bold mb-3 visimisi-heading">{{ __('site.visimisi.visi_label') }}</h3>
-                <p class="visimisi-text">
-                    {{ __('site.visimisi.visi_text') }}
-                </p>
-            </div>
+<section id="visimisi" class="section-tint py-5">
+    <div class="container">
+        <div class="text-center reveal">
+            <span class="section-eyebrow">{{ __('site.nav.visi_misi') }}</span>
+            <h2 class="fw-bold mb-5 visimisi-title reveal-stagger"><x-stagger-words :text="__('site.visimisi.title')" /></h2>
         </div>
 
-        <!-- Misi -->
-        <div class="col-md-6 d-flex">
-            <div class="visimisi-box misi" style="cursor: pointer; opacity: 0; animation: fadeInRight 1s ease forwards;">
-                <h3 class="fw-bold mb-3 visimisi-heading">{{ __('site.visimisi.misi_label') }}</h3>
-                <ul class="visimisi-text" style="padding-left: 1.2rem;">
-                    <li>{{ __('site.visimisi.misi_1') }}</li>
-                    <li>{{ __('site.visimisi.misi_2') }}</li>
-                    <li>{{ __('site.visimisi.misi_3') }}</li>
-                </ul>
-            </div>
-        </div>
+        <div class="row g-4 align-items-stretch">
 
+            <!-- Visi -->
+            <div class="col-md-6">
+                <div class="vm-panel visi-panel reveal-left">
+                    <span class="vm-label">{{ __('site.visimisi.visi_label') }}</span>
+                    <p class="visi-panel-text">{{ __('site.visimisi.visi_text') }}</p>
+                </div>
+            </div>
+
+            <!-- Misi -->
+            <div class="col-md-6">
+                <div class="vm-panel misi-panel reveal-right">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <span class="vm-label mb-0">{{ __('site.visimisi.misi_label') }}</span>
+                        <div class="icon-badge icon-badge-navy" style="margin-bottom:0"><i class="bi bi-rocket-takeoff-fill"></i></div>
+                    </div>
+                    <ul class="misi-list reveal-stagger">
+                        <li class="stagger-item" style="--i:0">{{ __('site.visimisi.misi_1') }}</li>
+                        <li class="stagger-item" style="--i:1">{{ __('site.visimisi.misi_2') }}</li>
+                        <li class="stagger-item" style="--i:2">{{ __('site.visimisi.misi_3') }}</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
     </div>
 </section>
 
@@ -412,9 +497,9 @@ html {
 .accordion-item {
     border: none;
     margin-bottom: 16px;
-    border-radius: 14px;
+    border-radius: var(--radius-md, 16px);
     overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    box-shadow: var(--shadow-sm);
 }
 
 .accordion-button {
@@ -436,16 +521,16 @@ html {
 .member-card {
     background: #fff;
     border: 1px solid #e4e4e4;
-    border-radius: 14px;
+    border-radius: var(--radius-md, 16px);
     overflow: hidden;
-    transition: 0.35s ease;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    transition: 0.35s var(--ease-material, ease);
+    box-shadow: var(--shadow-sm);
 }
 
 .member-card:hover {
     border-color: var(--color-primary-300);
     transform: translateY(-6px);
-    box-shadow: 0 14px 30px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow-lg);
 }
 
 .member-info::before {
@@ -512,9 +597,12 @@ html {
 </style>
 
 <section id="struktur" class="container py-5 struktur-page">
-    <h2 class="text-center fw-bold mb-5">{{ __('site.struktur.title') }}</h2>
+    <div class="text-center reveal">
+        <span class="section-eyebrow">{{ __('site.nav.struktur') }}</span>
+        <h2 class="fw-bold mb-5 reveal-stagger"><x-stagger-words :text="__('site.struktur.title')" /></h2>
+    </div>
 
-    <div class="struktur-wrapper">
+    <div class="struktur-wrapper reveal">
         <div class="accordion" id="strukturAccordion">
 
             {{-- BOD --}}
@@ -693,8 +781,7 @@ html {
 .proker-wrapper {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 60px 20px;
-    font-family: 'Segoe UI', sans-serif;
+    padding: 0 20px;
 }
 
 .proker-title {
@@ -705,82 +792,92 @@ html {
 
 @media (max-width: 575.98px) {
     .proker-wrapper {
-        padding: 40px 16px;
+        padding: 0 16px;
     }
 }
 
-.proker-title-line {
-    width: 80px;
-    height: 4px;
-    background: var(--color-primary-500);
-    margin: 15px auto 40px;
+.proker-shell {
+    margin-top: 40px;
 }
 
-.proker-cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin-bottom: 48px;
-}
-
-.proker-card {
-    cursor: pointer;
-    text-align: left;
+/* Segmented pill tab bar */
+.proker-tabbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
     background: #fff;
-    border: 1px solid #e4e4e4;
-    border-radius: 14px;
-    padding: 28px 24px;
-    transition: 0.25s ease;
+    border: 1px solid #e9e9e9;
+    border-radius: 999px;
+    padding: 6px;
+    max-width: fit-content;
+    margin: 0 auto;
+    box-shadow: var(--shadow-sm);
 }
 
-.proker-card:hover {
-    border-color: var(--color-primary-300);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-    transform: translateY(-4px);
-}
-
-.proker-card.active {
-    border-color: var(--color-primary-500);
-    box-shadow: 0 10px 25px rgba(206,17,38,0.12);
-}
-
-.proker-card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 8px;
-}
-
-.proker-card p {
-    color: #555;
-    font-size: 0.92rem;
-    line-height: 1.5;
-    margin-bottom: 14px;
-}
-
-.proker-card .card-cta {
-    color: var(--color-primary-500);
-    font-weight: 600;
-    font-size: 0.88rem;
-}
-
-@media (max-width: 767.98px) {
-    .proker-cards {
-        grid-template-columns: 1fr;
-        gap: 16px;
-        margin-bottom: 32px;
+@media (max-width: 575.98px) {
+    .proker-tabbar {
+        max-width: 100%;
+        border-radius: var(--radius-md, 16px);
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
     }
 }
 
-.tab-wrapper {
-    position: relative;
+.proker-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    border: none;
+    background: transparent;
+    color: #555;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    border-radius: 999px;
+    transition: background .25s var(--ease-material, ease), color .25s var(--ease-material, ease);
+}
+
+.proker-pill:hover {
+    color: var(--color-primary-600);
+}
+
+.proker-pill.active {
+    background: var(--color-primary-500);
+    color: #fff;
+}
+
+/* Content panel — single cohesive card under the tab bar */
+.proker-panel {
+    background: #fff;
+    border-radius: var(--radius-lg, 22px);
+    box-shadow: var(--shadow-sm);
+    padding: clamp(2rem, 4vw, 2.75rem);
+    margin-top: 20px;
+}
+
+.proker-panel-desc {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 20px;
 }
 
 .tab-content {
     display: none;
-    animation: fadeSlideProker .5s ease;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .25s var(--ease-material, ease), transform .25s var(--ease-material, ease);
 }
 
 .tab-content.active {
     display: block;
+}
+
+.tab-content.tab-in {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .checklist {
@@ -790,122 +887,132 @@ html {
 
 .checklist > li {
     position: relative;
-    padding-left: 28px;
-    margin-bottom: 10px;
+    padding-left: 32px;
+    margin-bottom: 12px;
 }
 
 .checklist > li::before {
-    content: "✔";
+    content: "\2713";
     position: absolute;
     left: 0;
-    top: 0;
-    color: var(--color-primary-500);
-    font-weight: bold;
+    top: 1px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color-primary-500);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
-.checklist ul {
-    list-style: none;
-    margin-top: 8px;
-    padding-left: 22px;
+/* Language tags — pill grid instead of a nested bullet list */
+.lang-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
 }
 
-.checklist ul li {
-    position: relative;
-    padding-left: 22px;
-    margin-bottom: 6px;
-    font-size: 0.95rem;
-}
-
-.checklist ul li::before {
-    content: "–";
-    position: absolute;
-    left: 0;
-    color: #666;
-}
-
-.soon {
+.lang-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-size: 0.85rem;
-    color: #999;
+    font-weight: 500;
+    color: var(--color-navy-700);
+    background: var(--color-navy-50);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 6px 14px;
 }
 
-@keyframes fadeSlideProker {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.lang-pill-soon {
+    color: #999;
+    background: transparent;
+    border: 1px dashed #ccc;
+}
+
+.lang-pill-soon .lang-pill-tag {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--color-gold-600);
 }
 </style>
 
-<section id="proker" class="proker-wrapper">
-    <h1 class="proker-title">{{ __('site.proker.title') }}</h1>
-    <div class="proker-title-line"></div>
-
-    <div class="proker-cards">
-        <div class="proker-card tab-btn active" data-tab="pendidikan">
-            <h3>{{ __('site.proker.tab_pendidikan') }}</h3>
-            <p>{{ __('site.proker.card_pendidikan_desc') }}</p>
-            <span class="card-cta">{{ __('site.proker.card_cta') }} &rarr;</span>
-        </div>
-        <div class="proker-card tab-btn" data-tab="wirausaha">
-            <h3>{{ __('site.proker.tab_wirausaha') }}</h3>
-            <p>{{ __('site.proker.card_wirausaha_desc') }}</p>
-            <span class="card-cta">{{ __('site.proker.card_cta') }} &rarr;</span>
-        </div>
-        <div class="proker-card tab-btn" data-tab="sdm">
-            <h3>{{ __('site.proker.tab_sdm') }}</h3>
-            <p>{{ __('site.proker.card_sdm_desc') }}</p>
-            <span class="card-cta">{{ __('site.proker.card_cta') }} &rarr;</span>
-        </div>
+<section id="proker" class="section-tint py-5">
+    <div class="proker-wrapper">
+    <div class="text-center reveal">
+        <span class="section-eyebrow">{{ __('site.nav.proker') }}</span>
+        <h1 class="proker-title reveal-stagger"><x-stagger-words :text="__('site.proker.title')" /></h1>
     </div>
 
-    <div class="tab-wrapper">
-        <div class="tab-content active" id="pendidikan">
-            <h2>{{ __('site.proker.pendidikan_title') }}</h2>
-            <ul class="checklist">
-                <li>{{ __('site.proker.pkbm') }}</li>
-                <li>{{ __('site.proker.self_improvement') }}</li>
-                <li>{{ __('site.proker.bahasa_asing') }}
-                    <ul>
-                        <li>{{ __('site.proker.lang_inggris') }}</li>
-                        <li>{{ __('site.proker.lang_jerman') }}</li>
-                        <li>{{ __('site.proker.lang_prancis') }}</li>
-                        <li>{{ __('site.proker.lang_mandarin') }}</li>
-                        <li>{{ __('site.proker.lang_arab') }}</li>
-                        <li>{{ __('site.proker.lang_turki') }}</li>
-                        <li>{{ __('site.proker.lang_korea') }}</li>
-                        <li>{{ __('site.proker.lang_thailand') }} <span class="soon">{{ __('site.proker.coming_soon') }}</span></li>
-                        <li>{{ __('site.proker.lang_isyarat') }} <span class="soon">{{ __('site.proker.coming_soon') }}</span></li>
-                        <li>{{ __('site.proker.lang_urdu') }} <span class="soon">{{ __('site.proker.coming_soon') }}</span></li>
-                    </ul>
-                </li>
-            </ul>
+    <div class="proker-shell reveal">
+        <div class="proker-tabbar" role="tablist">
+            <button type="button" class="proker-pill tab-btn active" data-tab="pendidikan">
+                <i class="bi bi-mortarboard-fill"></i> {{ __('site.proker.tab_pendidikan') }}
+            </button>
+            <button type="button" class="proker-pill tab-btn" data-tab="wirausaha">
+                <i class="bi bi-graph-up-arrow"></i> {{ __('site.proker.tab_wirausaha') }}
+            </button>
+            <button type="button" class="proker-pill tab-btn" data-tab="sdm">
+                <i class="bi bi-people-fill"></i> {{ __('site.proker.tab_sdm') }}
+            </button>
         </div>
 
-        <div class="tab-content" id="wirausaha">
-            <h2>{{ __('site.proker.wirausaha_title') }}</h2>
-            <ul class="checklist">
-                <li>{{ __('site.proker.umkm_export') }}</li>
-                <li>{{ __('site.proker.business_matching') }}</li>
-            </ul>
-        </div>
+        <div class="proker-panel">
+            <div class="tab-content active" id="pendidikan">
+                <p class="proker-panel-desc">{{ __('site.proker.card_pendidikan_desc') }}</p>
+                <h2>{{ __('site.proker.pendidikan_title') }}</h2>
+                <ul class="checklist">
+                    <li>{{ __('site.proker.pkbm') }}</li>
+                    <li>{{ __('site.proker.self_improvement') }}</li>
+                    <li>{{ __('site.proker.bahasa_asing') }}
+                        <div class="lang-pills">
+                            <span class="lang-pill">{{ __('site.proker.lang_inggris') }}</span>
+                            <span class="lang-pill">{{ __('site.proker.lang_jerman') }}</span>
+                            <span class="lang-pill">{{ __('site.proker.lang_prancis') }}</span>
+                            <span class="lang-pill">{{ __('site.proker.lang_mandarin') }}</span>
+                            <span class="lang-pill">{{ __('site.proker.lang_arab') }}</span>
+                            <span class="lang-pill">{{ __('site.proker.lang_turki') }}</span>
+                            <span class="lang-pill">{{ __('site.proker.lang_korea') }}</span>
+                            <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_thailand') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
+                            <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_isyarat') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
+                            <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_urdu') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
 
-        <div class="tab-content" id="sdm">
-            <h2>{{ __('site.proker.sdm_title') }}</h2>
-            <ul class="checklist">
-                <li>{{ __('site.proker.sdm_1') }}</li>
-                <li>{{ __('site.proker.sdm_2') }}</li>
-                <li>{{ __('site.proker.sdm_3') }}</li>
-                <li>{{ __('site.proker.sdm_4') }}</li>
-                <li>{{ __('site.proker.sdm_5') }}</li>
-                <li>{{ __('site.proker.sdm_6') }}</li>
-                <li>{{ __('site.proker.sdm_7') }}</li>
-                <li>{{ __('site.proker.sdm_8') }}</li>
-            </ul>
+            <div class="tab-content" id="wirausaha">
+                <p class="proker-panel-desc">{{ __('site.proker.card_wirausaha_desc') }}</p>
+                <h2>{{ __('site.proker.wirausaha_title') }}</h2>
+                <ul class="checklist">
+                    <li>{{ __('site.proker.umkm_export') }}</li>
+                    <li>{{ __('site.proker.business_matching') }}</li>
+                </ul>
+            </div>
+
+            <div class="tab-content" id="sdm">
+                <p class="proker-panel-desc">{{ __('site.proker.card_sdm_desc') }}</p>
+                <h2>{{ __('site.proker.sdm_title') }}</h2>
+                <ul class="checklist">
+                    <li>{{ __('site.proker.sdm_1') }}</li>
+                    <li>{{ __('site.proker.sdm_2') }}</li>
+                    <li>{{ __('site.proker.sdm_3') }}</li>
+                    <li>{{ __('site.proker.sdm_4') }}</li>
+                    <li>{{ __('site.proker.sdm_5') }}</li>
+                    <li>{{ __('site.proker.sdm_6') }}</li>
+                    <li>{{ __('site.proker.sdm_7') }}</li>
+                    <li>{{ __('site.proker.sdm_8') }}</li>
+                </ul>
+            </div>
         </div>
+    </div>
     </div>
 </section>
 
@@ -958,24 +1065,15 @@ html {
 
 .gallery-card {
     background: #fff;
-    border-radius: 14px;
+    border-radius: var(--radius-md, 16px);
     overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-    transition: .35s ease;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeUpGallery .6s ease forwards;
+    box-shadow: var(--shadow-sm);
+    transition: .35s var(--ease-material, ease);
 }
-
-.gallery-card:nth-child(2) { animation-delay: .1s; }
-.gallery-card:nth-child(3) { animation-delay: .2s; }
-.gallery-card:nth-child(4) { animation-delay: .3s; }
-.gallery-card:nth-child(5) { animation-delay: .4s; }
-.gallery-card:nth-child(6) { animation-delay: .5s; }
 
 .gallery-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow-lg);
 }
 
 .gallery-img {
@@ -995,6 +1093,10 @@ html {
     transform: scale(1.06);
 }
 
+.gallery-title-line {
+    background: linear-gradient(90deg, var(--color-primary-500), var(--color-gold-500));
+}
+
 .gallery-body {
     padding: 18px 20px;
 }
@@ -1009,23 +1111,19 @@ html {
     color: #666;
     margin: 0;
 }
-
-@keyframes fadeUpGallery {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 </style>
 
 <section id="dokumentasi" class="gallery-section">
     <div class="gallery-container">
-        <h2 class="gallery-title">{{ __('site.dokumentasi.title') }}</h2>
-        <div class="gallery-title-line"></div>
+        <div class="text-center reveal">
+            <span class="section-eyebrow">{{ __('site.nav.galeri') }}</span>
+            <h2 class="gallery-title reveal-stagger"><x-stagger-words :text="__('site.dokumentasi.title')" /></h2>
+            <div class="gallery-title-line"></div>
+        </div>
 
         <div class="gallery-grid">
 @foreach($galleries as $item)
-    <div class="gallery-card">
+    <div class="gallery-card reveal reveal-delay-{{ ($loop->index % 5) + 1 }}">
         <div class="gallery-img">
             <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}">
         </div>
@@ -1040,277 +1138,371 @@ html {
 </section>
 
 {{-- ======================= KEMITRAAN ======================= --}}
+{{-- Judul+deskripsi center di atas, lalu tiap kategori jadi baris:
+     label kategori di kiri, SEMUA logo mitra kategori itu di kanan
+     (tidak dipotong), reveal berjenjang per baris saat discroll. --}}
+@php
+    $mitraCategories = [
+        ['key' => 'media', 'images' => ['MEDIA1.png', 'media2.jpeg', 'media3.jpeg', 'med.png']],
+        ['key' => 'community', 'images' => ['com1-image.jpeg', 'com2-image.jpeg', 'com3-image.jpeg', 'com4-image.jpeg', 'com5-image.jpeg', 'com6-image.png']],
+        ['key' => 'government', 'images' => ['gov1.jpeg', 'gov2.jpeg', 'gov3.png', 'gov4.jpeg', 'gov5.jpeg', 'gov6.jpeg', 'gov7.jpeg', 'gov8.jpeg', 'gov9.jpeg']],
+        ['key' => 'hospitality_campus', 'images' => ['hc1.jpeg', 'hc5.jpeg']],
+        ['key' => 'hotel', 'images' => ['hotel1.jpeg', 'hotel2.jpeg', 'hotel3.jpeg', 'hotel4.jpeg', 'hotel5.jpeg']],
+        ['key' => 'brand', 'images' => ['brand1.jpeg', 'brand2.jpeg', 'brand3.jpeg', 'brand4.jpeg', 'brand5.jpeg', 'brand6.jpeg', 'brand7.jpeg', 'brand8.jpeg', 'brand9.jpeg', 'brand10.jpeg', 'brand11.jpeg', 'brand12.jpeg', 'brand13.jpeg', 'brand14.jpeg', 'brand15.jpeg', 'brand16.jpeg', 'brand17.png', 'brand18.png', 'brand19.png', 'brand20.png', 'brand21.png', 'brand22.jpeg', 'brand23.png', 'brand24.png', 'brand25.png', 'brand26.jpeg']],
+        ['key' => 'law', 'images' => ['law1.jpeg', 'law2.jpeg']],
+        ['key' => 'ip_trade', 'images' => ['ip1.png', 'ip2.png', 'ip3.jpeg', 'ip4.jpeg', 'ip5.png', 'ip6.jpeg', 'ip7.jpeg']],
+    ];
+@endphp
 <style>
-.kemitraan {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 60px 30px;
-    text-align: center;
+.mitra-heading {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    margin: 14px 0 16px;
 }
 
-.kemitraan h1 {
-    font-size: clamp(1.5rem, 5vw, 32px);
-    margin-bottom: 40px;
-    position: relative;
-    text-align: center;
-    font-weight: bold;
+.mitra-intro {
+    max-width: 560px;
+    margin: 0 auto 20px;
+}
+
+.mitra-desc {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.65;
+}
+
+.mitra-list {
+    margin-top: 44px;
+}
+
+.mitra-row {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 32px;
+    align-items: start;
+    padding: 34px 0;
+}
+
+.mitra-row-label {
+    position: sticky;
+    top: 110px;
+}
+
+@media (max-width: 991.98px) {
+    .mitra-row {
+        grid-template-columns: 160px 1fr;
+    }
+}
+
+.mitra-row + .mitra-row {
+    border-top: 1px solid rgba(0,0,0,0.07);
+}
+
+@media (max-width: 767.98px) {
+    .mitra-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 24px 0;
+    }
+
+    .mitra-row-label {
+        position: static;
+    }
+}
+
+.mitra-row-label h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.mitra-row-count {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.mitra-row-logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.mitra-logo {
+    width: 128px;
+    height: 86px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: var(--shadow-sm);
+    padding: 14px;
+    transition: transform .25s var(--ease-material, ease), box-shadow .25s var(--ease-material, ease);
+}
+
+.mitra-logo:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.mitra-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(45%);
+    opacity: 0.85;
+    transition: filter .25s var(--ease-material, ease), opacity .25s var(--ease-material, ease);
+}
+
+.mitra-logo:hover img {
+    filter: grayscale(0);
+    opacity: 1;
 }
 
 @media (max-width: 575.98px) {
-    .kemitraan {
-        padding: 40px 16px;
+    .mitra-logo {
+        width: 100px;
+        height: 68px;
     }
-
-    .partner-row img {
-        height: 60px;
-        max-width: 120px;
-    }
-}
-
-.partner-section {
-    margin-bottom: 60px;
-}
-
-.partner-title {
-    text-align: center;
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 24px;
-}
-
-.partner-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    justify-content: center;
-}
-
-.partner-row img {
-    height: 80px;
-    max-width: 160px;
-    object-fit: contain;
-}
-
-.partner-row img:hover {
-    filter: grayscale(0);
-    opacity: 1;
-    transform: scale(1.05);
 }
 </style>
 
-<section id="mitra" class="kemitraan">
-    <h1>{{ __('site.mitra.title') }}</h1>
-
-    {{-- MEDIA PARTNER --}}
-    <div class="partner-section">
-        <div class="partner-title">{{ __('site.mitra.media') }}</div>
-        <div class="partner-row">
-            <img src="{{ asset('assets/img/MEDIA1.png') }}">
-            <img src="{{ asset('assets/img/media2.jpeg') }}">
-            <img src="{{ asset('assets/img/media3.jpeg') }}">
-            <img src="{{ asset('assets/img/med.png') }}">
+<section id="mitra" class="section-tint py-5">
+    <div class="container">
+        <div class="text-center reveal mitra-intro">
+            <span class="section-eyebrow">{{ __('site.nav.kemitraan') }}</span>
+            <h1 class="mitra-heading reveal-stagger"><x-stagger-words :text="__('site.mitra.title')" /></h1>
+            <p class="mitra-desc">{{ __('site.mitra.description') }}</p>
         </div>
-    </div>
 
-    {{-- COMMUNITY PARTNER --}}
-    <div class="partner-section">
-        <div class="partner-title">{{ __('site.mitra.community') }}</div>
-        <div class="partner-row">
-            <img src="{{ asset('assets/img/com1-image.jpeg') }}">
-            <img src="{{ asset('assets/img/com2-image.jpeg') }}">
-            <img src="{{ asset('assets/img/com3-image.jpeg') }}">
-            <img src="{{ asset('assets/img/com4-image.jpeg') }}">
-            <img src="{{ asset('assets/img/com5-image.jpeg') }}">
-            <img src="{{ asset('assets/img/com6-image.png') }}">
-        </div>
-    </div>
-
-    {{-- GOVERNMENT PARTNERSHIP --}}
-    <div class="partner-section">
-        <div class="partner-title">{{ __('site.mitra.government') }}</div>
-        <div class="partner-row">
-            <img src="{{ asset('assets/img/gov1.jpeg') }}">
-            <img src="{{ asset('assets/img/gov2.jpeg') }}">
-            <img src="{{ asset('assets/img/gov3.png') }}">
-            <img src="{{ asset('assets/img/gov4.jpeg') }}">
-            <img src="{{ asset('assets/img/gov5.jpeg') }}">
-            <img src="{{ asset('assets/img/gov6.jpeg') }}">
-            <img src="{{ asset('assets/img/gov7.jpeg') }}">
-            <img src="{{ asset('assets/img/gov8.jpeg') }}">
-            <img src="{{ asset('assets/img/gov9.jpeg') }}">
-        </div>
-    </div>
-
-    {{-- HOSPITALITY & CAMPUS PARTNERSHIP --}}
-    <div class="partner-section">
-        <div class="partner-title">{{ __('site.mitra.hospitality_campus') }}</div>
-        <div class="partner-row">
-            <img src="{{ asset('assets/img/hc1.jpeg') }}">
-            <img src="{{ asset('assets/img/hc5.jpeg') }}">
-        </div>
-    </div>
-
-    {{-- HOTEL PARTNERSHIP --}}
-    <div class="partner-section">
-        <div class="partner-title">{{ __('site.mitra.hotel') }}</div>
-        <div class="partner-row">
-            <img src="{{ asset('assets/img/hotel1.jpeg') }}">
-            <img src="{{ asset('assets/img/hotel2.jpeg') }}">
-            <img src="{{ asset('assets/img/hotel3.jpeg') }}">
-            <img src="{{ asset('assets/img/hotel4.jpeg') }}">
-            <img src="{{ asset('assets/img/hotel5.jpeg') }}">
-        </div>
-    </div>
-
-    {{-- BRAND PARTNERSHIP --}}
-    <div class="partner-section">
-        <div class="partner-title">{{ __('site.mitra.brand') }}</div>
-        <div class="partner-row">
-            <img src="{{ asset('assets/img/brand1.jpeg') }}">
-            <img src="{{ asset('assets/img/brand2.jpeg') }}">
-            <img src="{{ asset('assets/img/brand3.jpeg') }}">
-            <img src="{{ asset('assets/img/brand4.jpeg') }}">
-            <img src="{{ asset('assets/img/brand5.jpeg') }}">
-            <img src="{{ asset('assets/img/brand6.jpeg') }}">
-            <img src="{{ asset('assets/img/brand7.jpeg') }}">
-            <img src="{{ asset('assets/img/brand8.jpeg') }}">
-            <img src="{{ asset('assets/img/brand9.jpeg') }}">
-            <img src="{{ asset('assets/img/brand10.jpeg') }}">
-            <img src="{{ asset('assets/img/brand11.jpeg') }}">
-            <img src="{{ asset('assets/img/brand12.jpeg') }}">
-            <img src="{{ asset('assets/img/brand13.jpeg') }}">
-            <img src="{{ asset('assets/img/brand14.jpeg') }}">
-            <img src="{{ asset('assets/img/brand15.jpeg') }}">
-            <img src="{{ asset('assets/img/brand16.jpeg') }}">
-            <img src="{{ asset('assets/img/brand17.png') }}">
-            <img src="{{ asset('assets/img/brand18.png') }}">
-            <img src="{{ asset('assets/img/brand19.png') }}">
-            <img src="{{ asset('assets/img/brand20.png') }}">
-            <img src="{{ asset('assets/img/brand21.png') }}">
-            <img src="{{ asset('assets/img/brand22.jpeg') }}">
-            <img src="{{ asset('assets/img/brand23.png') }}">
-            <img src="{{ asset('assets/img/brand24.png') }}">
-            <img src="{{ asset('assets/img/brand25.png') }}">
-            <img src="{{ asset('assets/img/brand26.jpeg') }}">
-        </div>
-    </div>
-
-    {{-- LAW PARTNERSHIP --}}
-    <div class="partner-section">
-        <div class="partner-title">{{ __('site.mitra.law') }}</div>
-        <div class="partner-row">
-            <img src="{{ asset('assets/img/law1.jpeg') }}">
-            <img src="{{ asset('assets/img/law2.jpeg') }}">
-        </div>
-    </div>
-
-    {{-- INTERNATIONAL PROMOTION TRADE CENTER PARTNERSHIP --}}
-    <div class="partner-section">
-        <div class="partner-title">{{ __('site.mitra.ip_trade') }}</div>
-        <div class="partner-row">
-            <img src="{{ asset('assets/img/ip1.png') }}">
-            <img src="{{ asset('assets/img/ip2.png') }}">
-            <img src="{{ asset('assets/img/ip3.jpeg') }}">
-            <img src="{{ asset('assets/img/ip4.jpeg') }}">
-            <img src="{{ asset('assets/img/ip5.png') }}">
-            <img src="{{ asset('assets/img/ip6.jpeg') }}">
-            <img src="{{ asset('assets/img/ip7.jpeg') }}">
+        <div class="mitra-list">
+            @foreach($mitraCategories as $i => $category)
+                <div class="mitra-row reveal reveal-delay-{{ ($i % 5) + 1 }}">
+                    <div class="mitra-row-label">
+                        <h3>{{ __('site.mitra.'.$category['key']) }}</h3>
+                        <span class="mitra-row-count">{{ count($category['images']) }} {{ __('site.mitra.partner_unit') }}</span>
+                    </div>
+                    <div class="mitra-row-logos">
+                        @foreach($category['images'] as $img)
+                            <div class="mitra-logo">
+                                <img src="{{ asset('assets/img/'.$img) }}" alt="{{ __('site.mitra.'.$category['key']) }}">
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 </section>
 
 {{-- ======================= KERJASAMA ======================= --}}
 <style>
-.partnership-wrapper {
-    max-width: 1100px;
-    margin: 60px auto;
+.kerjasama-section {
+    background: #fff;
+    color: inherit;
+    padding: 88px 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.kerjasama-inner {
+    max-width: 1140px;
+    margin: 0 auto;
     padding: 0 24px;
+}
+
+.kerjasama-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+}
+
+@media (max-width: 991.98px) {
+    .kerjasama-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+}
+
+.kerjasama-headline {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 14px 0 18px;
+}
+
+.kerjasama-headline .accent-dot {
+    color: var(--color-primary-500);
+}
+
+.kerjasama-desc {
+    color: #666;
+    font-size: 1.02rem;
+    line-height: 1.7;
+    max-width: 440px;
+    margin-bottom: 34px;
+}
+
+.kerjasama-points {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.kerjasama-points li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #333;
+    font-size: 0.96rem;
+}
+
+.kerjasama-point-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary-50);
+    border: 1px solid rgba(0,0,0,0.05);
+    color: var(--color-primary-600);
+    font-size: 1.05rem;
 }
 
 .partnership-card {
     background: #fff;
-    border-radius: 18px;
-    padding: 36px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-    animation: fadeUpKerjasama 0.6s ease forwards;
-}
-
-.partnership-title {
-    text-align: center;
-    font-size: clamp(1.6rem, 5vw, 38px);
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-.partnership-subtitle {
-    text-align: center;
-    color: #666;
-    margin-bottom: 40px;
+    border: 1px solid #eee;
+    border-radius: var(--radius-md, 16px);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    box-shadow: var(--shadow-md);
+    position: relative;
 }
 
 @media (max-width: 767.98px) {
-    .partnership-wrapper {
-        margin: 40px auto;
-        padding: 0 16px;
-    }
-
-    .partnership-card {
-        padding: 22px;
-    }
-
-    .partnership-subtitle {
-        margin-bottom: 28px;
+    .kerjasama-section {
+        padding: 60px 0;
     }
 }
 
-.partnership-wrapper .form-control {
-    border-radius: 12px;
+.hp-field {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.partnership-wrapper .form-control,
+.kerjasama-section .form-control {
+    border-radius: 10px;
     padding: 14px 16px;
+    background: #fff;
+    border: 1.5px solid #e4e4e4;
+    color: inherit;
+    transition: border-color .2s, box-shadow .2s, background .2s;
 }
 
-.form-col {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+.kerjasama-section .form-control::placeholder {
+    color: #999;
+}
+
+.kerjasama-section .form-control:focus {
+    background: #fff;
+    border-color: var(--color-primary-500);
+    box-shadow: 0 0 0 4px var(--color-primary-50);
+    color: inherit;
+}
+
+.kerjasama-section .invalid-feedback {
+    color: var(--color-primary-600);
+}
+
+.kerjasama-section .is-invalid {
+    border-color: var(--color-primary-500) !important;
+}
+
+.kerjasama-section .text-muted {
+    color: #888 !important;
 }
 
 .form-field {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
-.form-field-grow {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    margin-bottom: 20px;
-}
-
-.form-field-grow textarea.form-control {
-    flex: 1 1 auto;
-    min-height: 160px;
+.form-field textarea.form-control {
+    min-height: 130px;
     resize: none;
 }
 
 .btn-submit {
-    padding: 16px;
-    border-radius: 14px;
-    font-weight: 600;
-    transition: 0.25s;
+    padding: 16px 22px;
+    border-radius: 10px;
     margin-top: 8px;
-    background-color: var(--color-primary-500);
-    border-color: var(--color-primary-500);
+    width: 100%;
+    border: none;
+    background: var(--color-primary-500);
+    color: #fff;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 600;
 }
 
 .btn-submit:hover {
-    background-color: var(--color-primary-600);
-    border-color: var(--color-primary-600);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(206,17,38,0.35);
+    color: #fff;
 }
 
-@keyframes fadeUpKerjasama {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+.btn-submit-arrow {
+    display: inline-flex;
+    transition: transform .25s var(--ease-material, ease);
+}
+
+.btn-submit:hover .btn-submit-arrow {
+    transform: translateX(4px);
+}
+
+.btn-submit:hover {
+    background: var(--color-primary-600);
+    box-shadow: 0 12px 28px rgba(206,17,38,0.32);
+}
+
+.btn-submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.85;
+    transform: none;
+}
+
+.btn-submit-spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+.btn-submit.is-loading .btn-submit-spinner {
+    display: inline-block;
+}
+
+.btn-submit.is-loading .btn-submit-label,
+.btn-submit.is-loading .btn-submit-arrow {
+    opacity: 0.85;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 .success-overlay {
@@ -1326,11 +1518,41 @@ html {
 
 .success-card {
     background: #fff;
-    border-radius: 18px;
-    padding: 36px 32px;
+    border-radius: var(--radius-lg, 22px);
+    padding: 36px 32px 28px;
     text-align: center;
     width: 360px;
     animation: popUp 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.success-card-dots {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(var(--color-success) 1.5px, transparent 1.5px);
+    background-size: 20px 20px;
+    -webkit-mask-image: radial-gradient(circle at 50% 0%, black, transparent 65%);
+    mask-image: radial-gradient(circle at 50% 0%, black, transparent 65%);
+    opacity: 0.08;
+}
+
+.success-card-progress {
+    position: relative;
+    margin-top: 18px;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--color-primary-50);
+    overflow: hidden;
+}
+
+.success-card-progress span {
+    display: block;
+    width: 0%;
+    height: 100%;
+    background: var(--color-primary-500);
+    transition: width linear;
 }
 
 .success-card h4 {
@@ -1394,18 +1616,12 @@ html {
 }
 
 .error-toast {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    left: 24px;
-    margin-left: auto;
-    max-width: 380px;
-    background: #fff;
+    position: relative;
+    background: #fff8f8;
     border-left: 4px solid var(--color-primary-500);
     border-radius: 12px;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
     padding: 16px 44px 16px 16px;
-    z-index: 9999;
+    margin-bottom: 24px;
     display: flex;
     align-items: flex-start;
     gap: 12px;
@@ -1469,101 +1685,119 @@ html {
     from { opacity: 1; transform: translateY(0) scale(1); }
     to { opacity: 0; transform: translateY(-16px) scale(.97); }
 }
-
-@media (max-width: 575.98px) {
-    .error-toast {
-        top: 14px;
-        right: 14px;
-        left: 14px;
-        max-width: none;
-    }
-}
 </style>
 
-<section id="kerjasama" class="partnership-wrapper">
-    <h2 class="partnership-title">{{ __('site.kerjasama.title') }}</h2>
-    <p class="partnership-subtitle">
-        {{ __('site.kerjasama.subtitle') }}
-    </p>
+<section id="kerjasama" class="kerjasama-section">
+    <div class="kerjasama-inner">
+        <div class="kerjasama-grid">
 
-    <form method="POST"
-      action="{{ route('partnership.store') }}#kerjasama"
-      enctype="multipart/form-data">
-    @csrf
+            <div class="kerjasama-info reveal-left">
+                <span class="section-eyebrow">{{ __('site.nav.kerjasama') }}</span>
+                <h2 class="kerjasama-headline reveal-stagger">
+                    <x-stagger-words :text="__('site.kerjasama.title')" /><span class="accent-dot">.</span>
+                </h2>
+                <p class="kerjasama-desc">{{ __('site.kerjasama.subtitle') }}</p>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <strong>{{ __('site.kerjasama.error_title') }}</strong>
-                <ul class="mb-0 mt-1">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
+                <ul class="kerjasama-points">
+                    <li>
+                        <span class="kerjasama-point-icon"><i class="bi bi-people-fill"></i></span>
+                        {{ __('site.kerjasama.point_1') }}
+                    </li>
+                    <li>
+                        <span class="kerjasama-point-icon"><i class="bi bi-lightning-charge-fill"></i></span>
+                        {{ __('site.kerjasama.point_2') }}
+                    </li>
+                    <li>
+                        <span class="kerjasama-point-icon"><i class="bi bi-diagram-3-fill"></i></span>
+                        {{ __('site.kerjasama.point_3') }}
+                    </li>
                 </ul>
             </div>
-        @endif
 
-        <div class="partnership-card">
-            <div class="row g-4">
+            <div class="reveal-right">
+                <form method="POST"
+                  action="{{ route('partnership.store') }}#kerjasama"
+                  enctype="multipart/form-data">
+                @csrf
 
-                {{-- KIRI: informasi identitas --}}
-                <div class="col-md-6 form-col">
-                    <div class="form-field">
-                        <label class="form-label fw-semibold">{{ __('site.kerjasama.nama_institusi') }}</label>
-                        <input type="text" name="institution_name" value="{{ old('institution_name') }}" class="form-control @error('institution_name') is-invalid @enderror" required>
-                        @error('institution_name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                    <div class="partnership-card">
+
+                        @if ($errors->any())
+                            <div class="error-toast" id="errorToast">
+                                <div class="error-toast-icon">!</div>
+                                <div class="error-toast-body">
+                                    @if ($errors->has('proposal_file'))
+                                        <h6>{{ __('site.kerjasama.toast_upload_title') }}</h6>
+                                        <p>{{ $errors->first('proposal_file') }}</p>
+                                    @else
+                                        <h6>{{ __('site.kerjasama.toast_error_title') }}</h6>
+                                        <p>{{ $errors->first() }}</p>
+                                    @endif
+                                </div>
+                                <button type="button" class="error-toast-close" onclick="closeErrorToast()" aria-label="Close">&times;</button>
+                            </div>
+                        @endif
+
+                        {{-- Honeypot: hidden from real users, bots tend to fill every field --}}
+                        <div class="hp-field" aria-hidden="true">
+                            <label for="website">Website</label>
+                            <input type="text" name="website" id="website" tabindex="-1" autocomplete="off">
+                        </div>
+
+                        <div class="form-field">
+                            <input type="text" name="institution_name" value="{{ old('institution_name') }}" placeholder="{{ __('site.kerjasama.nama_institusi') }}" aria-label="{{ __('site.kerjasama.nama_institusi') }}" class="form-control @error('institution_name') is-invalid @enderror" maxlength="150" required>
+                            @error('institution_name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-field">
+                            <input type="text" name="pic_name" value="{{ old('pic_name') }}" placeholder="{{ __('site.kerjasama.nama_pic') }}" aria-label="{{ __('site.kerjasama.nama_pic') }}" class="form-control @error('pic_name') is-invalid @enderror" maxlength="100" required>
+                            @error('pic_name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-field">
+                            <input type="email" name="email" value="{{ old('email') }}" placeholder="{{ __('site.kerjasama.email') }}" aria-label="{{ __('site.kerjasama.email') }}" class="form-control @error('email') is-invalid @enderror" maxlength="150" required>
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-field">
+                            <input type="file" name="proposal_file" class="form-control @error('proposal_file') is-invalid @enderror" accept=".pdf,.doc,.docx" aria-label="{{ __('site.kerjasama.proposal') }}">
+                            @error('proposal_file')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @else
+                                <small class="text-muted">{{ __('site.kerjasama.proposal') }} — PDF, DOC, atau DOCX. Maks 5MB.</small>
+                            @enderror
+                        </div>
+
+                        <div class="form-field">
+                            <textarea name="summary" placeholder="{{ __('site.kerjasama.rangkuman') }}" aria-label="{{ __('site.kerjasama.rangkuman') }}" class="form-control @error('summary') is-invalid @enderror" maxlength="2000" required>{{ old('summary') }}</textarea>
+                            @error('summary')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <button class="btn-submit" id="kerjasamaSubmitBtn">
+                            <span class="btn-submit-label">{{ __('site.kerjasama.submit') }}</span>
+                            <i class="bi bi-arrow-right btn-submit-arrow" aria-hidden="true"></i>
+                            <span class="btn-submit-spinner" aria-hidden="true"></span>
+                        </button>
                     </div>
-
-                    <div class="form-field">
-                        <label class="form-label fw-semibold">{{ __('site.kerjasama.nama_pic') }}</label>
-                        <input type="text" name="pic_name" value="{{ old('pic_name') }}" class="form-control @error('pic_name') is-invalid @enderror" required>
-                        @error('pic_name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="form-field">
-                        <label class="form-label fw-semibold">{{ __('site.kerjasama.email') }}</label>
-                        <input type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" required>
-                        @error('email')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="form-field">
-                        <label class="form-label fw-semibold">{{ __('site.kerjasama.proposal') }}</label>
-                        <input type="file" name="proposal_file" class="form-control @error('proposal_file') is-invalid @enderror">
-                        @error('proposal_file')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @else
-                            <small class="text-muted">PDF, DOC, atau DOCX. Maks 5MB.</small>
-                        @enderror
-                    </div>
-                </div>
-
-                {{-- KANAN: detail kerjasama --}}
-                <div class="col-md-6 form-col">
-                    <div class="form-field-grow">
-                        <label class="form-label fw-semibold">{{ __('site.kerjasama.rangkuman') }}</label>
-                        <textarea name="summary" class="form-control @error('summary') is-invalid @enderror" required>{{ old('summary') }}</textarea>
-                        @error('summary')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
+                </form>
             </div>
 
-            <button class="btn btn-primary w-100 btn-submit">
-                {{ __('site.kerjasama.submit') }}
-            </button>
         </div>
+    </div>
     </form>
 </section>
 @if(session('success'))
 <div class="success-overlay" id="successOverlay">
     <div class="success-card">
+        <div class="success-card-dots" aria-hidden="true"></div>
         <div class="checkmark">
             <svg viewBox="0 0 52 52">
                 <circle cx="26" cy="26" r="25" fill="none"/>
@@ -1573,23 +1807,8 @@ html {
         <h4>{{ __('site.kerjasama.success_title') }}</h4>
         <p>{{ __('site.kerjasama.success_text') }}</p>
         <button onclick="closeSuccess()">{{ __('site.kerjasama.close') }}</button>
+        <div class="success-card-progress"><span id="successProgressBar"></span></div>
     </div>
-</div>
-@endif
-
-@if ($errors->any())
-<div class="error-toast" id="errorToast">
-    <div class="error-toast-icon">!</div>
-    <div class="error-toast-body">
-        @if ($errors->has('proposal_file'))
-            <h6>{{ __('site.kerjasama.toast_upload_title') }}</h6>
-            <p>{{ $errors->first('proposal_file') }}</p>
-        @else
-            <h6>{{ __('site.kerjasama.toast_error_title') }}</h6>
-            <p>{{ $errors->first() }}</p>
-        @endif
-    </div>
-    <button type="button" class="error-toast-close" onclick="closeErrorToast()" aria-label="Close">&times;</button>
 </div>
 @endif
 
@@ -1610,18 +1829,62 @@ function closeErrorToast() {
     if (!toast) return;
     setTimeout(closeErrorToast, 6000);
 })();
+
+(function () {
+    var bar = document.getElementById('successProgressBar');
+    if (!bar) return;
+    var duration = 8000;
+    requestAnimationFrame(function () {
+        bar.style.transitionDuration = duration + 'ms';
+        bar.style.width = '100%';
+    });
+    setTimeout(closeSuccess, duration);
+})();
+
+(function () {
+    var form = document.querySelector('#kerjasama form');
+    var btn = document.getElementById('kerjasamaSubmitBtn');
+    if (!form || !btn) return;
+    form.addEventListener('submit', function () {
+        if (!form.checkValidity()) return;
+        btn.classList.add('is-loading');
+        btn.disabled = true;
+    });
+})();
 </script>
 
 {{-- Tab switching (Proker) --}}
 <script>
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        if (btn.classList.contains('active')) return;
 
+        const current = document.querySelector('.tab-content.active');
+        const next = document.getElementById(btn.dataset.tab);
+
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        document.getElementById(btn.dataset.tab).classList.add('active');
+
+        const swap = () => {
+            if (current) {
+                current.classList.remove('active', 'tab-in');
+            }
+            next.classList.add('active');
+            requestAnimationFrame(() => next.classList.add('tab-in'));
+        };
+
+        if (current) {
+            current.classList.remove('tab-in');
+            setTimeout(swap, 180);
+        } else {
+            swap();
+        }
     });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const activeTab = document.querySelector('.tab-content.active');
+    if (activeTab) requestAnimationFrame(() => activeTab.classList.add('tab-in'));
 });
 </script>
 

@@ -11,11 +11,15 @@ class PartnershipController extends Controller
 {
     public function store(Request $request)
     {
+        if ($request->filled('website')) {
+            return redirect()->back()->with('success', 'Pengajuan berhasil');
+        }
+
         $data = $request->validate([
-            'institution_name' => 'required',
-            'pic_name' => 'required',
-            'email' => 'required|email',
-            'summary' => 'required',
+            'institution_name' => 'required|string|max:150',
+            'pic_name' => 'required|string|max:100',
+            'email' => 'required|email:rfc,dns|max:150',
+            'summary' => 'required|string|max:2000',
             'proposal_file' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
         ]);
 

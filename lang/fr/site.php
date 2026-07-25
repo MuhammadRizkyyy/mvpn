@@ -112,6 +112,8 @@ return [
 
     'mitra' => [
         'title' => 'Nos Partenariats',
+        'description' => 'Nos collaborations couvrent plusieurs secteurs — médias, communauté, gouvernement — pour élargir notre impact pour la jeunesse indonésienne.',
+        'partner_unit' => 'Partenaires',
         'media' => 'Partenariat Média',
         'community' => 'Partenariat Communautaire',
         'government' => 'Partenariat Gouvernemental',
@@ -123,8 +125,11 @@ return [
     ],
 
     'kerjasama' => [
-        'title' => 'Formulaire de Collaboration',
+        'title' => 'Collaborons Ensemble',
         'subtitle' => 'Construisons ensemble une collaboration percutante et professionnelle.',
+        'point_1' => 'Une portée auprès des jeunes dans toute l\'Indonésie',
+        'point_2' => 'Processus de soumission rapide & transparent',
+        'point_3' => 'Ouvert aux partenaires et organisations intersectoriels',
         'nama_institusi' => 'Nom de l\'Institution',
         'nama_pic' => 'Nom du Contact Référent',
         'email' => 'Email',

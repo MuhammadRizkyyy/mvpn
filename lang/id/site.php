@@ -112,6 +112,8 @@ return [
 
     'mitra' => [
         'title' => 'Kemitraan Kami',
+        'description' => 'Kolaborasi kami tersebar di berbagai sektor — mulai dari media, komunitas, hingga pemerintahan — untuk memperluas dampak bagi generasi muda Indonesia.',
+        'partner_unit' => 'Mitra',
         'media' => 'Kemitraan Media',
         'community' => 'Kemitraan Komunitas',
         'government' => 'Kemitraan Pemerintah',
@@ -123,8 +125,11 @@ return [
     ],
 
     'kerjasama' => [
-        'title' => 'Form Kerjasama',
+        'title' => 'Mari Berkolaborasi',
         'subtitle' => 'Mari bangun kolaborasi yang berdampak dan profesional.',
+        'point_1' => 'Jangkauan pemuda di seluruh Indonesia',
+        'point_2' => 'Proses pengajuan cepat & transparan',
+        'point_3' => 'Terbuka untuk lintas sektor & organisasi',
         'nama_institusi' => 'Nama Institusi',
         'nama_pic' => 'Nama PIC',
         'email' => 'Email',

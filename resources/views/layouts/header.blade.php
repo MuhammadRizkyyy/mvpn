@@ -65,10 +65,308 @@
             font-family: var(--font-display);
         }
 
+        /* ============ Material-inspired design tokens ============ */
+        :root {
+            --shadow-sm: 0 2px 8px rgba(18,35,59,0.06);
+            --shadow-md: 0 10px 28px rgba(18,35,59,0.10);
+            --shadow-lg: 0 20px 48px rgba(18,35,59,0.16);
+            --radius-md: 16px;
+            --radius-lg: 22px;
+            --ease-material: cubic-bezier(.22,.9,.3,1);
+        }
+
+        /* Material-style elevated card */
+        .m-card {
+            background: #fff;
+            border: none;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            transition: transform .35s var(--ease-material), box-shadow .35s var(--ease-material);
+        }
+
+        .m-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Gradient / outline buttons, Material "raised" + "text" button feel */
+        .btn-gradient {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 30px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #fff;
+            border: none;
+            background: linear-gradient(90deg, var(--color-primary-500), var(--color-primary-700));
+            box-shadow: 0 10px 24px rgba(206,17,38,0.28);
+            transition: transform .25s var(--ease-material), box-shadow .25s var(--ease-material), filter .25s;
+        }
+
+        .btn-gradient:hover {
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 16px 32px rgba(206,17,38,0.38);
+            filter: brightness(1.05);
+        }
+
+        .btn-gradient:active {
+            transform: translateY(-1px) scale(0.97);
+        }
+
+        /* Solid primary button — used for secondary CTAs so gradient stays
+           reserved for the single hero CTA per page */
+        .btn-solid {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 30px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #fff;
+            border: none;
+            background: var(--color-primary-500);
+            transition: background .25s var(--ease-material), transform .25s var(--ease-material), box-shadow .25s var(--ease-material);
+        }
+
+        .btn-solid:hover {
+            color: #fff;
+            background: var(--color-primary-600);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(206,17,38,0.24);
+        }
+
+        .btn-solid:active {
+            transform: translateY(-1px) scale(0.97);
+        }
+
+        .btn-outline-material {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 30px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            background: transparent;
+            transition: transform .25s var(--ease-material), background .25s, border-color .25s;
+        }
+
+        .btn-outline-material:active {
+            transform: scale(0.97);
+        }
+
+        /* Reveal-on-scroll: elements fade/slide in as they enter the viewport */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .7s var(--ease-material), transform .7s var(--ease-material);
+        }
+
+        .reveal.reveal-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: .1s; }
+        .reveal-delay-2 { transition-delay: .2s; }
+        .reveal-delay-3 { transition-delay: .3s; }
+        .reveal-delay-4 { transition-delay: .4s; }
+        .reveal-delay-5 { transition-delay: .5s; }
+
+        /* Directional variants — same trigger (.reveal-in), different origin */
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-24px);
+            transition: opacity .6s var(--ease-material), transform .6s var(--ease-material);
+        }
+
+        .reveal-left.reveal-in {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(24px);
+            transition: opacity .6s var(--ease-material), transform .6s var(--ease-material);
+        }
+
+        .reveal-right.reveal-in {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal, .reveal-left, .reveal-right {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        /* Block-level stagger (e.g. list items), same timing model as .stagger-word */
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(14px);
+            transition: opacity .55s var(--ease-material), transform .55s var(--ease-material);
+            transition-delay: calc(var(--i, 0) * 120ms);
+        }
+
+        .stagger-in .stagger-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .stagger-item {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        /* Word-by-word stagger reveal, used on headlines ("Design Blocks" style) */
+        .stagger-wrap {
+            display: inline;
+        }
+
+        .stagger-word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(0.35em);
+            transition: opacity .6s var(--ease-material), transform .6s var(--ease-material);
+            transition-delay: calc(var(--i, 0) * 55ms);
+            will-change: transform, opacity;
+        }
+
+        .stagger-in .stagger-word {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .stagger-word {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        .section-eyebrow {
+            display: inline-block;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--color-primary-600);
+            background: var(--color-primary-50);
+            padding: 6px 16px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+        }
+
+        .section-eyebrow-light {
+            color: var(--color-gold-500);
+            background: rgba(255,255,255,0.12);
+        }
+
+        /* Icon badge used in feature/card grids (Material "avatar" icon) */
+        .icon-badge {
+            width: 58px;
+            height: 58px;
+            border-radius: var(--radius-md, 16px);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #fff;
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+            box-shadow: 0 10px 22px rgba(206,17,38,0.28);
+            margin-bottom: 18px;
+        }
+
+        .icon-badge.icon-badge-navy {
+            background: linear-gradient(135deg, var(--color-navy-500), var(--color-navy-900));
+            box-shadow: 0 10px 22px rgba(18,35,59,0.28);
+        }
+
+        /* Alternating full-bleed section backgrounds for visual rhythm */
+        .section-tint {
+            background: #F7F8FA;
+        }
+
+        .section-dark {
+            background: linear-gradient(180deg, var(--color-navy-900), var(--color-navy-700));
+            color: #fff;
+        }
+
+        .section-dark .section-eyebrow {
+            color: var(--color-gold-500);
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* ============ Fixed / overlay navbar ============ */
+        body {
+            padding-top: 82px;
+        }
+
+        body.page-hero {
+            padding-top: 0;
+        }
+
         .navbar-custom {
-            background: #ffffff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: saturate(180%) blur(10px);
+            -webkit-backdrop-filter: saturate(180%) blur(10px);
+            box-shadow: var(--shadow-sm);
             border-bottom: 3px solid var(--color-primary-500);
+            transition: box-shadow .3s var(--ease-material), background .3s var(--ease-material), border-color .3s;
+        }
+
+        .navbar-custom.navbar-scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        .navbar-custom.navbar-transparent {
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            box-shadow: none;
+            border-bottom-color: transparent;
+        }
+
+        .navbar-custom.navbar-transparent .navbar-nav .nav-link {
+            color: #fff !important;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.35);
+        }
+
+        .navbar-custom.navbar-transparent .navbar-brand span {
+            color: #fff;
+        }
+
+        .navbar-custom.navbar-transparent .navbar-toggler-icon {
+            filter: invert(1);
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-custom.navbar-transparent .navbar-collapse.show,
+            .navbar-custom.navbar-transparent .navbar-collapse.collapsing {
+                background: var(--color-navy-900);
+                border-radius: 0 0 16px 16px;
+                padding: 8px 8px 16px;
+            }
         }
 
         .navbar-nav {
@@ -166,13 +464,13 @@
     </style>
 </head>
 
-<body>
+<body class="{{ request()->routeIs('index1') ? 'page-hero' : '' }}">
 
 @if(request()->routeIs('index1'))
     @include('layouts.splash')
 @endif
 
-<nav class="navbar navbar-expand-lg navbar-custom">
+<nav class="navbar navbar-expand-lg navbar-custom {{ request()->routeIs('index1') ? 'navbar-transparent' : '' }}">
     <div class="container-fluid px-3 px-lg-4">
 
         <a class="navbar-brand d-flex align-items-center" href="/">

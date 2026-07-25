@@ -112,6 +112,8 @@ return [
 
     'mitra' => [
         'title' => 'Our Partnerships',
+        'description' => 'Our collaborations span across sectors — from media and community to government — widening our impact for Indonesian youth.',
+        'partner_unit' => 'Partners',
         'media' => 'Media Partnership',
         'community' => 'Community Partnership',
         'government' => 'Government Partnership',
@@ -123,8 +125,11 @@ return [
     ],
 
     'kerjasama' => [
-        'title' => 'Collaboration Form',
+        'title' => 'Let\'s Collaborate',
         'subtitle' => 'Let\'s build an impactful and professional collaboration.',
+        'point_1' => 'Reaching youth across Indonesia',
+        'point_2' => 'Fast & transparent submission process',
+        'point_3' => 'Open to cross-sector partners & organizations',
         'nama_institusi' => 'Institution Name',
         'nama_pic' => 'Contact Person Name',
         'email' => 'Email',
