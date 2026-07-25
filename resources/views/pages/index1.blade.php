@@ -1142,16 +1142,10 @@ html {
      label kategori di kiri, SEMUA logo mitra kategori itu di kanan
      (tidak dipotong), reveal berjenjang per baris saat discroll. --}}
 @php
-    $mitraCategories = [
-        ['key' => 'media', 'images' => ['MEDIA1.png', 'media2.jpeg', 'media3.jpeg', 'med.png']],
-        ['key' => 'community', 'images' => ['com1-image.jpeg', 'com2-image.jpeg', 'com3-image.jpeg', 'com4-image.jpeg', 'com5-image.jpeg', 'com6-image.png']],
-        ['key' => 'government', 'images' => ['gov1.jpeg', 'gov2.jpeg', 'gov3.png', 'gov4.jpeg', 'gov5.jpeg', 'gov6.jpeg', 'gov7.jpeg', 'gov8.jpeg', 'gov9.jpeg']],
-        ['key' => 'hospitality_campus', 'images' => ['hc1.jpeg', 'hc5.jpeg']],
-        ['key' => 'hotel', 'images' => ['hotel1.jpeg', 'hotel2.jpeg', 'hotel3.jpeg', 'hotel4.jpeg', 'hotel5.jpeg']],
-        ['key' => 'brand', 'images' => ['brand1.jpeg', 'brand2.jpeg', 'brand3.jpeg', 'brand4.jpeg', 'brand5.jpeg', 'brand6.jpeg', 'brand7.jpeg', 'brand8.jpeg', 'brand9.jpeg', 'brand10.jpeg', 'brand11.jpeg', 'brand12.jpeg', 'brand13.jpeg', 'brand14.jpeg', 'brand15.jpeg', 'brand16.jpeg', 'brand17.png', 'brand18.png', 'brand19.png', 'brand20.png', 'brand21.png', 'brand22.jpeg', 'brand23.png', 'brand24.png', 'brand25.png', 'brand26.jpeg']],
-        ['key' => 'law', 'images' => ['law1.jpeg', 'law2.jpeg']],
-        ['key' => 'ip_trade', 'images' => ['ip1.png', 'ip2.png', 'ip3.jpeg', 'ip4.jpeg', 'ip5.png', 'ip6.jpeg', 'ip7.jpeg']],
-    ];
+    $mitraCategories = \App\Models\Mitra::orderBy('category')->orderBy('order')->get()
+        ->groupBy('category')
+        ->map(fn ($items, $key) => ['key' => $key, 'logos' => $items])
+        ->values();
 @endphp
 <style>
 .mitra-heading {
@@ -1281,12 +1275,12 @@ html {
                 <div class="mitra-row reveal reveal-delay-{{ ($i % 5) + 1 }}">
                     <div class="mitra-row-label">
                         <h3>{{ __('site.mitra.'.$category['key']) }}</h3>
-                        <span class="mitra-row-count">{{ count($category['images']) }} {{ __('site.mitra.partner_unit') }}</span>
+                        <span class="mitra-row-count">{{ $category['logos']->count() }} {{ __('site.mitra.partner_unit') }}</span>
                     </div>
                     <div class="mitra-row-logos">
-                        @foreach($category['images'] as $img)
+                        @foreach($category['logos'] as $logo)
                             <div class="mitra-logo">
-                                <img src="{{ asset('assets/img/'.$img) }}" alt="{{ __('site.mitra.'.$category['key']) }}">
+                                <img src="{{ $logo->logo_url }}" alt="{{ $logo->name ?: __('site.mitra.'.$category['key']) }}">
                             </div>
                         @endforeach
                     </div>

@@ -5,7 +5,6 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\PartnershipController;
 use App\Http\Controllers\Admin\PartnershipAdminController;
 use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\AdminGalleryController;
 
 /*
@@ -84,22 +83,43 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::post('/partnerships/{id}/reject', [PartnershipAdminController::class, 'reject'])
         ->name('partnerships.reject');
+
+    // Program Kerja (Kegiatan)
+    Route::resource('kegiatan', \App\Http\Controllers\Admin\KegiatanController::class)
+        ->except(['show']);
+
+    // Tentang
+    Route::get('/tentang', [\App\Http\Controllers\Admin\AboutController::class, 'edit'])
+        ->name('about.edit');
+    Route::put('/tentang', [\App\Http\Controllers\Admin\AboutController::class, 'update'])
+        ->name('about.update');
+
+    // Visi & Misi
+    Route::get('/visi-misi', [\App\Http\Controllers\Admin\VisiMisiController::class, 'edit'])
+        ->name('visimisi.edit');
+    Route::put('/visi-misi', [\App\Http\Controllers\Admin\VisiMisiController::class, 'update'])
+        ->name('visimisi.update');
+    Route::post('/misi', [\App\Http\Controllers\Admin\MisiItemController::class, 'store'])
+        ->name('misi.store');
+    Route::put('/misi/{misiItem}', [\App\Http\Controllers\Admin\MisiItemController::class, 'update'])
+        ->name('misi.update');
+    Route::delete('/misi/{misiItem}', [\App\Http\Controllers\Admin\MisiItemController::class, 'destroy'])
+        ->name('misi.destroy');
+
+    // Struktur Pengurus
+    Route::resource('pengurus', \App\Http\Controllers\Admin\PengurusController::class)
+        ->parameters(['pengurus' => 'pengurus'])
+        ->except(['show']);
+
+    // Mitra
+    Route::post('/mitra/reorder', [\App\Http\Controllers\Admin\MitraController::class, 'reorder'])
+        ->name('mitra.reorder');
+    Route::resource('mitra', \App\Http\Controllers\Admin\MitraController::class)
+        ->except(['show']);
 });
 
-Route::middleware(['auth'])->prefix('admin')->group(function () {
-    Route::get('/gallery', [GalleryController::class, 'index'])->name('admin.gallery');
-    Route::post('/gallery', [GalleryController::class, 'store']);
-    Route::delete('/gallery/{gallery}', [GalleryController::class, 'destroy']);
-});
+Route::get('/galeri', [\App\Http\Controllers\GalleryController::class, 'index']);
 
-Route::prefix('admin')->middleware('admin')->group(function () {
-    Route::get('/gallery', [AdminGalleryController::class, 'index']);
-    Route::post('/gallery', [AdminGalleryController::class, 'store']);
-    Route::delete('/gallery/{id}', [AdminGalleryController::class, 'destroy']);
-});
-
-
-Route::get('/galeri', [GalleryController::class, 'index']);
 Route::middleware(['admin'])->prefix('admin')->group(function () {
     Route::resource('gallery', AdminGalleryController::class)
         ->only(['index', 'store', 'destroy']);
