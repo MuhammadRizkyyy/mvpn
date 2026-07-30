@@ -15,6 +15,14 @@ class About extends Model
 
     public static function singleton(): self
     {
-        return static::firstOrCreate(['id' => 1]);
+        $about = static::find(1);
+
+        if (! $about) {
+            $about = new static();
+            $about->id = 1;
+            $about->save();
+        }
+
+        return $about;
     }
 }
