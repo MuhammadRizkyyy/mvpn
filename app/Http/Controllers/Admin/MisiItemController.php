@@ -38,4 +38,18 @@ class MisiItemController extends Controller
 
         return back()->with('success', 'Poin misi dihapus');
     }
+
+    public function reorder(Request $request)
+    {
+        $validated = $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'integer|exists:misi_items,id',
+        ]);
+
+        foreach ($validated['ids'] as $index => $id) {
+            MisiItem::where('id', $id)->update(['order' => $index]);
+        }
+
+        return response()->json(['status' => 'ok']);
+    }
 }
