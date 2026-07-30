@@ -285,11 +285,14 @@ html {
         <div class="row align-items-center">
 
             <div class="col-md-7 reveal">
+                @php
+                    $about = \App\Models\About::singleton();
+                @endphp
                 <span class="section-eyebrow">{{ __('site.nav.tentang') }}</span>
                 <h1 class="tentang-title mb-4 reveal-stagger"><x-stagger-words :text="__('site.tentang.title')" /></h1>
-                <p class="tentang-text">{{ __('site.tentang.p1') }}</p>
-                <p class="tentang-text">{{ __('site.tentang.p2') }}</p>
-                <p class="tentang-text">{{ __('site.tentang.p3') }}</p>
+                <p class="tentang-text">{{ $about->paragraph_1 ?: __('site.tentang.p1') }}</p>
+                <p class="tentang-text">{{ $about->paragraph_2 ?: __('site.tentang.p2') }}</p>
+                <p class="tentang-text">{{ $about->paragraph_3 ?: __('site.tentang.p3') }}</p>
             </div>
 
             <div class="col-md-5 text-center reveal reveal-delay-2">
@@ -428,6 +431,10 @@ html {
 }
 </style>
 
+@php
+    $visiMisi = \App\Models\VisiMisi::singleton();
+    $misiItems = \App\Models\MisiItem::orderBy('order')->get();
+@endphp
 <section id="visimisi" class="section-tint py-5">
     <div class="container">
         <div class="text-center reveal">
@@ -441,7 +448,7 @@ html {
             <div class="col-md-6">
                 <div class="vm-panel visi-panel reveal-left">
                     <span class="vm-label">{{ __('site.visimisi.visi_label') }}</span>
-                    <p class="visi-panel-text">{{ __('site.visimisi.visi_text') }}</p>
+                    <p class="visi-panel-text">{{ $visiMisi->visi_text ?: __('site.visimisi.visi_text') }}</p>
                 </div>
             </div>
 
@@ -453,9 +460,13 @@ html {
                         <div class="icon-badge icon-badge-navy" style="margin-bottom:0"><i class="bi bi-rocket-takeoff-fill"></i></div>
                     </div>
                     <ul class="misi-list reveal-stagger">
-                        <li class="stagger-item" style="--i:0">{{ __('site.visimisi.misi_1') }}</li>
-                        <li class="stagger-item" style="--i:1">{{ __('site.visimisi.misi_2') }}</li>
-                        <li class="stagger-item" style="--i:2">{{ __('site.visimisi.misi_3') }}</li>
+                        @forelse($misiItems as $item)
+                            <li class="stagger-item" style="--i:{{ $loop->index }}">{{ $item->text }}</li>
+                        @empty
+                            <li class="stagger-item" style="--i:0">{{ __('site.visimisi.misi_1') }}</li>
+                            <li class="stagger-item" style="--i:1">{{ __('site.visimisi.misi_2') }}</li>
+                            <li class="stagger-item" style="--i:2">{{ __('site.visimisi.misi_3') }}</li>
+                        @endforelse
                     </ul>
                 </div>
             </div>
@@ -584,6 +595,32 @@ html {
     box-shadow: 0 6px 14px rgba(214,41,118,0.35);
 }
 
+.member-socials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.li-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #0A66C2;
+    color: #fff;
+    font-size: 1.1rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.li-btn:hover {
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(10,102,194,0.35);
+}
+
 @keyframes fadeSlide {
     from {
         opacity: 0;
@@ -596,6 +633,17 @@ html {
 }
 </style>
 
+@php
+    $pengurusBySection = \App\Models\Pengurus::orderBy('section')->orderBy('order')->get()->groupBy('section');
+    $strukturSectionLabels = [
+        'bod' => __('site.struktur.bod'),
+        'sekretaris' => __('site.struktur.sekretaris_section'),
+        'ekonomi' => __('site.struktur.ekonomi_section'),
+        'internasional' => __('site.struktur.internasional_section'),
+        'itdev' => __('site.struktur.itdev_section'),
+    ];
+@endphp
+
 <section id="struktur" class="container py-5 struktur-page">
     <div class="text-center reveal">
         <span class="section-eyebrow">{{ __('site.nav.struktur') }}</span>
@@ -604,174 +652,51 @@ html {
 
     <div class="struktur-wrapper reveal">
         <div class="accordion" id="strukturAccordion">
+            @php $firstOpened = false; @endphp
+            @foreach(\App\Models\Pengurus::SECTIONS as $sectionKey => $fallbackLabel)
+                @php $members = $pengurusBySection->get($sectionKey, collect()); @endphp
+                @continue($members->isEmpty())
+                @php $isFirst = ! $firstOpened; $firstOpened = true; @endphp
 
-            {{-- BOD --}}
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#bod">
-                        {{ __('site.struktur.bod') }}
-                    </button>
-                </h2>
-                <div id="bod" class="accordion-collapse collapse show" data-bs-parent="#strukturAccordion">
-                    <div class="accordion-body">
-                        <div class="row justify-content-center g-4">
-                            <div class="col-12 col-sm-8 col-md-5">
-                                <div class="member-card">
-                                    <img class="member-photo" src="{{ asset('assets/img/pres1.png') }}">
-                                    <div class="member-info">
-                                        <h5>Indra A. Oktariawan</h5>
-                                        <p>{{ __('site.struktur.president') }}</p>
-                                        <a href="https://www.instagram.com/oktariawanindra?igsh=MWNkZG1kZGE1NHZrZg==" class="ig-btn" title="{{ __('site.struktur.instagram') }}"><i class="bi bi-instagram"></i></a>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button @unless($isFirst) collapsed @endunless" data-bs-toggle="collapse" data-bs-target="#{{ $sectionKey }}">
+                            {{ $strukturSectionLabels[$sectionKey] ?? $fallbackLabel }}
+                        </button>
+                    </h2>
+                    <div id="{{ $sectionKey }}" class="accordion-collapse collapse @if($isFirst) show @endif" data-bs-parent="#strukturAccordion">
+                        <div class="accordion-body">
+                            <div class="row justify-content-center g-4">
+                                @foreach($members as $member)
+                                    <div class="col-12 col-sm-8 col-md-5">
+                                        <div class="member-card">
+                                            @if($member->photo)
+                                                <img class="member-photo" src="{{ $member->photo }}" alt="{{ $member->name }}">
+                                            @else
+                                                <div class="member-photo d-flex align-items-center justify-content-center text-uppercase fw-bold" style="font-size:2.5rem;color:#bbb;">
+                                                    {{ substr($member->name, 0, 1) }}
+                                                </div>
+                                            @endif
+                                            <div class="member-info">
+                                                <h5>{{ $member->name }}</h5>
+                                                <p>{{ $member->position }}</p>
+                                                <div class="member-socials">
+                                                    @if($member->instagram_url)
+                                                        <a href="{{ $member->instagram_url }}" class="ig-btn" title="{{ __('site.struktur.instagram') }}" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
+                                                    @endif
+                                                    @if($member->linkedin_url)
+                                                        <a href="{{ $member->linkedin_url }}" class="li-btn" title="{{ __('site.struktur.linkedin') }}" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i></a>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-8 col-md-5">
-                                <div class="member-card">
-                                    <img class="member-photo" src="{{ asset('assets/img/wapres.png') }}">
-                                    <div class="member-info">
-                                        <h5>Ani Yuliani</h5>
-                                        <p>{{ __('site.struktur.vice_president') }}</p>
-                                        <a href="https://www.instagram.com/aniyuliani2020?igsh=MWRwMWR4emJqY3E0aQ==
-" class="ig-btn" title="{{ __('site.struktur.instagram') }}"><i class="bi bi-instagram"></i></a>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            {{-- SEKRETARIS --}}
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#sekretaris">
-                        {{ __('site.struktur.sekretaris_section') }}
-                    </button>
-                </h2>
-                <div id="sekretaris" class="accordion-collapse collapse" data-bs-parent="#strukturAccordion">
-                    <div class="accordion-body">
-                        <div class="row justify-content-center g-4">
-                            <div class="col-12 col-sm-8 col-md-5">
-                                <div class="member-card">
-                                    <img class="member-photo" src="{{ asset('assets/img/sekre1.png') }}">
-                                    <div class="member-info">
-                                        <h5>Putri Wardhany</h5>
-                                        <p>{{ __('site.struktur.sekretaris') }}</p>
-                                        <a href="https://www.instagram.com/__putriwardha?igsh=MXh6NThjZWxha3BhaA==" class="ig-btn" title="{{ __('site.struktur.instagram') }}"><i class="bi bi-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-8 col-md-5">
-                                <div class="member-card">
-                                    <img class="member-photo" src="{{ asset('assets/img/sekre2_v2.png') }}">
-                                    <div class="member-info">
-                                        <h5>Maria C. Maharani</h5>
-                                        <p>{{ __('site.struktur.wakil_sekretaris') }}</p>
-                                        <a href="https://www.instagram.com/raanisti?igsh=MWEyMmN0N3JuOXY0Zg==
-" class="ig-btn" title="{{ __('site.struktur.instagram') }}"><i class="bi bi-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- EKONOMI --}}
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#ekonomi">
-                        {{ __('site.struktur.ekonomi_section') }}
-                    </button>
-                </h2>
-                <div id="ekonomi" class="accordion-collapse collapse" data-bs-parent="#strukturAccordion">
-                    <div class="accordion-body">
-                        <div class="row justify-content-center g-4">
-                            <div class="col-12 col-sm-8 col-md-5">
-                                <div class="member-card">
-                                    <img class="member-photo" src="{{ asset('assets/img/direktorat.png') }}">
-                                    <div class="member-info">
-                                        <h5>Susanty</h5>
-                                        <p>{{ __('site.struktur.direktorat') }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-8 col-md-5">
-                                <div class="member-card">
-                                    <img class="member-photo" src="{{ asset('assets/img/wakildirektorat.png') }}">
-                                    <div class="member-info">
-                                        <h5>Ajeng Fimara</h5>
-                                        <p>{{ __('site.struktur.wakil_direktorat') }}</p>
-                                        <a href="https://www.instagram.com/ajengfsbtr_?igsh=Y3oxaThqZWJ3dnJ1
-" class="ig-btn" title="{{ __('site.struktur.instagram') }}"><i class="bi bi-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- INTERNASIONAL --}}
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#internasional">
-                        {{ __('site.struktur.internasional_section') }}
-                    </button>
-                </h2>
-                <div id="internasional" class="accordion-collapse collapse" data-bs-parent="#strukturAccordion">
-                    <div class="accordion-body">
-                        <div class="row justify-content-center g-4">
-                            <div class="col-12 col-sm-8 col-md-5">
-                                <div class="member-card">
-                                    <img class="member-photo" src="{{ asset('assets/img/hi asean.jpeg') }}">
-                                    <div class="member-info">
-                                        <h5>DR.(C). Ramdani Murdiana</h5>
-                                        <p>{{ __('site.struktur.hi_asean') }}</p>
-                                        <a href="https://www.instagram.com/walikutay?igsh=dDB0YTNvd3A3cWJh
-" class="ig-btn" title="{{ __('site.struktur.instagram') }}"><i class="bi bi-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-8 col-md-5">
-                                <div class="member-card">
-                                    <img class="member-photo" src="{{ asset('assets/img/hi tim.png') }}">
-                                    <div class="member-info">
-                                        <h5>Budi Suranto</h5>
-                                        <p>{{ __('site.struktur.hi_timteng') }}</p>
-                                        <a href="#" class="ig-btn" title="{{ __('site.struktur.instagram') }}"><i class="bi bi-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- IT DEVELOPMENT --}}
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#itdev">
-                        {{ __('site.struktur.itdev_section') }}
-                    </button>
-                </h2>
-                <div id="itdev" class="accordion-collapse collapse" data-bs-parent="#strukturAccordion">
-                    <div class="accordion-body">
-                        <div class="row justify-content-center g-4">
-                            <div class="col-12 col-sm-8 col-md-5">
-                                <div class="member-card">
-                                    <img class="member-photo" src="{{ asset('assets/img/it.jpeg') }}">
-                                    <div class="member-info">
-                                        <h5>Fardin Muhammad Azis</h5>
-                                        <p>{{ __('site.struktur.frontend_dev') }}</p>
-                                        <a href="https://www.instagram.com/swsevrydy_/" class="ig-btn" title="{{ __('site.struktur.instagram') }}"><i class="bi bi-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
@@ -942,8 +867,25 @@ html {
     letter-spacing: .5px;
     color: var(--color-gold-600);
 }
+
+.soon-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 10px;
+    border: 1px dashed #ccc;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--color-gold-600);
+    vertical-align: middle;
+}
 </style>
 
+@php
+    $kegiatans = \App\Models\Kegiatan::orderBy('category')->orderBy('order')->get()->groupBy('category');
+@endphp
 <section id="proker" class="section-tint py-5">
     <div class="proker-wrapper">
     <div class="text-center reveal">
@@ -969,22 +911,26 @@ html {
                 <p class="proker-panel-desc">{{ __('site.proker.card_pendidikan_desc') }}</p>
                 <h2>{{ __('site.proker.pendidikan_title') }}</h2>
                 <ul class="checklist">
-                    <li>{{ __('site.proker.pkbm') }}</li>
-                    <li>{{ __('site.proker.self_improvement') }}</li>
-                    <li>{{ __('site.proker.bahasa_asing') }}
-                        <div class="lang-pills">
-                            <span class="lang-pill">{{ __('site.proker.lang_inggris') }}</span>
-                            <span class="lang-pill">{{ __('site.proker.lang_jerman') }}</span>
-                            <span class="lang-pill">{{ __('site.proker.lang_prancis') }}</span>
-                            <span class="lang-pill">{{ __('site.proker.lang_mandarin') }}</span>
-                            <span class="lang-pill">{{ __('site.proker.lang_arab') }}</span>
-                            <span class="lang-pill">{{ __('site.proker.lang_turki') }}</span>
-                            <span class="lang-pill">{{ __('site.proker.lang_korea') }}</span>
-                            <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_thailand') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
-                            <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_isyarat') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
-                            <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_urdu') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
-                        </div>
-                    </li>
+                    @forelse($kegiatans->get('pendidikan', collect()) as $item)
+                        <li>{{ $item->title }}@if($item->is_coming_soon)<span class="soon-badge">Segera Hadir</span>@endif</li>
+                    @empty
+                        <li>{{ __('site.proker.pkbm') }}</li>
+                        <li>{{ __('site.proker.self_improvement') }}</li>
+                        <li>{{ __('site.proker.bahasa_asing') }}
+                            <div class="lang-pills">
+                                <span class="lang-pill">{{ __('site.proker.lang_inggris') }}</span>
+                                <span class="lang-pill">{{ __('site.proker.lang_jerman') }}</span>
+                                <span class="lang-pill">{{ __('site.proker.lang_prancis') }}</span>
+                                <span class="lang-pill">{{ __('site.proker.lang_mandarin') }}</span>
+                                <span class="lang-pill">{{ __('site.proker.lang_arab') }}</span>
+                                <span class="lang-pill">{{ __('site.proker.lang_turki') }}</span>
+                                <span class="lang-pill">{{ __('site.proker.lang_korea') }}</span>
+                                <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_thailand') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
+                                <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_isyarat') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
+                                <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_urdu') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
+                            </div>
+                        </li>
+                    @endforelse
                 </ul>
             </div>
 
@@ -992,8 +938,12 @@ html {
                 <p class="proker-panel-desc">{{ __('site.proker.card_wirausaha_desc') }}</p>
                 <h2>{{ __('site.proker.wirausaha_title') }}</h2>
                 <ul class="checklist">
-                    <li>{{ __('site.proker.umkm_export') }}</li>
-                    <li>{{ __('site.proker.business_matching') }}</li>
+                    @forelse($kegiatans->get('wirausaha', collect()) as $item)
+                        <li>{{ $item->title }}@if($item->is_coming_soon)<span class="soon-badge">Segera Hadir</span>@endif</li>
+                    @empty
+                        <li>{{ __('site.proker.umkm_export') }}</li>
+                        <li>{{ __('site.proker.business_matching') }}</li>
+                    @endforelse
                 </ul>
             </div>
 
@@ -1001,14 +951,18 @@ html {
                 <p class="proker-panel-desc">{{ __('site.proker.card_sdm_desc') }}</p>
                 <h2>{{ __('site.proker.sdm_title') }}</h2>
                 <ul class="checklist">
-                    <li>{{ __('site.proker.sdm_1') }}</li>
-                    <li>{{ __('site.proker.sdm_2') }}</li>
-                    <li>{{ __('site.proker.sdm_3') }}</li>
-                    <li>{{ __('site.proker.sdm_4') }}</li>
-                    <li>{{ __('site.proker.sdm_5') }}</li>
-                    <li>{{ __('site.proker.sdm_6') }}</li>
-                    <li>{{ __('site.proker.sdm_7') }}</li>
-                    <li>{{ __('site.proker.sdm_8') }}</li>
+                    @forelse($kegiatans->get('sdm', collect()) as $item)
+                        <li>{{ $item->title }}@if($item->is_coming_soon)<span class="soon-badge">Segera Hadir</span>@endif</li>
+                    @empty
+                        <li>{{ __('site.proker.sdm_1') }}</li>
+                        <li>{{ __('site.proker.sdm_2') }}</li>
+                        <li>{{ __('site.proker.sdm_3') }}</li>
+                        <li>{{ __('site.proker.sdm_4') }}</li>
+                        <li>{{ __('site.proker.sdm_5') }}</li>
+                        <li>{{ __('site.proker.sdm_6') }}</li>
+                        <li>{{ __('site.proker.sdm_7') }}</li>
+                        <li>{{ __('site.proker.sdm_8') }}</li>
+                    @endforelse
                 </ul>
             </div>
         </div>
