@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin') — MVP.N</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/mvpn.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/img/mvpn.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-neutral-50 text-neutral-800 font-sans antialiased">
@@ -143,9 +145,16 @@
 
         <main class="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
             @if(session('success'))
-                <div class="mb-6 flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+                <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)"
+                     x-show="show" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-full"
+                     x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150"
+                     x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-full"
+                     class="fixed right-4 top-4 z-50 flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 shadow-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                     {{ session('success') }}
+                    <button type="button" @click="show = false" class="ml-1 text-emerald-500 hover:text-emerald-700" aria-label="Tutup">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
                 </div>
             @endif
 
