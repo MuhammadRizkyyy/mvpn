@@ -65,6 +65,7 @@ return [
         'itdev_section' => 'Développement Informatique',
         'frontend_dev' => 'Développeur Web Frontend',
         'instagram' => 'Instagram',
+        'linkedin' => 'LinkedIn',
     ],
 
     'proker' => [
