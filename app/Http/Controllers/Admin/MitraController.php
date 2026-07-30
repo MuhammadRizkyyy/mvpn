@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Mitra;
+use App\Services\CloudinaryImageService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class MitraController extends Controller
 {
+    public function __construct(private CloudinaryImageService $cloudinary)
+    {
+    }
+
     public function index()
     {
         $mitras = Mitra::orderBy('category')->orderBy('order')->get()->groupBy('category');
@@ -30,7 +34,9 @@ class MitraController extends Controller
             'order' => 'nullable|integer|min:0',
         ]);
 
-        $validated['logo'] = $request->file('logo')->store('mitra', 'public');
+        $uploaded = $this->cloudinary->upload($request->file('logo'), 'mitra');
+        $validated['logo'] = $uploaded['url'];
+        $validated['logo_public_id'] = $uploaded['public_id'];
 
         Mitra::create($validated);
 
@@ -52,8 +58,11 @@ class MitraController extends Controller
         ]);
 
         if ($request->hasFile('logo')) {
-            Storage::disk('public')->delete($mitra->logo);
-            $validated['logo'] = $request->file('logo')->store('mitra', 'public');
+            $uploaded = $this->cloudinary->upload($request->file('logo'), 'mitra');
+            $validated['logo'] = $uploaded['url'];
+            $validated['logo_public_id'] = $uploaded['public_id'];
+
+            $this->cloudinary->delete($mitra->logo_public_id);
         }
 
         $mitra->update($validated);
@@ -63,7 +72,8 @@ class MitraController extends Controller
 
     public function destroy(Mitra $mitra)
     {
-        Storage::disk('public')->delete($mitra->logo);
+        $this->cloudinary->delete($mitra->logo_public_id);
+
         $mitra->delete();
 
         return back()->with('success', 'Mitra dihapus');
