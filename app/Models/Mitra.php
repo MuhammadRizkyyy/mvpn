@@ -21,13 +21,18 @@ class Mitra extends Model
         'category',
         'name',
         'logo',
+        'logo_public_id',
         'order',
     ];
 
-    // Seeded rows point at public/assets/img (legacy static files); admin uploads
-    // go through Storage::disk('public') and are stored relative to storage/app/public.
+    // Logos are stored as absolute Cloudinary URLs. Any remaining rows with a
+    // relative 'assets/...' path are legacy seed data pointing at local static files.
     public function getLogoUrlAttribute(): string
     {
+        if (str_starts_with($this->logo, 'http://') || str_starts_with($this->logo, 'https://')) {
+            return $this->logo;
+        }
+
         return str_starts_with($this->logo, 'assets/')
             ? asset($this->logo)
             : asset('storage/' . $this->logo);
