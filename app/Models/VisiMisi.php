@@ -14,6 +14,14 @@ class VisiMisi extends Model
 
     public static function singleton(): self
     {
-        return static::firstOrCreate(['id' => 1]);
+        $visiMisi = static::find(1);
+
+        if (! $visiMisi) {
+            $visiMisi = new static();
+            $visiMisi->id = 1;
+            $visiMisi->save();
+        }
+
+        return $visiMisi;
     }
 }
