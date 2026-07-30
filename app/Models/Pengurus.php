@@ -21,7 +21,9 @@ class Pengurus extends Model
         'name',
         'position',
         'photo',
+        'photo_public_id',
         'instagram_url',
+        'linkedin_url',
         'order',
     ];
 }
