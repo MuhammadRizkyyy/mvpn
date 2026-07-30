@@ -18,7 +18,6 @@ class AboutController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'nullable|string|max:255',
             'paragraph_1' => 'nullable|string',
             'paragraph_2' => 'nullable|string',
             'paragraph_3' => 'nullable|string',
