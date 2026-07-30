@@ -84,7 +84,12 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::post('/partnerships/{id}/reject', [PartnershipAdminController::class, 'reject'])
         ->name('partnerships.reject');
 
+    Route::delete('/partnerships/{id}', [PartnershipAdminController::class, 'destroy'])
+        ->name('partnerships.destroy');
+
     // Program Kerja (Kegiatan)
+    Route::post('/kegiatan/reorder', [\App\Http\Controllers\Admin\KegiatanController::class, 'reorder'])
+        ->name('kegiatan.reorder');
     Route::resource('kegiatan', \App\Http\Controllers\Admin\KegiatanController::class)
         ->except(['show']);
 
@@ -105,8 +110,12 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         ->name('misi.update');
     Route::delete('/misi/{misiItem}', [\App\Http\Controllers\Admin\MisiItemController::class, 'destroy'])
         ->name('misi.destroy');
+    Route::post('/misi/reorder', [\App\Http\Controllers\Admin\MisiItemController::class, 'reorder'])
+        ->name('misi.reorder');
 
     // Struktur Pengurus
+    Route::post('/pengurus/reorder', [\App\Http\Controllers\Admin\PengurusController::class, 'reorder'])
+        ->name('pengurus.reorder');
     Route::resource('pengurus', \App\Http\Controllers\Admin\PengurusController::class)
         ->parameters(['pengurus' => 'pengurus'])
         ->except(['show']);
