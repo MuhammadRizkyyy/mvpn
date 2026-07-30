@@ -22,12 +22,18 @@ class PartnershipAdminController extends Controller
     public function approve($id)
     {
         Partnership::where('id', $id)->update(['status' => 'approved']);
-        return redirect()->back();
+        return redirect()->route('admin.partnerships.index')->with('success', 'Pengajuan kerjasama disetujui');
     }
 
     public function reject($id)
     {
         Partnership::where('id', $id)->update(['status' => 'rejected']);
-        return redirect()->back();
+        return redirect()->route('admin.partnerships.index')->with('success', 'Pengajuan kerjasama ditolak');
+    }
+
+    public function destroy($id)
+    {
+        Partnership::where('id', $id)->delete();
+        return redirect()->route('admin.partnerships.index')->with('success', 'Pengajuan kerjasama dihapus');
     }
 }
