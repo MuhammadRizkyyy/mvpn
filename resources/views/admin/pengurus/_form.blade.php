@@ -36,7 +36,7 @@
 <div>
     <label for="photo" class="mb-1.5 block text-xs font-medium text-neutral-600">Foto <span class="font-normal text-neutral-400">(opsional)</span></label>
     @if(($pengurus->photo ?? null))
-        <img src="{{ asset('storage/'.$pengurus->photo) }}" class="mb-2 h-16 w-16 rounded-full object-cover">
+        <img src="{{ $pengurus->photo }}" class="mb-2 h-16 w-16 rounded-full object-cover">
     @endif
     <input type="file" name="photo" id="photo"
            class="block w-full rounded-lg border border-neutral-300 text-sm text-neutral-600 file:mr-3 file:rounded-md file:border-0 file:bg-navy-500 file:px-3 file:py-2 file:text-xs file:font-medium file:text-white hover:file:bg-navy-700">
@@ -50,7 +50,8 @@
 </div>
 
 <div>
-    <label for="order" class="mb-1.5 block text-xs font-medium text-neutral-600">Urutan Tampil</label>
-    <input type="number" name="order" id="order" min="0" value="{{ old('order', $pengurus->order ?? 0) }}"
-           class="block w-32 rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">
+    <label for="linkedin_url" class="mb-1.5 block text-xs font-medium text-neutral-600">Link LinkedIn <span class="font-normal text-neutral-400">(opsional)</span></label>
+    <input type="url" name="linkedin_url" id="linkedin_url" value="{{ old('linkedin_url', $pengurus->linkedin_url ?? '') }}"
+           placeholder="https://www.linkedin.com/in/username"
+           class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">
 </div>
