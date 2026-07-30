@@ -6,7 +6,7 @@
 
 <div class="mb-6">
     <h1 class="font-display text-2xl font-semibold text-neutral-950">Tentang</h1>
-    <p class="mt-1 text-sm text-neutral-500">Konten deskripsi organisasi. Data ini tersimpan di database, belum otomatis tampil di landing page (lihat catatan di bawah).</p>
+    <p class="mt-1 text-sm text-neutral-500">Konten deskripsi organisasi. Teks ini tampil langsung di halaman utama pada bagian "Tentang Kami".</p>
 </div>
 
 <div class="max-w-2xl overflow-hidden rounded-xl border border-neutral-200 bg-white">
@@ -29,26 +29,23 @@
         @endif
 
         <div>
-            <label for="title" class="mb-1.5 block text-xs font-medium text-neutral-600">Judul</label>
-            <input type="text" name="title" id="title" value="{{ old('title', $about->title) }}"
-                   class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">
-        </div>
-
-        <div>
             <label for="paragraph_1" class="mb-1.5 block text-xs font-medium text-neutral-600">Paragraf 1</label>
             <textarea name="paragraph_1" id="paragraph_1" rows="3"
+                      placeholder="{{ $about->paragraph_1 }}"
                       class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">{{ old('paragraph_1', $about->paragraph_1) }}</textarea>
         </div>
 
         <div>
             <label for="paragraph_2" class="mb-1.5 block text-xs font-medium text-neutral-600">Paragraf 2</label>
             <textarea name="paragraph_2" id="paragraph_2" rows="3"
+                      placeholder="{{ $about->paragraph_2 }}"
                       class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">{{ old('paragraph_2', $about->paragraph_2) }}</textarea>
         </div>
 
         <div>
             <label for="paragraph_3" class="mb-1.5 block text-xs font-medium text-neutral-600">Paragraf 3</label>
             <textarea name="paragraph_3" id="paragraph_3" rows="3"
+                      placeholder="{{ $about->paragraph_3 }}"
                       class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">{{ old('paragraph_3', $about->paragraph_3) }}</textarea>
         </div>
 
@@ -62,7 +59,7 @@
 </div>
 
 <div class="mt-4 max-w-2xl rounded-lg border border-gold-500/30 bg-gold-100 px-4 py-3 text-sm text-gold-600">
-    Landing page saat ini menampilkan teks Tentang lewat file bahasa (4 bahasa: ID/EN/FR/ES). Menyambungkan form ini ke halaman publik memerlukan keputusan terpisah soal strategi terjemahan.
+    Teks di atas mengisi bagian "Tentang Kami" di halaman utama (bahasa Indonesia). Jika kolom dikosongkan, halaman publik otomatis kembali menampilkan teks default dari file bahasa.
 </div>
 
 @endsection
