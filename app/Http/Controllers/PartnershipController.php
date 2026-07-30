@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Partnership;
+use App\Services\CloudinaryImageService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class PartnershipController extends Controller
 {
+    public function __construct(private CloudinaryImageService $cloudinary)
+    {
+    }
+
     public function store(Request $request)
     {
         if ($request->filled('website')) {
@@ -24,8 +29,8 @@ class PartnershipController extends Controller
         ]);
 
         if ($request->hasFile('proposal_file')) {
-            $data['proposal_file'] = $request->file('proposal_file')
-                                    ->store('partnership_files', 'public');
+            $uploaded = $this->cloudinary->upload($request->file('proposal_file'), 'partnership_files', 'auto');
+            $data['proposal_file'] = $uploaded['url'];
         }
 
         $partnership = Partnership::create($data);
@@ -49,9 +54,7 @@ class PartnershipController extends Controller
                 'pic_name' => $partnership->pic_name,
                 'email' => $partnership->email,
                 'summary' => $partnership->summary,
-                'proposal_file_url' => $partnership->proposal_file
-                    ? asset('storage/' . $partnership->proposal_file)
-                    : '',
+                'proposal_file_url' => $partnership->proposal_file_url ?? '',
                 'submitted_at' => $partnership->created_at?->timezone('Asia/Jakarta')->toDateTimeString(),
             ]);
         } catch (\Throwable $e) {
