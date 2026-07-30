@@ -26,8 +26,10 @@ class KegiatanController extends Controller
             'category' => 'required|in:' . implode(',', array_keys(Kegiatan::CATEGORIES)),
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'is_coming_soon' => 'nullable|boolean',
             'order' => 'nullable|integer|min:0',
         ]);
+        $validated['is_coming_soon'] = $request->boolean('is_coming_soon');
 
         Kegiatan::create($validated);
 
@@ -45,8 +47,10 @@ class KegiatanController extends Controller
             'category' => 'required|in:' . implode(',', array_keys(Kegiatan::CATEGORIES)),
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'is_coming_soon' => 'nullable|boolean',
             'order' => 'nullable|integer|min:0',
         ]);
+        $validated['is_coming_soon'] = $request->boolean('is_coming_soon');
 
         $kegiatan->update($validated);
 
@@ -58,5 +62,26 @@ class KegiatanController extends Controller
         $kegiatan->delete();
 
         return back()->with('success', 'Program kerja dihapus');
+    }
+
+    public function reorder(Request $request)
+    {
+        $validated = $request->validate([
+            'category' => 'required|in:' . implode(',', array_keys(Kegiatan::CATEGORIES)),
+            'ids' => 'required|array',
+            'ids.*' => 'integer|exists:kegiatans,id',
+        ]);
+
+        $ids = Kegiatan::where('category', $validated['category'])
+            ->whereIn('id', $validated['ids'])
+            ->pluck('id');
+
+        foreach ($validated['ids'] as $index => $id) {
+            if ($ids->contains($id)) {
+                Kegiatan::where('id', $id)->update(['order' => $index]);
+            }
+        }
+
+        return response()->json(['status' => 'ok']);
     }
 }
