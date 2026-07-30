@@ -16,6 +16,11 @@ class Kegiatan extends Model
         'category',
         'title',
         'description',
+        'is_coming_soon',
         'order',
+    ];
+
+    protected $casts = [
+        'is_coming_soon' => 'boolean',
     ];
 }
