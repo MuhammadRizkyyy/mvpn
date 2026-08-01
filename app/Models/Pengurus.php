@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Pengurus extends Model
 {
@@ -26,4 +27,10 @@ class Pengurus extends Model
         'linkedin_url',
         'order',
     ];
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => Cache::forget('home.pengurus'));
+        static::deleted(fn () => Cache::forget('home.pengurus'));
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Kegiatan extends Model
 {
@@ -23,4 +24,10 @@ class Kegiatan extends Model
     protected $casts = [
         'is_coming_soon' => 'boolean',
     ];
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => Cache::forget('home.kegiatans'));
+        static::deleted(fn () => Cache::forget('home.kegiatans'));
+    }
 }

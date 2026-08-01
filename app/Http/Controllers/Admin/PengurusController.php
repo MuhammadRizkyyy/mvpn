@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Pengurus;
 use App\Services\CloudinaryImageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class PengurusController extends Controller
 {
@@ -70,7 +71,7 @@ class PengurusController extends Controller
             $validated['photo'] = $uploaded['url'];
             $validated['photo_public_id'] = $uploaded['public_id'];
 
-            $this->cloudinary->delete($pengurus->photo_public_id);
+            $this->cloudinary->deferredDelete($pengurus->photo_public_id);
         }
 
         $pengurus->update($validated);
@@ -80,7 +81,7 @@ class PengurusController extends Controller
 
     public function destroy(Pengurus $pengurus)
     {
-        $this->cloudinary->delete($pengurus->photo_public_id);
+        $this->cloudinary->deferredDelete($pengurus->photo_public_id);
 
         $pengurus->delete();
 
@@ -104,6 +105,8 @@ class PengurusController extends Controller
                 Pengurus::where('id', $id)->update(['order' => $index]);
             }
         }
+
+        Cache::forget('home.pengurus');
 
         return response()->json(['status' => 'ok']);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Kegiatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class KegiatanController extends Controller
 {
@@ -81,6 +82,8 @@ class KegiatanController extends Controller
                 Kegiatan::where('id', $id)->update(['order' => $index]);
             }
         }
+
+        Cache::forget('home.kegiatans');
 
         return response()->json(['status' => 'ok']);
     }

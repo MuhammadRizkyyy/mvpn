@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\MisiItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class MisiItemController extends Controller
 {
@@ -49,6 +50,8 @@ class MisiItemController extends Controller
         foreach ($validated['ids'] as $index => $id) {
             MisiItem::where('id', $id)->update(['order' => $index]);
         }
+
+        Cache::forget('home.misiitems');
 
         return response()->json(['status' => 'ok']);
     }

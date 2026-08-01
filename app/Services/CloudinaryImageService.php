@@ -22,8 +22,14 @@ class CloudinaryImageService
             'unique_filename' => true,
         ]);
 
+        $url = $result['secure_url'];
+
+        if ($resourceType === 'image') {
+            $url = str_replace('/upload/', '/upload/f_auto,q_auto/', $url);
+        }
+
         return [
-            'url' => $result['secure_url'],
+            'url' => $url,
             'public_id' => $result['public_id'],
         ];
     }
@@ -35,5 +41,20 @@ class CloudinaryImageService
         }
 
         Cloudinary::uploadApi()->destroy($publicId, ['resource_type' => $resourceType]);
+    }
+
+    /**
+     * Delete an asset without blocking the HTTP response — the request is
+     * redirected first, then this runs after the response is sent to the browser.
+     */
+    public function deferredDelete(?string $publicId, string $resourceType = 'image'): void
+    {
+        if (! $publicId) {
+            return;
+        }
+
+        dispatch(function () use ($publicId, $resourceType) {
+            $this->delete($publicId, $resourceType);
+        })->afterResponse();
     }
 }

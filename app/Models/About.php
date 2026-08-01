@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class About extends Model
 {
@@ -12,6 +13,11 @@ class About extends Model
         'paragraph_2',
         'paragraph_3',
     ];
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => Cache::forget('home.about'));
+    }
 
     public static function singleton(): self
     {

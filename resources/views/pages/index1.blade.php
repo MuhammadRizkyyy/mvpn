@@ -1,7 +1,8 @@
 @include('layouts.header')
 
 @php
-    $galleries = App\Models\Gallery::latest()->get();
+    $galleries = \Illuminate\Support\Facades\Cache::remember('home.galleries', 3600, fn () => App\Models\Gallery::orderBy('order')->latest('id')->take(3)->get());
+    $galleriesTotal = \Illuminate\Support\Facades\Cache::remember('home.galleries.total', 3600, fn () => App\Models\Gallery::count());
 @endphp
 
 <style>
@@ -286,7 +287,7 @@ html {
 
             <div class="col-md-7 reveal">
                 @php
-                    $about = \App\Models\About::singleton();
+                    $about = \Illuminate\Support\Facades\Cache::remember('home.about', 3600, fn () => \App\Models\About::singleton());
                 @endphp
                 <span class="section-eyebrow">{{ __('site.nav.tentang') }}</span>
                 <h1 class="tentang-title mb-4 reveal-stagger"><x-stagger-words :text="__('site.tentang.title')" /></h1>
@@ -299,6 +300,7 @@ html {
                 <div class="tentang-logo-wrap">
                     <img src="{{ asset('assets/img/mvpn.png') }}"
                          alt="Logo"
+                         loading="lazy"
                          class="tentang-logo">
                 </div>
             </div>
@@ -432,8 +434,8 @@ html {
 </style>
 
 @php
-    $visiMisi = \App\Models\VisiMisi::singleton();
-    $misiItems = \App\Models\MisiItem::orderBy('order')->get();
+    $visiMisi = \Illuminate\Support\Facades\Cache::remember('home.visimisi', 3600, fn () => \App\Models\VisiMisi::singleton());
+    $misiItems = \Illuminate\Support\Facades\Cache::remember('home.misiitems', 3600, fn () => \App\Models\MisiItem::orderBy('order')->get());
 @endphp
 <section id="visimisi" class="section-tint py-5">
     <div class="container">
@@ -634,7 +636,7 @@ html {
 </style>
 
 @php
-    $pengurusBySection = \App\Models\Pengurus::orderBy('section')->orderBy('order')->get()->groupBy('section');
+    $pengurusBySection = \Illuminate\Support\Facades\Cache::remember('home.pengurus', 3600, fn () => \App\Models\Pengurus::orderBy('section')->orderBy('order')->get()->groupBy('section'));
     $strukturSectionLabels = [
         'bod' => __('site.struktur.bod'),
         'sekretaris' => __('site.struktur.sekretaris_section'),
@@ -671,7 +673,7 @@ html {
                                     <div class="col-12 col-sm-8 col-md-5">
                                         <div class="member-card">
                                             @if($member->photo)
-                                                <img class="member-photo" src="{{ $member->photo }}" alt="{{ $member->name }}">
+                                                <img class="member-photo" src="{{ $member->photo }}" alt="{{ $member->name }}" loading="lazy">
                                             @else
                                                 <div class="member-photo d-flex align-items-center justify-content-center text-uppercase fw-bold" style="font-size:2.5rem;color:#bbb;">
                                                     {{ substr($member->name, 0, 1) }}
@@ -884,7 +886,7 @@ html {
 </style>
 
 @php
-    $kegiatans = \App\Models\Kegiatan::orderBy('category')->orderBy('order')->get()->groupBy('category');
+    $kegiatans = \Illuminate\Support\Facades\Cache::remember('home.kegiatans', 3600, fn () => \App\Models\Kegiatan::orderBy('category')->orderBy('order')->get()->groupBy('category'));
 @endphp
 <section id="proker" class="section-tint py-5">
     <div class="proker-wrapper">
@@ -1018,6 +1020,9 @@ html {
 }
 
 .gallery-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     background: #fff;
     border-radius: var(--radius-md, 16px);
     overflow: hidden;
@@ -1052,18 +1057,47 @@ html {
 }
 
 .gallery-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     padding: 18px 20px;
 }
 
 .gallery-body h5 {
     font-weight: 600;
     margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }
 
 .gallery-body p {
     font-size: 14px;
     color: #666;
     margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+.btn-outline-gallery {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border: 1.5px solid var(--color-primary-500, #000);
+    color: var(--color-primary-500, #000);
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 999px;
+    transition: .3s var(--ease-material, ease);
+}
+
+.btn-outline-gallery:hover {
+    background: var(--color-primary-500, #000);
+    color: #fff;
 }
 </style>
 
@@ -1079,7 +1113,7 @@ html {
 @foreach($galleries as $item)
     <div class="gallery-card reveal reveal-delay-{{ ($loop->index % 5) + 1 }}">
         <div class="gallery-img">
-            <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}">
+            <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}" loading="lazy">
         </div>
         <div class="gallery-body">
             <h5>{{ $item->title ?? __('site.dokumentasi.default_title') }}</h5>
@@ -1088,6 +1122,14 @@ html {
     </div>
 @endforeach
         </div>
+
+        @if($galleriesTotal > 3)
+            <div class="text-center reveal" style="margin-top: 40px;">
+                <a href="{{ route('galeri.index') }}" class="btn-outline-gallery">
+                    {{ __('site.dokumentasi.view_all') }}
+                </a>
+            </div>
+        @endif
     </div>
 </section>
 
@@ -1096,10 +1138,10 @@ html {
      label kategori di kiri, SEMUA logo mitra kategori itu di kanan
      (tidak dipotong), reveal berjenjang per baris saat discroll. --}}
 @php
-    $mitraCategories = \App\Models\Mitra::orderBy('category')->orderBy('order')->get()
+    $mitraCategories = \Illuminate\Support\Facades\Cache::remember('home.mitra', 3600, fn () => \App\Models\Mitra::orderBy('category')->orderBy('order')->get()
         ->groupBy('category')
         ->map(fn ($items, $key) => ['key' => $key, 'logos' => $items])
-        ->values();
+        ->values());
 @endphp
 <style>
 .mitra-heading {
@@ -1234,13 +1276,220 @@ html {
                     <div class="mitra-row-logos">
                         @foreach($category['logos'] as $logo)
                             <div class="mitra-logo">
-                                <img src="{{ $logo->logo_url }}" alt="{{ $logo->name ?: __('site.mitra.'.$category['key']) }}">
+                                <img src="{{ $logo->logo_url }}" alt="{{ $logo->name ?: __('site.mitra.'.$category['key']) }}" loading="lazy">
                             </div>
                         @endforeach
                     </div>
                 </div>
             @endforeach
         </div>
+    </div>
+</section>
+
+{{-- ======================= ARTIKEL ======================= --}}
+@php
+    $latestArticles = \Illuminate\Support\Facades\Cache::remember('home.articles', 300, fn () => \App\Models\Article::published()->orderBy('order')->latest('id')->take(3)->get());
+@endphp
+<style>
+.artikel-section {
+    padding: 88px 0;
+    background: #fff;
+}
+
+.artikel-intro {
+    max-width: 640px;
+    margin: 0 auto 48px;
+}
+
+.artikel-desc {
+    color: #666;
+    font-size: 1.02rem;
+    line-height: 1.7;
+    margin-top: 10px;
+}
+
+.artikel-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    align-items: stretch;
+}
+
+@media (max-width: 991.98px) {
+    .artikel-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 575.98px) {
+    .artikel-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.artikel-card {
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+    background: #fff;
+    border-radius: var(--radius-lg, 22px);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform .35s var(--ease-material), box-shadow .35s var(--ease-material);
+}
+
+.artikel-card:hover {
+    color: inherit;
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.artikel-card-img {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--color-navy-50);
+}
+
+.artikel-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .5s var(--ease-material);
+}
+
+.artikel-card:hover .artikel-card-img img {
+    transform: scale(1.06);
+}
+
+.artikel-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 22px 24px 24px;
+}
+
+.artikel-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.artikel-badge {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--color-primary-600);
+    background: var(--color-primary-50);
+    padding: 4px 12px;
+    border-radius: 999px;
+}
+
+.artikel-date {
+    font-size: 0.82rem;
+    color: #888;
+    white-space: nowrap;
+}
+
+.artikel-title {
+    font-weight: 700;
+    font-size: 1.05rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.artikel-excerpt {
+    color: #666;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.artikel-readmore {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-navy-500);
+    margin-top: auto;
+}
+
+.artikel-readmore i {
+    transition: transform .25s var(--ease-material);
+}
+
+.artikel-card:hover .artikel-readmore i {
+    transform: translateX(4px);
+}
+
+.artikel-cta-wrap {
+    text-align: center;
+    margin-top: 44px;
+}
+
+.artikel-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #888;
+    border: 1px dashed var(--color-navy-100);
+    border-radius: var(--radius-lg, 22px);
+}
+
+@media (max-width: 575.98px) {
+    .artikel-section { padding: 56px 0; }
+}
+</style>
+<section id="artikel" class="artikel-section">
+    <div class="container">
+        <div class="text-center reveal artikel-intro">
+            <span class="section-eyebrow">{{ __('site.nav.artikel') }}</span>
+            <h1 class="artikel-heading reveal-stagger"><x-stagger-words :text="__('site.artikel.title')" /></h1>
+            <p class="artikel-desc">{{ __('site.artikel.description') }}</p>
+        </div>
+
+        @if($latestArticles->isEmpty())
+            <div class="artikel-empty reveal">{{ __('site.artikel.empty') }}</div>
+        @else
+            <div class="artikel-grid">
+                @foreach($latestArticles as $i => $item)
+                    <a href="{{ $item->url }}" @if($item->is_external) target="_blank" rel="noopener" @endif class="artikel-card reveal reveal-delay-{{ $i + 1 }}">
+                        <div class="artikel-card-img">
+                            <img src="{{ $item->image }}" alt="{{ $item->title }}" loading="lazy">
+                        </div>
+                        <div class="artikel-card-body">
+                            <div class="artikel-meta">
+                                <span class="artikel-badge">{{ $item->is_external ? $item->source_name : (\App\Models\Article::CATEGORIES[$item->category] ?? $item->category) }}</span>
+                                <span class="artikel-date">{{ $item->published_at?->translatedFormat('d M Y') }}</span>
+                            </div>
+                            <h3 class="artikel-title">{{ $item->title }}</h3>
+                            <p class="artikel-excerpt">{{ $item->excerpt }}</p>
+                            <span class="artikel-readmore">{{ __('site.artikel.read_more') }} <i class="bi {{ $item->is_external ? 'bi-box-arrow-up-right' : 'bi-arrow-right' }}"></i></span>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+
+            <div class="artikel-cta-wrap reveal">
+                <a href="{{ route('artikel.index') }}" class="btn-gradient">{{ __('site.artikel.view_all') }} <i class="bi bi-arrow-right"></i></a>
+            </div>
+        @endif
     </div>
 </section>
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Mitra;
 use App\Services\CloudinaryImageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class MitraController extends Controller
 {
@@ -62,7 +63,7 @@ class MitraController extends Controller
             $validated['logo'] = $uploaded['url'];
             $validated['logo_public_id'] = $uploaded['public_id'];
 
-            $this->cloudinary->delete($mitra->logo_public_id);
+            $this->cloudinary->deferredDelete($mitra->logo_public_id);
         }
 
         $mitra->update($validated);
@@ -72,7 +73,7 @@ class MitraController extends Controller
 
     public function destroy(Mitra $mitra)
     {
-        $this->cloudinary->delete($mitra->logo_public_id);
+        $this->cloudinary->deferredDelete($mitra->logo_public_id);
 
         $mitra->delete();
 
@@ -96,6 +97,8 @@ class MitraController extends Controller
                 Mitra::where('id', $id)->update(['order' => $index]);
             }
         }
+
+        Cache::forget('home.mitra');
 
         return response()->json(['status' => 'ok']);
     }
