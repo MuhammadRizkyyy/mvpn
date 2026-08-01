@@ -56,7 +56,8 @@ Route::post('/partnership', [PartnershipController::class, 'store'])
 Route::get('/admin/login', [AdminAuthController::class, 'loginForm'])
     ->name('admin.login');
 
-Route::post('/admin/login', [AdminAuthController::class, 'login']);
+Route::post('/admin/login', [AdminAuthController::class, 'login'])
+    ->middleware('throttle:5,1');
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])
     ->name('admin.logout');
 

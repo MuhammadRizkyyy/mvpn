@@ -22,6 +22,7 @@ class AdminAuthController extends Controller
         $passwordValid = $passwordHash && Hash::check((string) $request->password, $passwordHash);
 
         if ($usernameValid && $passwordValid) {
+            $request->session()->regenerate();
             session(['admin' => true]);
             return redirect('/admin/dashboard');
         }
@@ -29,9 +30,10 @@ class AdminAuthController extends Controller
         return back()->with('error', 'Username atau password salah');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->forget('admin');
+        $request->session()->forget('admin');
+        $request->session()->regenerate();
         return redirect('/admin/login');
     }
 }
