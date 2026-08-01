@@ -43,7 +43,7 @@
                                     Detail
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                                 </a>
-                                <form method="POST" action="{{ route('admin.partnerships.destroy', $p->id) }}" onsubmit="return confirm('Hapus pengajuan ini?');">
+                                <form method="POST" action="{{ route('admin.partnerships.destroy', $p->id) }}" data-confirm="Hapus pengajuan ini?">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"

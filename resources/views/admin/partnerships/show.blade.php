@@ -64,7 +64,7 @@
             </button>
         </form>
 
-        <form method="POST" action="{{ route('admin.partnerships.destroy', $partnership->id) }}" onsubmit="return confirm('Hapus pengajuan ini?');">
+        <form method="POST" action="{{ route('admin.partnerships.destroy', $partnership->id) }}" data-confirm="Hapus pengajuan ini?">
             @csrf
             @method('DELETE')
             <button class="inline-flex items-center gap-1.5 rounded-lg border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-600 transition-colors hover:bg-neutral-100">

@@ -84,6 +84,13 @@
                     </x-slot:icon>
                     Mitra
                 </x-admin.nav-item>
+
+                <x-admin.nav-item :href="route('admin.artikel.index')" :active="request()->routeIs('admin.artikel.*')">
+                    <x-slot:icon>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>
+                    </x-slot:icon>
+                    Artikel
+                </x-admin.nav-item>
             </div>
 
             <div>
@@ -143,21 +150,7 @@
             @endif
         </header>
 
-        <main class="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-            @if(session('success'))
-                <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)"
-                     x-show="show" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-full"
-                     x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150"
-                     x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-full"
-                     class="fixed right-4 top-4 z-50 flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 shadow-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    {{ session('success') }}
-                    <button type="button" @click="show = false" class="ml-1 text-emerald-500 hover:text-emerald-700" aria-label="Tutup">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    </button>
-                </div>
-            @endif
-
+        <main class="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8" @if(session('success')) data-flash-success="{{ session('success') }}" @endif>
             @yield('content')
         </main>
     </div>

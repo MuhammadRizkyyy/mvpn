@@ -46,7 +46,7 @@
                             <p class="truncate text-xs font-medium text-neutral-700">{{ $item->name ?: '—' }}</p>
                             <div class="flex shrink-0 items-center gap-1.5">
                                 <a href="{{ route('admin.mitra.edit', $item) }}" class="text-xs font-medium text-navy-500 hover:text-navy-700">Edit</a>
-                                <form method="POST" action="{{ route('admin.mitra.destroy', $item) }}" onsubmit="return confirm('Hapus mitra ini?');">
+                                <form method="POST" action="{{ route('admin.mitra.destroy', $item) }}" data-confirm="Hapus mitra ini?">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-xs font-medium text-primary-600 hover:text-primary-700">Hapus</button>

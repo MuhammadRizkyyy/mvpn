@@ -73,7 +73,7 @@
                                     class="inline-flex items-center gap-1 rounded-md border border-neutral-300 px-2.5 py-1.5 text-xs font-medium text-neutral-700 transition-colors hover:border-navy-500 hover:text-navy-500">
                                 Edit
                             </button>
-                            <form method="POST" action="{{ route('admin.misi.destroy', $item) }}" onsubmit="return confirm('Hapus poin misi ini?');">
+                            <form method="POST" action="{{ route('admin.misi.destroy', $item) }}" data-confirm="Hapus poin misi ini?">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"

@@ -100,10 +100,39 @@
         display: flex;
         flex-direction: column;
     }
+
+    .mvpn-spinner {
+        display: inline-block;
+        width: 0.9em;
+        height: 0.9em;
+        border: 2px solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        animation: mvpn-spin 0.6s linear infinite;
+        vertical-align: -0.15em;
+        margin-right: 6px;
+    }
+
+    @keyframes mvpn-spin {
+        to { transform: rotate(360deg); }
+    }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+document.addEventListener('submit', function (event) {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement) || form.hasAttribute('data-no-loading')) {
+        return;
+    }
+
+    const submitBtn = form.querySelector('button[type="submit"]:not(:disabled)');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="mvpn-spinner"></span>' + submitBtn.innerHTML;
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.querySelector('.navbar-custom');
     if (navbar) {

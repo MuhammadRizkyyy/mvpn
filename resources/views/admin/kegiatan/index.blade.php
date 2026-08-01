@@ -55,7 +55,7 @@
                                class="inline-flex items-center gap-1 rounded-md border border-neutral-300 px-2.5 py-1.5 text-xs font-medium text-neutral-700 transition-colors hover:border-navy-500 hover:text-navy-500">
                                 Edit
                             </a>
-                            <form method="POST" action="{{ route('admin.kegiatan.destroy', $item) }}" onsubmit="return confirm('Hapus program kerja ini?');">
+                            <form method="POST" action="{{ route('admin.kegiatan.destroy', $item) }}" data-confirm="Hapus program kerja ini?">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
