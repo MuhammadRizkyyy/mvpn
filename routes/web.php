@@ -38,6 +38,16 @@ Route::redirect('/kerjasama', '/#kerjasama')->name('kerjasama');
 
 /*
 |--------------------------------------------------------------------------
+| ARTIKEL (PUBLIC)
+|--------------------------------------------------------------------------
+*/
+Route::get('/artikel', [\App\Http\Controllers\ArticleController::class, 'index'])
+    ->name('artikel.index');
+Route::get('/artikel/{artikel}', [\App\Http\Controllers\ArticleController::class, 'show'])
+    ->name('artikel.show');
+
+/*
+|--------------------------------------------------------------------------
 | PARTNERSHIP (USER)
 |--------------------------------------------------------------------------
 */
@@ -126,11 +136,20 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         ->name('mitra.reorder');
     Route::resource('mitra', \App\Http\Controllers\Admin\MitraController::class)
         ->except(['show']);
+
+    // Artikel
+    Route::post('/artikel/reorder', [\App\Http\Controllers\Admin\ArticleController::class, 'reorder'])
+        ->name('artikel.reorder');
+    Route::resource('artikel', \App\Http\Controllers\Admin\ArticleController::class)
+        ->except(['show']);
 });
 
-Route::get('/galeri', [\App\Http\Controllers\GalleryController::class, 'index']);
+Route::get('/galeri', [\App\Http\Controllers\GalleryController::class, 'index'])
+    ->name('galeri.index');
 
 Route::middleware(['admin'])->prefix('admin')->group(function () {
+    Route::post('/gallery/reorder', [AdminGalleryController::class, 'reorder'])
+        ->name('gallery.reorder');
     Route::resource('gallery', AdminGalleryController::class)
-        ->only(['index', 'store', 'destroy']);
+        ->only(['index', 'store', 'update', 'destroy']);
 });

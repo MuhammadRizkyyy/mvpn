@@ -10,6 +10,7 @@ return [
         'proker' => 'Programmes de Travail',
         'galeri' => 'Galerie',
         'kemitraan' => 'Partenariat',
+        'artikel' => 'Articles',
         'kerjasama' => 'Collaboration',
         'alih_bahasa' => 'Changer de Langue',
     ],
@@ -109,6 +110,7 @@ return [
     'dokumentasi' => [
         'title' => 'Galerie d\'Activités',
         'default_title' => 'Documentation',
+        'view_all' => 'Voir Toute la Galerie',
     ],
 
     'mitra' => [
@@ -123,6 +125,16 @@ return [
         'brand' => 'Partenariat de Marque',
         'law' => 'Partenariat Juridique',
         'ip_trade' => 'Partenariat du Centre de Promotion du Commerce International',
+    ],
+
+    'artikel' => [
+        'title' => 'Articles & Actualités',
+        'description' => 'Les dernières nouvelles sur les activités, communiqués de presse et annonces de MVP.N.',
+        'empty' => 'Aucun article n\'a encore été publié.',
+        'read_more' => 'Lire la Suite',
+        'view_all' => 'Voir Tous les Articles',
+        'back' => 'Retour aux Articles',
+        'related' => 'Articles Similaires',
     ],
 
     'kerjasama' => [

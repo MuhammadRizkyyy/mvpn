@@ -10,6 +10,7 @@ return [
         'proker' => 'Programas de Trabajo',
         'galeri' => 'Galería',
         'kemitraan' => 'Alianzas',
+        'artikel' => 'Artículos',
         'kerjasama' => 'Colaboración',
         'alih_bahasa' => 'Cambiar Idioma',
     ],
@@ -109,6 +110,7 @@ return [
     'dokumentasi' => [
         'title' => 'Galería de Actividades',
         'default_title' => 'Documentación',
+        'view_all' => 'Ver Toda la Galería',
     ],
 
     'mitra' => [
@@ -123,6 +125,16 @@ return [
         'brand' => 'Alianza de Marca',
         'law' => 'Alianza Legal',
         'ip_trade' => 'Alianza del Centro de Promoción de Comercio Internacional',
+    ],
+
+    'artikel' => [
+        'title' => 'Artículos & Noticias',
+        'description' => 'Últimas novedades sobre actividades, comunicados de prensa y anuncios de MVP.N.',
+        'empty' => 'Aún no se ha publicado ningún artículo.',
+        'read_more' => 'Leer Más',
+        'view_all' => 'Ver Todos los Artículos',
+        'back' => 'Volver a Artículos',
+        'related' => 'Artículos Relacionados',
     ],
 
     'kerjasama' => [

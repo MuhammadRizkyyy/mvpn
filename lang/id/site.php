@@ -10,6 +10,7 @@ return [
         'proker' => 'Program Kerja',
         'galeri' => 'Galeri',
         'kemitraan' => 'Kemitraan',
+        'artikel' => 'Artikel',
         'kerjasama' => 'Kerjasama',
         'alih_bahasa' => 'Alih Bahasa',
     ],
@@ -109,6 +110,7 @@ return [
     'dokumentasi' => [
         'title' => 'Galeri Kegiatan',
         'default_title' => 'Dokumentasi',
+        'view_all' => 'Lihat Semua Galeri',
     ],
 
     'mitra' => [
@@ -123,6 +125,16 @@ return [
         'brand' => 'Kemitraan Merek',
         'law' => 'Kemitraan Hukum',
         'ip_trade' => 'Kemitraan Pusat Promosi Perdagangan Internasional',
+    ],
+
+    'artikel' => [
+        'title' => 'Artikel & Berita',
+        'description' => 'Kabar terbaru seputar kegiatan, siaran pers, dan pengumuman dari MVP.N.',
+        'empty' => 'Belum ada artikel yang diterbitkan.',
+        'read_more' => 'Baca Selengkapnya',
+        'view_all' => 'Lihat Semua Artikel',
+        'back' => 'Kembali ke Artikel',
+        'related' => 'Artikel Terkait',
     ],
 
     'kerjasama' => [

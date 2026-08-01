@@ -10,6 +10,7 @@ return [
         'proker' => 'Work Programs',
         'galeri' => 'Gallery',
         'kemitraan' => 'Partnership',
+        'artikel' => 'Articles',
         'kerjasama' => 'Collaboration',
         'alih_bahasa' => 'Change Language',
     ],
@@ -109,6 +110,7 @@ return [
     'dokumentasi' => [
         'title' => 'Activity Gallery',
         'default_title' => 'Documentation',
+        'view_all' => 'View All Gallery',
     ],
 
     'mitra' => [
@@ -123,6 +125,16 @@ return [
         'brand' => 'Brand Partnership',
         'law' => 'Law Partnership',
         'ip_trade' => 'International Promotion Trade Center Partnership',
+    ],
+
+    'artikel' => [
+        'title' => 'Articles & News',
+        'description' => 'Latest updates on activities, press releases, and announcements from MVP.N.',
+        'empty' => 'No articles have been published yet.',
+        'read_more' => 'Read More',
+        'view_all' => 'View All Articles',
+        'back' => 'Back to Articles',
+        'related' => 'Related Articles',
     ],
 
     'kerjasama' => [

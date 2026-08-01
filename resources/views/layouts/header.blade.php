@@ -514,6 +514,10 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" data-section="artikel" href="{{ request()->routeIs('index1') ? '#artikel' : '/#artikel' }}">{{ __('site.nav.artikel') }}</a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" data-section="kerjasama" href="{{ request()->routeIs('index1') ? '#kerjasama' : '/#kerjasama' }}">{{ __('site.nav.kerjasama') }}</a>
                 </li>
             </ul>
