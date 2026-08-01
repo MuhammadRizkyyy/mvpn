@@ -1,6 +1,6 @@
 @include('layouts.header')
 @php
-    $galleries = App\Models\Gallery::latest()->get();
+    $galleries = App\Models\Gallery::orderBy('order')->latest('id')->get();
 @endphp
 <section class="gallery-section">
     <style>
@@ -50,6 +50,10 @@
         }
 
         .gallery-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            cursor: pointer;
             background: #fff;
             border-radius: 14px;
             overflow: hidden;
@@ -89,18 +93,29 @@
         }
 
         .gallery-body {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
             padding: 18px 20px;
         }
 
         .gallery-body h5 {
             font-weight: 600;
             margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
         }
 
         .gallery-body p {
             font-size: 14px;
             color: #666;
             margin: 0;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
         }
 
         @keyframes fadeUp {
@@ -108,6 +123,77 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1050;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 24px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-overlay.is-open {
+            display: flex;
+        }
+
+        .lightbox-box {
+            position: relative;
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            max-width: 720px;
+            width: 100%;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lightbox-img {
+            width: 100%;
+            max-height: 60vh;
+            background: #f2f2f2;
+            object-fit: contain;
+        }
+
+        .lightbox-body {
+            padding: 20px 24px;
+            overflow-y: auto;
+        }
+
+        .lightbox-body h5 {
+            font-weight: 700;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .lightbox-body p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            margin: 0;
+            white-space: pre-line;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .lightbox-close:hover {
+            background: #fff;
         }
     </style>
 
@@ -117,9 +203,10 @@
 
         <div class="gallery-grid">
 @foreach($galleries as $item)
-    <div class="gallery-card">
+    <div class="gallery-card"
+         onclick="openLightbox({{ Js::from(asset('storage/'.$item->image)) }}, {{ Js::from($item->title ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->description) }})">
         <div class="gallery-img">
-            <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}">
+            <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}" loading="lazy">
         </div>
         <div class="gallery-body">
             <h5>{{ $item->title ?? __('site.dokumentasi.default_title') }}</h5>
@@ -132,4 +219,37 @@
         </div>
     </div>
 </section>
+
+{{-- LIGHTBOX --}}
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="if(event.target === this) closeLightbox()">
+    <div class="lightbox-box">
+        <button type="button" class="lightbox-close" onclick="closeLightbox()" aria-label="Tutup">&times;</button>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="">
+        <div class="lightbox-body">
+            <h5 id="lightboxTitle"></h5>
+            <p id="lightboxDescription"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openLightbox(image, title, description) {
+        document.getElementById('lightboxImg').src = image;
+        document.getElementById('lightboxImg').alt = title;
+        document.getElementById('lightboxTitle').textContent = title;
+        document.getElementById('lightboxDescription').textContent = description || '';
+        document.getElementById('lightboxOverlay').classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        document.getElementById('lightboxOverlay').classList.remove('is-open');
+        document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeLightbox();
+    });
+</script>
+
 @include('layouts.footer')
