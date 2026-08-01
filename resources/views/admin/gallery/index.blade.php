@@ -19,20 +19,23 @@
 
             <div>
                 <label for="image" class="mb-1.5 block text-xs font-medium text-neutral-600">Foto</label>
-                <input type="file" name="image" id="image" required
+                <input type="file" name="image" id="image" accept="image/jpeg,image/png" required onchange="previewImage(this, 'image-preview')"
                        class="block w-full rounded-lg border border-neutral-300 text-sm text-neutral-600 file:mr-3 file:rounded-md file:border-0 file:bg-navy-500 file:px-3 file:py-2 file:text-xs file:font-medium file:text-white hover:file:bg-navy-700">
+                <img id="image-preview" src="" alt="Preview foto" class="mt-3 hidden aspect-video w-full rounded-lg border border-neutral-200 object-cover">
             </div>
 
             <div>
                 <label for="title" class="mb-1.5 block text-xs font-medium text-neutral-600">Judul</label>
-                <input type="text" name="title" id="title" placeholder="Judul foto"
+                <input type="text" name="title" id="title" placeholder="Judul foto" maxlength="80" oninput="updateCounter(this, 'title-counter')"
                        class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">
+                <p class="mt-1 text-right text-xs text-neutral-400"><span id="title-counter">0</span>/80</p>
             </div>
 
             <div>
                 <label for="description" class="mb-1.5 block text-xs font-medium text-neutral-600">Deskripsi</label>
-                <textarea name="description" id="description" rows="3" placeholder="Deskripsi singkat"
+                <textarea name="description" id="description" rows="3" placeholder="Deskripsi singkat" maxlength="180" oninput="updateCounter(this, 'description-counter')"
                           class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500"></textarea>
+                <p class="mt-1 text-right text-xs text-neutral-400"><span id="description-counter">0</span>/180</p>
             </div>
 
             <button type="submit"
@@ -67,38 +70,112 @@
 </div>
 
 <div class="mt-8 border-t border-neutral-200 pt-6">
-    <h2 class="mb-4 text-sm font-semibold text-neutral-950">Semua Foto ({{ $galleries->count() }})</h2>
+    <h2 class="mb-1 text-sm font-semibold text-neutral-950">Semua Foto ({{ $galleries->count() }})</h2>
 
     @if($galleries->isEmpty())
-        <div class="rounded-xl border border-dashed border-neutral-300 px-5 py-12 text-center">
+        <div class="mt-4 rounded-xl border border-dashed border-neutral-300 px-5 py-12 text-center">
             <p class="text-sm font-medium text-neutral-800">Belum ada foto dokumentasi</p>
             <p class="mt-1 text-sm text-neutral-500">Unggah foto pertama lewat form di atas.</p>
         </div>
     @else
-        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        @foreach($galleries as $item)
-            <div class="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-                <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title ?? 'Foto kegiatan' }}" class="aspect-square w-full object-cover">
-                <div class="p-3">
-                    <p class="truncate text-sm font-medium text-neutral-950">{{ $item->title ?: 'Tanpa judul' }}</p>
-                    @if($item->description)
-                        <p class="mt-0.5 line-clamp-2 text-xs text-neutral-500">{{ $item->description }}</p>
-                    @endif
+        <p class="mb-4 text-xs text-neutral-500">Seret pakai ikon titik-titik untuk mengubah urutan tampil.</p>
 
-                    <form action="/admin/gallery/{{ $item->id }}" method="POST" class="mt-3">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" onclick="openDeleteModal(this)"
-                                class="flex w-full items-center justify-center gap-1.5 rounded-md border border-primary-300 py-1.5 text-xs font-medium text-primary-600 transition-colors hover:bg-primary-50">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                            Hapus
-                        </button>
-                    </form>
-                </div>
-            </div>
-        @endforeach
+        <div class="overflow-hidden rounded-xl border border-neutral-200 bg-white">
+            <table class="w-full text-left text-sm">
+                <thead class="border-b border-neutral-200 bg-neutral-50 text-xs uppercase text-neutral-500">
+                    <tr>
+                        <th class="w-10 px-3 py-3 font-medium"></th>
+                        <th class="px-5 py-3 font-medium">Foto</th>
+                        <th class="px-5 py-3 font-medium text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="js-reorder-list divide-y divide-neutral-100">
+                @foreach($galleries as $item)
+                    <tr class="js-reorder-item" data-id="{{ $item->id }}">
+                        <td class="px-3 py-3">
+                            <button type="button"
+                                    class="js-drag-handle touch-none flex h-7 w-7 shrink-0 cursor-grab items-center justify-center rounded-md text-neutral-400 hover:text-neutral-600 active:cursor-grabbing"
+                                    aria-label="Seret untuk mengubah urutan" title="Seret untuk mengubah urutan">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="15" cy="12" r="1.4"/><circle cx="9" cy="18" r="1.4"/><circle cx="15" cy="18" r="1.4"/></svg>
+                            </button>
+                        </td>
+                        <td class="px-5 py-3">
+                            <div class="flex items-center gap-3">
+                                <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title ?? 'Foto kegiatan' }}" class="h-10 w-14 shrink-0 rounded-md object-cover" draggable="false">
+                                <div class="min-w-0">
+                                    <p class="truncate font-medium text-neutral-800">{{ $item->title ?: 'Tanpa judul' }}</p>
+                                    @if($item->description)
+                                        <p class="mt-0.5 line-clamp-1 text-xs text-neutral-500">{{ $item->description }}</p>
+                                    @endif
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-5 py-3 text-right">
+                            <div class="flex items-center justify-end gap-3">
+                                <button type="button"
+                                        onclick="openEditModal({{ $item->id }}, {{ Js::from($item->title) }}, {{ Js::from($item->description) }}, {{ Js::from(asset('storage/'.$item->image)) }})"
+                                        class="text-xs font-medium text-navy-500 hover:text-navy-700">
+                                    Edit
+                                </button>
+                                <form action="/admin/gallery/{{ $item->id }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" onclick="openDeleteModal(this)" class="text-xs font-medium text-primary-600 hover:text-primary-700">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
         </div>
     @endif
+</div>
+
+{{-- EDIT MODAL --}}
+<div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-navy-900/50 p-4">
+    <div class="w-full max-w-sm rounded-xl bg-white p-5 shadow-lg">
+        <h3 class="text-base font-semibold text-neutral-950">Edit Foto</h3>
+
+        <form id="editForm" method="POST" enctype="multipart/form-data" class="mt-4 space-y-4">
+            @csrf
+            @method('PUT')
+
+            <div>
+                <label for="edit-image" class="mb-1.5 block text-xs font-medium text-neutral-600">Ganti Foto (opsional)</label>
+                <input type="file" name="image" id="edit-image" accept="image/jpeg,image/png" onchange="previewImage(this, 'edit-image-preview')"
+                       class="block w-full rounded-lg border border-neutral-300 text-sm text-neutral-600 file:mr-3 file:rounded-md file:border-0 file:bg-navy-500 file:px-3 file:py-2 file:text-xs file:font-medium file:text-white hover:file:bg-navy-700">
+                <img id="edit-image-preview" src="" alt="Preview foto" class="mt-3 hidden aspect-video w-full rounded-lg border border-neutral-200 object-cover">
+            </div>
+
+            <div>
+                <label for="edit-title" class="mb-1.5 block text-xs font-medium text-neutral-600">Judul</label>
+                <input type="text" name="title" id="edit-title" placeholder="Judul foto" maxlength="80" oninput="updateCounter(this, 'edit-title-counter')"
+                       class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">
+                <p class="mt-1 text-right text-xs text-neutral-400"><span id="edit-title-counter">0</span>/80</p>
+            </div>
+
+            <div>
+                <label for="edit-description" class="mb-1.5 block text-xs font-medium text-neutral-600">Deskripsi</label>
+                <textarea name="description" id="edit-description" rows="3" placeholder="Deskripsi singkat" maxlength="180" oninput="updateCounter(this, 'edit-description-counter')"
+                          class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500"></textarea>
+                <p class="mt-1 text-right text-xs text-neutral-400"><span id="edit-description-counter">0</span>/180</p>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-1">
+                <button type="button" onclick="closeEditModal()"
+                        class="rounded-md border border-neutral-300 px-3.5 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">
+                    Batal
+                </button>
+                <button type="submit"
+                        class="rounded-md bg-primary-500 px-3.5 py-2 text-sm font-semibold text-white hover:bg-primary-600">
+                    Simpan
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 {{-- DELETE CONFIRM MODAL --}}
@@ -120,6 +197,51 @@
 </div>
 
 <script>
+    function updateCounter(input, counterId) {
+        document.getElementById(counterId).textContent = input.value.length;
+    }
+
+    function previewImage(input, previewId) {
+        const preview = document.getElementById(previewId);
+
+        if (!input.files || !input.files[0]) {
+            preview.src = '';
+            preview.classList.add('hidden');
+            return;
+        }
+
+        preview.src = URL.createObjectURL(input.files[0]);
+        preview.classList.remove('hidden');
+    }
+
+    function openEditModal(id, title, description, image) {
+        const form = document.getElementById('editForm');
+        form.action = '/admin/gallery/' + id;
+
+        const titleInput = document.getElementById('edit-title');
+        const descriptionInput = document.getElementById('edit-description');
+        titleInput.value = title || '';
+        descriptionInput.value = description || '';
+        document.getElementById('edit-image').value = '';
+
+        const preview = document.getElementById('edit-image-preview');
+        preview.src = image || '';
+        preview.classList.toggle('hidden', !image);
+
+        updateCounter(titleInput, 'edit-title-counter');
+        updateCounter(descriptionInput, 'edit-description-counter');
+
+        const modal = document.getElementById('editModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeEditModal() {
+        const modal = document.getElementById('editModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
     let formToSubmit = null;
 
     function openDeleteModal(button) {
@@ -138,6 +260,91 @@
 
     document.getElementById('confirmDelete').addEventListener('click', function () {
         if (formToSubmit) formToSubmit.submit();
+    });
+
+    document.querySelectorAll('.js-reorder-list').forEach(function (list) {
+        let draggedItem = null;
+
+        function moveItem(item) {
+            if (!item || item === draggedItem || !list.contains(item)) return;
+            const items = Array.from(list.children);
+            const draggedIndex = items.indexOf(draggedItem);
+            const targetIndex = items.indexOf(item);
+            if (draggedIndex < targetIndex) {
+                item.after(draggedItem);
+            } else {
+                item.before(draggedItem);
+            }
+        }
+
+        list.querySelectorAll('.js-drag-handle').forEach(function (handle) {
+            // MOUSE (native HTML5 drag-and-drop)
+            handle.addEventListener('mousedown', function () {
+                handle.closest('.js-reorder-item').draggable = true;
+            });
+            handle.addEventListener('mouseup', function () {
+                handle.closest('.js-reorder-item').draggable = false;
+            });
+
+            // TOUCH (HTML5 DnD has no touch support, so this is a separate path)
+            handle.addEventListener('touchstart', function () {
+                draggedItem = handle.closest('.js-reorder-item');
+                draggedItem.classList.add('opacity-40');
+            }, { passive: true });
+
+            handle.addEventListener('touchmove', function (e) {
+                if (!draggedItem) return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                const item = target && target.closest('.js-reorder-item');
+                moveItem(item);
+            }, { passive: false });
+
+            handle.addEventListener('touchend', function () {
+                if (!draggedItem) return;
+                draggedItem.classList.remove('opacity-40');
+                persistOrder(list);
+                draggedItem = null;
+            });
+        });
+
+        list.addEventListener('dragstart', function (e) {
+            const item = e.target.closest('.js-reorder-item');
+            if (!item) return;
+            draggedItem = item;
+            e.dataTransfer.effectAllowed = 'move';
+            setTimeout(function () { item.classList.add('opacity-40'); }, 0);
+        });
+
+        list.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            const item = e.target.closest('.js-reorder-item');
+            moveItem(item);
+        });
+
+        list.addEventListener('dragend', function () {
+            if (!draggedItem) return;
+            draggedItem.classList.remove('opacity-40');
+            draggedItem.draggable = false;
+            persistOrder(list);
+            draggedItem = null;
+        });
+
+        function persistOrder(list) {
+            const ids = Array.from(list.querySelectorAll('.js-reorder-item')).map(function (el) {
+                return el.dataset.id;
+            });
+
+            fetch('{{ route("gallery.reorder") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                },
+                body: JSON.stringify({ ids: ids }),
+            });
+        }
     });
 </script>
 
