@@ -1231,6 +1231,11 @@ html {
     transition: transform .25s var(--ease-material, ease), box-shadow .25s var(--ease-material, ease);
 }
 
+a.mitra-logo {
+    cursor: pointer;
+    text-decoration: none;
+}
+
 .mitra-logo:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow-md);
@@ -1275,9 +1280,15 @@ html {
                     </div>
                     <div class="mitra-row-logos">
                         @foreach($category['logos'] as $logo)
-                            <div class="mitra-logo">
-                                <img src="{{ $logo->logo_url }}" alt="{{ $logo->name ?: __('site.mitra.'.$category['key']) }}" loading="lazy">
-                            </div>
+                            @if($logo->link)
+                                <a href="{{ $logo->link }}" target="_blank" rel="noopener noreferrer" class="mitra-logo" aria-label="{{ $logo->name ?: __('site.mitra.'.$category['key']) }}">
+                                    <img src="{{ $logo->logo_url }}" alt="{{ $logo->name ?: __('site.mitra.'.$category['key']) }}" loading="lazy">
+                                </a>
+                            @else
+                                <div class="mitra-logo">
+                                    <img src="{{ $logo->logo_url }}" alt="{{ $logo->name ?: __('site.mitra.'.$category['key']) }}" loading="lazy">
+                                </div>
+                            @endif
                         @endforeach
                     </div>
                 </div>

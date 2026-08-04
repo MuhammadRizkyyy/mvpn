@@ -23,6 +23,7 @@ class Mitra extends Model
         'name',
         'logo',
         'logo_public_id',
+        'link',
         'order',
     ];
 

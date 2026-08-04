@@ -36,7 +36,8 @@
 </div>
 
 <div>
-    <label for="order" class="mb-1.5 block text-xs font-medium text-neutral-600">Urutan Tampil</label>
-    <input type="number" name="order" id="order" min="0" value="{{ old('order', $mitra->order ?? 0) }}"
-           class="block w-32 rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">
+    <label for="link" class="mb-1.5 block text-xs font-medium text-neutral-600">Link Mitra <span class="font-normal text-neutral-400">(opsional)</span></label>
+    <input type="url" name="link" id="link" placeholder="https://" value="{{ old('link', $mitra->link ?? '') }}"
+           class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">
+    <p class="mt-1 text-xs text-neutral-400">Jika diisi, logo mitra di halaman publik akan bisa diklik menuju link ini.</p>
 </div>

@@ -32,7 +32,7 @@ class MitraController extends Controller
             'category' => 'required|in:' . implode(',', array_keys(Mitra::CATEGORIES)),
             'name' => 'nullable|string|max:255',
             'logo' => 'required|image|mimes:jpg,jpeg,png|max:5120',
-            'order' => 'nullable|integer|min:0',
+            'link' => 'nullable|url|max:255',
         ]);
 
         $uploaded = $this->cloudinary->upload($request->file('logo'), 'mitra');
@@ -55,7 +55,7 @@ class MitraController extends Controller
             'category' => 'required|in:' . implode(',', array_keys(Mitra::CATEGORIES)),
             'name' => 'nullable|string|max:255',
             'logo' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
-            'order' => 'nullable|integer|min:0',
+            'link' => 'nullable|url|max:255',
         ]);
 
         if ($request->hasFile('logo')) {
