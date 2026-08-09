@@ -14,6 +14,19 @@ class Gallery extends Model
         'order',
     ];
 
+    public function getDescriptionHtmlAttribute(): string
+    {
+        if (blank($this->description)) {
+            return '';
+        }
+
+        if ($this->description === strip_tags($this->description)) {
+            return nl2br(e($this->description));
+        }
+
+        return $this->description;
+    }
+
     protected static function booted(): void
     {
         static::saved(function () {

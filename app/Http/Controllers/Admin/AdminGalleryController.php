@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Article;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -20,8 +21,8 @@ class AdminGalleryController extends Controller
     {
         $request->validate([
             'image' => 'required|image|mimes:jpg,jpeg,png|max:5120',
-            'title' => 'nullable|string|max:80',
-            'description' => 'nullable|string|max:180',
+            'title' => 'nullable|string',
+            'description' => 'nullable|string',
         ]);
 
         $path = $request->file('image')->store('gallery', 'public');
@@ -29,7 +30,7 @@ class AdminGalleryController extends Controller
         Gallery::create([
             'image' => $path,
             'title' => $request->title,
-            'description' => $request->description,
+            'description' => Article::sanitizeContent($request->description),
             'order' => (int) Gallery::max('order') + 1,
         ]);
 
@@ -58,13 +59,13 @@ class AdminGalleryController extends Controller
 
         $request->validate([
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
-            'title' => 'nullable|string|max:80',
-            'description' => 'nullable|string|max:180',
+            'title' => 'nullable|string',
+            'description' => 'nullable|string',
         ]);
 
         $data = [
             'title' => $request->title,
-            'description' => $request->description,
+            'description' => Article::sanitizeContent($request->description),
         ];
 
         if ($request->hasFile('image')) {

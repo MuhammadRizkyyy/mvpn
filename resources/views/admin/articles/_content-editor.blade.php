@@ -36,11 +36,20 @@
                 <button type="button" class="ql-clean"></button>
             </span>
         </div>
-        <div id="{{ $fieldId }}-editor" style="min-height: 220px;" class="bg-white text-sm"></div>
+        <div id="{{ $fieldId }}-editor" style="min-height: {{ $minHeight ?? '220px' }};" class="bg-white text-sm"></div>
     </div>
 
     <textarea name="{{ $fieldName }}" id="{{ $fieldId }}" class="hidden">{{ $editorValue }}</textarea>
 </div>
+
+<style>
+    #{{ $fieldId }}-editor.ql-container {
+        min-height: {{ $minHeight ?? '220px' }};
+    }
+    #{{ $fieldId }}-editor .ql-editor {
+        min-height: {{ $minHeight ?? '220px' }};
+    }
+</style>
 
 <script>
 (function () {
@@ -54,6 +63,9 @@
         if (textarea.value.trim()) {
             quill.clipboard.dangerouslyPasteHTML(textarea.value);
         }
+
+        window.__quillEditors = window.__quillEditors || {};
+        window.__quillEditors['{{ $fieldId }}'] = quill;
 
         var form = textarea.closest('form');
         if (form) {
@@ -73,7 +85,7 @@
         var link = document.createElement('link');
         link.id = 'quill-snow-css';
         link.rel = 'stylesheet';
-        link.href = 'https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css';
+        link.href = '{{ asset('vendor/quill/quill.snow.css') }}';
         document.head.appendChild(link);
     }
 
@@ -85,7 +97,7 @@
 
     var script = document.createElement('script');
     script.id = 'quill-js';
-    script.src = 'https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js';
+    script.src = '{{ asset('vendor/quill/quill.min.js') }}';
     script.onload = initEditor;
     document.head.appendChild(script);
 })();

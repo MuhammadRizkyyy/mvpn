@@ -460,6 +460,13 @@
                 border-left-color: var(--color-primary-500);
                 font-weight: 700;
             }
+
+            .navbar-custom.navbar-transparent .navbar-collapse .nav-link.active:not(.dropdown-toggle) {
+                background: rgba(255, 255, 255, 0.12);
+                border-left-color: #fff;
+                color: #fff !important;
+                text-shadow: none;
+            }
         }
     </style>
 </head>

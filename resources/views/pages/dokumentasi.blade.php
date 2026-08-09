@@ -1,7 +1,4 @@
 @include('layouts.header')
-@php
-    $galleries = App\Models\Gallery::orderBy('order')->latest('id')->get();
-@endphp
 <section class="gallery-section">
     <style>
         .gallery-section {
@@ -132,8 +129,9 @@
             z-index: 1050;
             background: rgba(0, 0, 0, 0.8);
             padding: 24px;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
+            overflow-y: auto;
         }
 
         .lightbox-overlay.is-open {
@@ -147,7 +145,7 @@
             overflow: hidden;
             max-width: 720px;
             width: 100%;
-            max-height: 90vh;
+            margin: auto;
             display: flex;
             flex-direction: column;
         }
@@ -155,13 +153,13 @@
         .lightbox-img {
             width: 100%;
             max-height: 60vh;
+            flex-shrink: 0;
             background: #f2f2f2;
             object-fit: contain;
         }
 
         .lightbox-body {
             padding: 20px 24px;
-            overflow-y: auto;
         }
 
         .lightbox-body h5 {
@@ -170,12 +168,29 @@
             margin-bottom: 8px;
         }
 
-        .lightbox-body p {
+        .lightbox-description {
             font-size: 14px;
             color: #555;
             line-height: 1.6;
-            margin: 0;
-            white-space: pre-line;
+        }
+
+        .lightbox-description p {
+            margin: 0 0 8px;
+        }
+
+        .lightbox-description p:last-child {
+            margin-bottom: 0;
+        }
+
+        .lightbox-description ul,
+        .lightbox-description ol {
+            margin: 0 0 8px;
+            padding-left: 20px;
+        }
+
+        .lightbox-description a {
+            color: #ce1126;
+            text-decoration: underline;
         }
 
         .lightbox-close {
@@ -195,6 +210,46 @@
         .lightbox-close:hover {
             background: #fff;
         }
+
+        .gallery-pagination {
+            margin-top: 40px;
+        }
+
+        .gallery-pagination .pagination {
+            justify-content: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .gallery-pagination .page-link {
+            border: none;
+            border-radius: 999px !important;
+            min-width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .gallery-pagination .page-link:hover {
+            background: #FDECEC;
+            color: #CE1126;
+        }
+
+        .gallery-pagination .page-item.active .page-link {
+            background: #CE1126;
+            color: #fff;
+        }
+
+        .gallery-pagination .page-item.disabled .page-link {
+            background: transparent;
+            color: #bbb;
+        }
+
+        .gallery-pagination .page-link:focus {
+            box-shadow: none;
+        }
     </style>
 
      <div class="gallery-container">
@@ -204,17 +259,23 @@
         <div class="gallery-grid">
 @foreach($galleries as $item)
     <div class="gallery-card"
-         onclick="openLightbox({{ Js::from(asset('storage/'.$item->image)) }}, {{ Js::from($item->title ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->description) }})">
+         onclick="openLightbox({{ Js::from(asset('storage/'.$item->image)) }}, {{ Js::from($item->title ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->description_html) }})">
         <div class="gallery-img">
             <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}" loading="lazy">
         </div>
         <div class="gallery-body">
             <h5>{{ $item->title ?? __('site.dokumentasi.default_title') }}</h5>
-            <p>{{ $item->description }}</p>
+            <p>{{ \Illuminate\Support\Str::limit(strip_tags($item->description), 120) }}</p>
         </div>
     </div>
 @endforeach
 </div>
+
+        @if($galleries->hasPages())
+            <div class="gallery-pagination">
+                {{ $galleries->onEachSide(1)->links('pagination::bootstrap-5') }}
+            </div>
+        @endif
 
         </div>
     </div>
@@ -227,7 +288,7 @@
         <img class="lightbox-img" id="lightboxImg" src="" alt="">
         <div class="lightbox-body">
             <h5 id="lightboxTitle"></h5>
-            <p id="lightboxDescription"></p>
+            <div id="lightboxDescription" class="lightbox-description"></div>
         </div>
     </div>
 </div>
@@ -237,7 +298,7 @@
         document.getElementById('lightboxImg').src = image;
         document.getElementById('lightboxImg').alt = title;
         document.getElementById('lightboxTitle').textContent = title;
-        document.getElementById('lightboxDescription').textContent = description || '';
+        document.getElementById('lightboxDescription').innerHTML = description || '';
         document.getElementById('lightboxOverlay').classList.add('is-open');
         document.body.style.overflow = 'hidden';
     }

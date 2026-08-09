@@ -7,8 +7,9 @@ use App\Models\Gallery;
 class GalleryController extends Controller
 {
     public function index()
-{
-    $galleries = Gallery::latest()->get();
+    {
+        $galleries = Gallery::orderBy('order')->latest('id')->paginate(12)->withQueryString();
+
         return view('pages.dokumentasi', compact('galleries'));
-}
+    }
 }

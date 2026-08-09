@@ -161,9 +161,23 @@ html {
     transform: translateY(-3px);
 }
 
+@media (max-width: 991.98px) {
+    .global-map {
+        height: 90vh;
+    }
+}
+
 @media (max-width: 575.98px) {
     .global-map {
         height: 80vh;
+    }
+}
+
+@media (max-width: 575.98px) and (max-height: 600px) {
+    .global-map {
+        height: auto;
+        min-height: 100vh;
+        padding: 90px 0 40px;
     }
 }
 
@@ -291,9 +305,9 @@ html {
                 @endphp
                 <span class="section-eyebrow">{{ __('site.nav.tentang') }}</span>
                 <h1 class="tentang-title mb-4 reveal-stagger"><x-stagger-words :text="__('site.tentang.title')" /></h1>
-                <p class="tentang-text">{{ $about->paragraph_1 ?: __('site.tentang.p1') }}</p>
-                <p class="tentang-text">{{ $about->paragraph_2 ?: __('site.tentang.p2') }}</p>
-                <p class="tentang-text">{{ $about->paragraph_3 ?: __('site.tentang.p3') }}</p>
+                <p class="tentang-text">{{ app()->getLocale() === 'id' && $about->paragraph_1 ? $about->paragraph_1 : __('site.tentang.p1') }}</p>
+                <p class="tentang-text">{{ app()->getLocale() === 'id' && $about->paragraph_2 ? $about->paragraph_2 : __('site.tentang.p2') }}</p>
+                <p class="tentang-text">{{ app()->getLocale() === 'id' && $about->paragraph_3 ? $about->paragraph_3 : __('site.tentang.p3') }}</p>
             </div>
 
             <div class="col-md-5 text-center reveal reveal-delay-2">
@@ -450,7 +464,7 @@ html {
             <div class="col-md-6">
                 <div class="vm-panel visi-panel reveal-left">
                     <span class="vm-label">{{ __('site.visimisi.visi_label') }}</span>
-                    <p class="visi-panel-text">{{ $visiMisi->visi_text ?: __('site.visimisi.visi_text') }}</p>
+                    <p class="visi-panel-text">{{ app()->getLocale() === 'id' && $visiMisi->visi_text ? $visiMisi->visi_text : __('site.visimisi.visi_text') }}</p>
                 </div>
             </div>
 
@@ -462,7 +476,7 @@ html {
                         <div class="icon-badge icon-badge-navy" style="margin-bottom:0"><i class="bi bi-rocket-takeoff-fill"></i></div>
                     </div>
                     <ul class="misi-list reveal-stagger">
-                        @forelse($misiItems as $item)
+                        @forelse(app()->getLocale() === 'id' ? $misiItems : [] as $item)
                             <li class="stagger-item" style="--i:{{ $loop->index }}">{{ $item->text }}</li>
                         @empty
                             <li class="stagger-item" style="--i:0">{{ __('site.visimisi.misi_1') }}</li>
@@ -642,6 +656,7 @@ html {
         'sekretaris' => __('site.struktur.sekretaris_section'),
         'ekonomi' => __('site.struktur.ekonomi_section'),
         'internasional' => __('site.struktur.internasional_section'),
+        'kerjasama_id_jerman' => __('site.struktur.kerjasama_id_jerman_section'),
         'itdev' => __('site.struktur.itdev_section'),
     ];
 @endphp
@@ -743,12 +758,44 @@ html {
 }
 
 @media (max-width: 575.98px) {
+    .proker-tabbar-wrap {
+        position: relative;
+        margin: 0 -16px;
+        padding: 0 16px;
+    }
+
+    .proker-tabbar-wrap::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 16px;
+        bottom: 0;
+        width: 36px;
+        border-radius: 0 var(--radius-md, 16px) var(--radius-md, 16px) 0;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0), #fff 70%);
+        pointer-events: none;
+    }
+
     .proker-tabbar {
         max-width: 100%;
         border-radius: var(--radius-md, 16px);
         justify-content: flex-start;
         overflow-x: auto;
         flex-wrap: nowrap;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .proker-tabbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .proker-pill {
+        scroll-snap-align: start;
+        padding: 9px 16px;
+        font-size: 0.85rem;
     }
 }
 
@@ -850,11 +897,20 @@ html {
     gap: 6px;
     font-size: 0.85rem;
     font-weight: 500;
+    font-family: inherit;
     color: var(--color-navy-700);
     background: var(--color-navy-50);
     border: 1px solid transparent;
     border-radius: 999px;
     padding: 6px 14px;
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+}
+
+button.lang-pill:hover,
+button.lang-pill:focus-visible {
+    background: var(--color-navy-100, #dbe4f0);
+    border-color: var(--color-gold-500, #c9a227);
 }
 
 .lang-pill-soon {
@@ -887,6 +943,21 @@ html {
 
 @php
     $kegiatans = \Illuminate\Support\Facades\Cache::remember('home.kegiatans', 3600, fn () => \App\Models\Kegiatan::orderBy('category')->orderBy('order')->get()->groupBy('category'));
+    $languageCoordinators = \Illuminate\Support\Facades\Cache::remember('home.language_coordinators', 3600, fn () => \App\Models\LanguageClassCoordinator::orderBy('language')->orderBy('order')->get()->groupBy('language'));
+    $languageCoordinatorsJson = collect(\App\Models\LanguageClassCoordinator::LANGUAGES)->mapWithKeys(function ($label, $key) use ($languageCoordinators) {
+        $members = $languageCoordinators->get($key, collect());
+
+        return [$key => [
+            'label' => $label,
+            'certificate' => optional($members->first(fn ($p) => $p->certificate))->certificate,
+            'people' => $members->map(fn ($p) => [
+                'name' => $p->name,
+                'role' => $p->role,
+                'photo' => $p->photo,
+                'period' => $p->period,
+            ])->values(),
+        ]];
+    });
 @endphp
 <section id="proker" class="section-tint py-5">
     <div class="proker-wrapper">
@@ -896,16 +967,18 @@ html {
     </div>
 
     <div class="proker-shell reveal">
-        <div class="proker-tabbar" role="tablist">
-            <button type="button" class="proker-pill tab-btn active" data-tab="pendidikan">
-                <i class="bi bi-mortarboard-fill"></i> {{ __('site.proker.tab_pendidikan') }}
-            </button>
-            <button type="button" class="proker-pill tab-btn" data-tab="wirausaha">
-                <i class="bi bi-graph-up-arrow"></i> {{ __('site.proker.tab_wirausaha') }}
-            </button>
-            <button type="button" class="proker-pill tab-btn" data-tab="sdm">
-                <i class="bi bi-people-fill"></i> {{ __('site.proker.tab_sdm') }}
-            </button>
+        <div class="proker-tabbar-wrap">
+            <div class="proker-tabbar" role="tablist">
+                <button type="button" class="proker-pill tab-btn active" data-tab="pendidikan">
+                    <i class="bi bi-mortarboard-fill"></i> {{ __('site.proker.tab_pendidikan') }}
+                </button>
+                <button type="button" class="proker-pill tab-btn" data-tab="wirausaha">
+                    <i class="bi bi-graph-up-arrow"></i> {{ __('site.proker.tab_wirausaha') }}
+                </button>
+                <button type="button" class="proker-pill tab-btn" data-tab="sdm">
+                    <i class="bi bi-people-fill"></i> {{ __('site.proker.tab_sdm') }}
+                </button>
+            </div>
         </div>
 
         <div class="proker-panel">
@@ -913,26 +986,26 @@ html {
                 <p class="proker-panel-desc">{{ __('site.proker.card_pendidikan_desc') }}</p>
                 <h2>{{ __('site.proker.pendidikan_title') }}</h2>
                 <ul class="checklist">
-                    @forelse($kegiatans->get('pendidikan', collect()) as $item)
-                        <li>{{ $item->title }}@if($item->is_coming_soon)<span class="soon-badge">Segera Hadir</span>@endif</li>
+                    @forelse(app()->getLocale() === 'id' ? $kegiatans->get('pendidikan', collect()) : collect() as $item)
+                        <li>{{ $item->title }}@if($item->is_coming_soon)<span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span>@endif</li>
                     @empty
                         <li>{{ __('site.proker.pkbm') }}</li>
                         <li>{{ __('site.proker.self_improvement') }}</li>
+                    @endforelse
                         <li>{{ __('site.proker.bahasa_asing') }}
                             <div class="lang-pills">
-                                <span class="lang-pill">{{ __('site.proker.lang_inggris') }}</span>
-                                <span class="lang-pill">{{ __('site.proker.lang_jerman') }}</span>
-                                <span class="lang-pill">{{ __('site.proker.lang_prancis') }}</span>
-                                <span class="lang-pill">{{ __('site.proker.lang_mandarin') }}</span>
-                                <span class="lang-pill">{{ __('site.proker.lang_arab') }}</span>
-                                <span class="lang-pill">{{ __('site.proker.lang_turki') }}</span>
-                                <span class="lang-pill">{{ __('site.proker.lang_korea') }}</span>
+                                <button type="button" class="lang-pill" data-language="inggris">{{ __('site.proker.lang_inggris') }}</button>
+                                <button type="button" class="lang-pill" data-language="jerman">{{ __('site.proker.lang_jerman') }}</button>
+                                <button type="button" class="lang-pill" data-language="prancis">{{ __('site.proker.lang_prancis') }}</button>
+                                <button type="button" class="lang-pill" data-language="mandarin">{{ __('site.proker.lang_mandarin') }}</button>
+                                <button type="button" class="lang-pill" data-language="arab">{{ __('site.proker.lang_arab') }}</button>
+                                <button type="button" class="lang-pill" data-language="turki">{{ __('site.proker.lang_turki') }}</button>
+                                <button type="button" class="lang-pill" data-language="korea">{{ __('site.proker.lang_korea') }}</button>
                                 <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_thailand') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
                                 <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_isyarat') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
                                 <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_urdu') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
                             </div>
                         </li>
-                    @endforelse
                 </ul>
             </div>
 
@@ -940,8 +1013,8 @@ html {
                 <p class="proker-panel-desc">{{ __('site.proker.card_wirausaha_desc') }}</p>
                 <h2>{{ __('site.proker.wirausaha_title') }}</h2>
                 <ul class="checklist">
-                    @forelse($kegiatans->get('wirausaha', collect()) as $item)
-                        <li>{{ $item->title }}@if($item->is_coming_soon)<span class="soon-badge">Segera Hadir</span>@endif</li>
+                    @forelse(app()->getLocale() === 'id' ? $kegiatans->get('wirausaha', collect()) : collect() as $item)
+                        <li>{{ $item->title }}@if($item->is_coming_soon)<span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span>@endif</li>
                     @empty
                         <li>{{ __('site.proker.umkm_export') }}</li>
                         <li>{{ __('site.proker.business_matching') }}</li>
@@ -953,8 +1026,8 @@ html {
                 <p class="proker-panel-desc">{{ __('site.proker.card_sdm_desc') }}</p>
                 <h2>{{ __('site.proker.sdm_title') }}</h2>
                 <ul class="checklist">
-                    @forelse($kegiatans->get('sdm', collect()) as $item)
-                        <li>{{ $item->title }}@if($item->is_coming_soon)<span class="soon-badge">Segera Hadir</span>@endif</li>
+                    @forelse(app()->getLocale() === 'id' ? $kegiatans->get('sdm', collect()) : collect() as $item)
+                        <li>{{ $item->title }}@if($item->is_coming_soon)<span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span>@endif</li>
                     @empty
                         <li>{{ __('site.proker.sdm_1') }}</li>
                         <li>{{ __('site.proker.sdm_2') }}</li>
@@ -971,6 +1044,464 @@ html {
     </div>
     </div>
 </section>
+
+{{-- ======================= PJ KELAS BAHASA (MODAL) ======================= --}}
+<style>
+.lang-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(12, 22, 45, .55);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .25s ease, visibility 0s linear .25s;
+    z-index: 1055;
+}
+
+.lang-modal-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity .25s ease;
+}
+
+.lang-modal {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1056;
+    width: 100%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -10px 40px rgba(16, 33, 63, .25);
+    transform: translateY(100%);
+    transition: transform .3s cubic-bezier(.32, .72, 0, 1);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.lang-modal.show {
+    transform: translateY(0);
+}
+
+.lang-modal-handle {
+    width: 40px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--color-navy-100, #dbe4f0);
+    margin: 10px auto 0;
+    flex-shrink: 0;
+}
+
+@media (min-width: 576px) {
+    .lang-modal {
+        left: 50%;
+        right: auto;
+        bottom: auto;
+        top: 50%;
+        width: 92vw;
+        max-width: 440px;
+        max-height: 82vh;
+        border-radius: 18px;
+        transform: translate(-50%, -46%) scale(.97);
+        opacity: 0;
+        transition: transform .25s ease, opacity .25s ease;
+    }
+
+    .lang-modal.show {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    .lang-modal-handle {
+        display: none;
+    }
+}
+
+.lang-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--color-navy-100, #e5e9f0);
+    padding: 1rem 1.25rem;
+    flex-shrink: 0;
+}
+
+.lang-modal-title {
+    font-family: var(--font-display, inherit);
+    color: var(--color-navy-900, #10213f);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.35;
+}
+
+.lang-modal-period {
+    display: inline-block;
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .3px;
+    color: var(--color-gold-700, #8a6a14);
+    background: var(--color-gold-50, #fbf3dd);
+    border-radius: 999px;
+    padding: 2px 10px;
+    margin-top: 6px;
+}
+
+.lang-modal-close {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: var(--color-navy-50, #eef2f8);
+    color: var(--color-navy-700, #33507c);
+    font-size: 1.1rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color .15s ease;
+}
+
+.lang-modal-close:hover {
+    background: var(--color-navy-100, #dbe4f0);
+}
+
+.lang-modal-body {
+    padding: .5rem 1.25rem 1.25rem;
+    overflow-y: auto;
+}
+
+.lang-coordinator-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-navy-100, #eef1f6);
+}
+
+.lang-coordinator-card:last-child {
+    border-bottom: none;
+}
+
+.lang-coordinator-photo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid var(--color-gold-500, #c9a227);
+}
+
+.lang-coordinator-photo-fallback {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-navy-50, #eef2f8);
+    color: var(--color-navy-500, #3a5a99);
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.lang-coordinator-name {
+    font-weight: 600;
+    color: var(--color-navy-900, #10213f);
+    font-size: .92rem;
+}
+
+.lang-coordinator-role {
+    font-size: .78rem;
+    color: var(--color-navy-500, #5c6b85);
+    margin-top: 1px;
+}
+
+.lang-coordinator-empty {
+    padding: 1.75rem 0;
+    text-align: center;
+    color: #999;
+    font-size: .88rem;
+}
+
+body.lang-modal-open {
+    overflow: hidden;
+}
+
+.lang-cert-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: calc(100% - 2.5rem);
+    margin: .9rem 1.25rem 0;
+    padding: 8px 12px;
+    background: linear-gradient(135deg, var(--color-gold-50, #fbf3dd), #fff);
+    border: 1px solid var(--color-gold-200, #ecd694);
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+
+.lang-cert-banner:hover {
+    border-color: var(--color-gold-500, #c9a227);
+    box-shadow: 0 4px 14px rgba(201, 162, 39, .18);
+    transform: translateY(-1px);
+}
+
+.lang-cert-thumb {
+    flex-shrink: 0;
+    width: 52px;
+    height: 36px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--color-gold-300, #ddc16a);
+    background: #fff;
+}
+
+.lang-cert-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.lang-cert-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.lang-cert-label {
+    display: block;
+    font-size: .82rem;
+    font-weight: 700;
+    color: var(--color-navy-900, #10213f);
+}
+
+.lang-cert-sub {
+    display: block;
+    font-size: .72rem;
+    color: var(--color-navy-500, #5c6b85);
+    margin-top: 1px;
+}
+
+.lang-cert-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--color-gold-500, #c9a227);
+    color: #fff;
+}
+
+.lang-cert-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1070;
+    background: rgba(8, 14, 28, .85);
+    padding: 24px;
+    align-items: center;
+    justify-content: center;
+}
+
+.lang-cert-lightbox.is-open {
+    display: flex;
+}
+
+.lang-cert-lightbox-box {
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+}
+
+.lang-cert-lightbox-img {
+    width: 100%;
+    height: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .45);
+}
+
+.lang-cert-lightbox-close {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: #fff;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
+}
+</style>
+
+<div class="lang-modal-backdrop" id="lang-offcanvas-backdrop"></div>
+<div class="lang-modal" id="lang-offcanvas" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="lang-offcanvas-label">
+    <div class="lang-modal-handle"></div>
+    <div class="lang-modal-header">
+        <h5 class="lang-modal-title" id="lang-offcanvas-label">
+            <span id="lang-offcanvas-name">Penanggung Jawab Kelas Bahasa</span>
+            <span id="lang-offcanvas-period" class="lang-modal-period" hidden></span>
+        </h5>
+        <button type="button" class="lang-modal-close" id="lang-offcanvas-close" aria-label="Tutup">&times;</button>
+    </div>
+    <button type="button" class="lang-cert-banner" id="lang-offcanvas-cert" hidden>
+        <span class="lang-cert-thumb"><img id="lang-offcanvas-cert-thumb" src="" alt="Sertifikat kelulusan"></span>
+        <span class="lang-cert-text">
+            <span class="lang-cert-label">Sertifikat Kelulusan Tim</span>
+            <span class="lang-cert-sub">Ketuk untuk melihat ukuran penuh</span>
+        </span>
+        <span class="lang-cert-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </span>
+    </button>
+    <div class="lang-modal-body" id="lang-offcanvas-body"></div>
+</div>
+
+<div class="lang-cert-lightbox" id="lang-cert-lightbox">
+    <div class="lang-cert-lightbox-box">
+        <button type="button" class="lang-cert-lightbox-close" id="lang-cert-lightbox-close" aria-label="Tutup">&times;</button>
+        <img class="lang-cert-lightbox-img" id="lang-cert-lightbox-img" src="" alt="Sertifikat kelulusan">
+    </div>
+</div>
+
+<script>
+(function () {
+    var languageData = @json($languageCoordinatorsJson);
+    var modalEl = document.getElementById('lang-offcanvas');
+    var backdropEl = document.getElementById('lang-offcanvas-backdrop');
+    if (!modalEl || !backdropEl) return;
+
+    var nameEl = document.getElementById('lang-offcanvas-name');
+    var periodEl = document.getElementById('lang-offcanvas-period');
+    var bodyEl = document.getElementById('lang-offcanvas-body');
+    var closeBtn = document.getElementById('lang-offcanvas-close');
+    var certBanner = document.getElementById('lang-offcanvas-cert');
+    var certThumb = document.getElementById('lang-offcanvas-cert-thumb');
+    var certLightbox = document.getElementById('lang-cert-lightbox');
+    var certLightboxImg = document.getElementById('lang-cert-lightbox-img');
+    var certLightboxClose = document.getElementById('lang-cert-lightbox-close');
+
+    function openCertLightbox(src) {
+        certLightboxImg.src = src;
+        certLightbox.classList.add('is-open');
+    }
+
+    function closeCertLightbox() {
+        certLightbox.classList.remove('is-open');
+    }
+
+    certLightboxClose.addEventListener('click', closeCertLightbox);
+    certLightbox.addEventListener('click', function (e) {
+        if (e.target === certLightbox) closeCertLightbox();
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && certLightbox.classList.contains('is-open')) closeCertLightbox();
+    });
+
+    function openModal() {
+        modalEl.classList.add('show');
+        backdropEl.classList.add('show');
+        document.body.classList.add('lang-modal-open');
+    }
+
+    function closeModal() {
+        modalEl.classList.remove('show');
+        backdropEl.classList.remove('show');
+        document.body.classList.remove('lang-modal-open');
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    backdropEl.addEventListener('click', closeModal);
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modalEl.classList.contains('show') && !certLightbox.classList.contains('is-open')) closeModal();
+    });
+
+    document.querySelectorAll('.lang-pill[data-language]').forEach(function (pill) {
+        pill.addEventListener('click', function () {
+            var lang = pill.dataset.language;
+            var entry = languageData[lang];
+
+            nameEl.textContent = 'Penanggung Jawab Kelas Bahasa ' + (entry ? entry.label : '');
+
+            var people = entry ? entry.people : [];
+            if (people.length && people[0].period) {
+                periodEl.textContent = 'Periode ' + people[0].period;
+                periodEl.hidden = false;
+            } else {
+                periodEl.hidden = true;
+            }
+
+            if (entry && entry.certificate) {
+                certThumb.src = entry.certificate;
+                certBanner.hidden = false;
+                certBanner.onclick = function () { openCertLightbox(entry.certificate); };
+            } else {
+                certBanner.hidden = true;
+                certBanner.onclick = null;
+            }
+
+            bodyEl.innerHTML = '';
+
+            if (!people.length) {
+                var empty = document.createElement('div');
+                empty.className = 'lang-coordinator-empty';
+                empty.textContent = 'Belum ada penanggung jawab untuk kelas ini.';
+                bodyEl.appendChild(empty);
+            } else {
+                people.forEach(function (person) {
+                    var card = document.createElement('div');
+                    card.className = 'lang-coordinator-card';
+
+                    var photoEl;
+                    if (person.photo) {
+                        photoEl = document.createElement('img');
+                        photoEl.className = 'lang-coordinator-photo';
+                        photoEl.src = person.photo;
+                        photoEl.alt = person.name;
+                    } else {
+                        photoEl = document.createElement('span');
+                        photoEl.className = 'lang-coordinator-photo-fallback';
+                        photoEl.textContent = person.name.charAt(0).toUpperCase();
+                    }
+
+                    var info = document.createElement('div');
+                    var nameLine = document.createElement('div');
+                    nameLine.className = 'lang-coordinator-name';
+                    nameLine.textContent = person.name;
+                    var roleLine = document.createElement('div');
+                    roleLine.className = 'lang-coordinator-role';
+                    roleLine.textContent = person.role;
+                    info.appendChild(nameLine);
+                    info.appendChild(roleLine);
+
+                    card.appendChild(photoEl);
+                    card.appendChild(info);
+                    bodyEl.appendChild(card);
+                });
+            }
+
+            openModal();
+        });
+    });
+})();
+</script>
 
 {{-- ======================= GALERI / DOKUMENTASI ======================= --}}
 <style>
@@ -1028,6 +1559,7 @@ html {
     overflow: hidden;
     box-shadow: var(--shadow-sm);
     transition: .35s var(--ease-material, ease);
+    cursor: pointer;
 }
 
 .gallery-card:hover {
@@ -1099,6 +1631,77 @@ html {
     background: var(--color-primary-500, #000);
     color: #fff;
 }
+
+.home-gallery-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 24px;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-gallery-lightbox.is-open {
+    display: flex;
+}
+
+.home-gallery-lightbox-box {
+    position: relative;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    max-width: 720px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-gallery-lightbox-img {
+    width: 100%;
+    max-height: 60vh;
+    background: #f2f2f2;
+    object-fit: contain;
+}
+
+.home-gallery-lightbox-body {
+    padding: 20px 24px;
+    overflow-y: auto;
+}
+
+.home-gallery-lightbox-body h5 {
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.home-gallery-lightbox-body p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+    white-space: pre-line;
+}
+
+.home-gallery-lightbox-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.home-gallery-lightbox-close:hover {
+    background: #fff;
+}
 </style>
 
 <section id="dokumentasi" class="gallery-section">
@@ -1111,7 +1714,8 @@ html {
 
         <div class="gallery-grid">
 @foreach($galleries as $item)
-    <div class="gallery-card reveal reveal-delay-{{ ($loop->index % 5) + 1 }}">
+    <div class="gallery-card reveal reveal-delay-{{ ($loop->index % 5) + 1 }}"
+         onclick="openHomeGalleryLightbox({{ Js::from(asset('storage/'.$item->image)) }}, {{ Js::from($item->title ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->description) }})">
         <div class="gallery-img">
             <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}" loading="lazy">
         </div>
@@ -1132,6 +1736,37 @@ html {
         @endif
     </div>
 </section>
+
+<div class="home-gallery-lightbox" id="homeGalleryLightbox" onclick="if(event.target === this) closeHomeGalleryLightbox()">
+    <div class="home-gallery-lightbox-box">
+        <button type="button" class="home-gallery-lightbox-close" onclick="closeHomeGalleryLightbox()" aria-label="Tutup">&times;</button>
+        <img class="home-gallery-lightbox-img" id="homeGalleryLightboxImg" src="" alt="">
+        <div class="home-gallery-lightbox-body">
+            <h5 id="homeGalleryLightboxTitle"></h5>
+            <p id="homeGalleryLightboxDescription"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openHomeGalleryLightbox(image, title, description) {
+        document.getElementById('homeGalleryLightboxImg').src = image;
+        document.getElementById('homeGalleryLightboxImg').alt = title;
+        document.getElementById('homeGalleryLightboxTitle').textContent = title;
+        document.getElementById('homeGalleryLightboxDescription').textContent = description || '';
+        document.getElementById('homeGalleryLightbox').classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeHomeGalleryLightbox() {
+        document.getElementById('homeGalleryLightbox').classList.remove('is-open');
+        document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeHomeGalleryLightbox();
+    });
+</script>
 
 {{-- ======================= KEMITRAAN ======================= --}}
 {{-- Judul+deskripsi center di atas, lalu tiap kategori jadi baris:
@@ -1730,9 +2365,21 @@ a.mitra-logo {
     padding: 36px 32px 28px;
     text-align: center;
     width: 360px;
+    max-width: 90vw;
     animation: popUp 0.4s ease;
     position: relative;
     overflow: hidden;
+}
+
+@media (max-width: 575.98px) {
+    .success-overlay {
+        padding: 16px;
+    }
+
+    .success-card {
+        width: 100%;
+        padding: 28px 20px 22px;
+    }
 }
 
 .success-card-dots {

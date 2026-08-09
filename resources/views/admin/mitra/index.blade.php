@@ -44,12 +44,12 @@
                         </div>
                         <div class="flex items-center justify-between gap-2 px-2.5 py-2">
                             <p class="truncate text-xs font-medium text-neutral-700">{{ $item->name ?: '—' }}</p>
-                            <div class="flex shrink-0 items-center gap-1.5">
-                                <a href="{{ route('admin.mitra.edit', $item) }}" class="text-xs font-medium text-navy-500 hover:text-navy-700">Edit</a>
-                                <form method="POST" action="{{ route('admin.mitra.destroy', $item) }}" data-confirm="Hapus mitra ini?">
+                            <div class="flex shrink-0 items-center gap-1.5 leading-none">
+                                <a href="{{ route('admin.mitra.edit', $item) }}" class="text-xs font-medium leading-none text-navy-500 hover:text-navy-700">Edit</a>
+                                <form method="POST" action="{{ route('admin.mitra.destroy', $item) }}" data-confirm="Hapus mitra ini?" class="leading-none">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-xs font-medium text-primary-600 hover:text-primary-700">Hapus</button>
+                                    <button type="submit" class="appearance-none border-0 bg-transparent p-0 text-xs font-medium leading-none text-primary-600 hover:text-primary-700">Hapus</button>
                                 </form>
                             </div>
                         </div>

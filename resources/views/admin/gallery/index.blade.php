@@ -9,7 +9,7 @@
     <p class="mt-1 text-sm text-neutral-500">Unggah dan kelola foto kegiatan yang tampil di halaman dokumentasi.</p>
 </div>
 
-<div class="grid grid-cols-1 gap-5 lg:grid-cols-[380px_1fr]">
+<div class="grid grid-cols-1 gap-5 lg:grid-cols-[460px_1fr]">
 
     {{-- UPLOAD FORM --}}
     <div class="h-fit rounded-xl border border-neutral-200 bg-white p-5">
@@ -21,22 +21,21 @@
                 <label for="image" class="mb-1.5 block text-xs font-medium text-neutral-600">Foto</label>
                 <input type="file" name="image" id="image" accept="image/jpeg,image/png" required onchange="previewImage(this, 'image-preview')"
                        class="block w-full rounded-lg border border-neutral-300 text-sm text-neutral-600 file:mr-3 file:rounded-md file:border-0 file:bg-navy-500 file:px-3 file:py-2 file:text-xs file:font-medium file:text-white hover:file:bg-navy-700">
-                <img id="image-preview" src="" alt="Preview foto" class="mt-3 hidden aspect-video w-full rounded-lg border border-neutral-200 object-cover">
+                <img id="image-preview" src="" alt="Preview foto" class="mt-3 hidden aspect-square w-full rounded-lg border border-neutral-200 bg-neutral-100 object-contain">
             </div>
 
             <div>
                 <label for="title" class="mb-1.5 block text-xs font-medium text-neutral-600">Judul</label>
-                <input type="text" name="title" id="title" placeholder="Judul foto" maxlength="80" oninput="updateCounter(this, 'title-counter')"
+                <input type="text" name="title" id="title" placeholder="Judul foto"
                        class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">
-                <p class="mt-1 text-right text-xs text-neutral-400"><span id="title-counter">0</span>/80</p>
             </div>
 
-            <div>
-                <label for="description" class="mb-1.5 block text-xs font-medium text-neutral-600">Deskripsi</label>
-                <textarea name="description" id="description" rows="3" placeholder="Deskripsi singkat" maxlength="180" oninput="updateCounter(this, 'description-counter')"
-                          class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500"></textarea>
-                <p class="mt-1 text-right text-xs text-neutral-400"><span id="description-counter">0</span>/180</p>
-            </div>
+            @include('admin.articles._content-editor', [
+                'fieldId' => 'description',
+                'name' => 'description',
+                'label' => 'Deskripsi',
+                'minHeight' => '260px',
+            ])
 
             <button type="submit"
                     class="w-full rounded-lg bg-primary-500 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-600">
@@ -135,8 +134,8 @@
 </div>
 
 {{-- EDIT MODAL --}}
-<div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-navy-900/50 p-4">
-    <div class="w-full max-w-sm rounded-xl bg-white p-5 shadow-lg">
+<div id="editModal" class="invisible fixed inset-0 z-50 flex items-center justify-center bg-navy-900/50 p-4 opacity-0 transition-opacity">
+    <div class="w-full max-w-lg rounded-xl bg-white p-5 shadow-lg max-h-[90vh] overflow-y-auto">
         <h3 class="text-base font-semibold text-neutral-950">Edit Foto</h3>
 
         <form id="editForm" method="POST" enctype="multipart/form-data" class="mt-4 space-y-4">
@@ -147,22 +146,21 @@
                 <label for="edit-image" class="mb-1.5 block text-xs font-medium text-neutral-600">Ganti Foto (opsional)</label>
                 <input type="file" name="image" id="edit-image" accept="image/jpeg,image/png" onchange="previewImage(this, 'edit-image-preview')"
                        class="block w-full rounded-lg border border-neutral-300 text-sm text-neutral-600 file:mr-3 file:rounded-md file:border-0 file:bg-navy-500 file:px-3 file:py-2 file:text-xs file:font-medium file:text-white hover:file:bg-navy-700">
-                <img id="edit-image-preview" src="" alt="Preview foto" class="mt-3 hidden aspect-video w-full rounded-lg border border-neutral-200 object-cover">
+                <img id="edit-image-preview" src="" alt="Preview foto" class="mt-3 hidden aspect-square w-full rounded-lg border border-neutral-200 bg-neutral-100 object-contain">
             </div>
 
             <div>
                 <label for="edit-title" class="mb-1.5 block text-xs font-medium text-neutral-600">Judul</label>
-                <input type="text" name="title" id="edit-title" placeholder="Judul foto" maxlength="80" oninput="updateCounter(this, 'edit-title-counter')"
+                <input type="text" name="title" id="edit-title" placeholder="Judul foto"
                        class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">
-                <p class="mt-1 text-right text-xs text-neutral-400"><span id="edit-title-counter">0</span>/80</p>
             </div>
 
-            <div>
-                <label for="edit-description" class="mb-1.5 block text-xs font-medium text-neutral-600">Deskripsi</label>
-                <textarea name="description" id="edit-description" rows="3" placeholder="Deskripsi singkat" maxlength="180" oninput="updateCounter(this, 'edit-description-counter')"
-                          class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500"></textarea>
-                <p class="mt-1 text-right text-xs text-neutral-400"><span id="edit-description-counter">0</span>/180</p>
-            </div>
+            @include('admin.articles._content-editor', [
+                'fieldId' => 'edit-description',
+                'name' => 'description',
+                'label' => 'Deskripsi',
+                'minHeight' => '260px',
+            ])
 
             <div class="flex justify-end gap-2 pt-1">
                 <button type="button" onclick="closeEditModal()"
@@ -222,24 +220,28 @@
         const descriptionInput = document.getElementById('edit-description');
         titleInput.value = title || '';
         descriptionInput.value = description || '';
+
+        const descriptionQuill = window.__quillEditors && window.__quillEditors['edit-description'];
+        if (descriptionQuill) {
+            descriptionQuill.setText('');
+            if (description) {
+                descriptionQuill.clipboard.dangerouslyPasteHTML(description);
+            }
+        }
+
         document.getElementById('edit-image').value = '';
 
         const preview = document.getElementById('edit-image-preview');
         preview.src = image || '';
         preview.classList.toggle('hidden', !image);
 
-        updateCounter(titleInput, 'edit-title-counter');
-        updateCounter(descriptionInput, 'edit-description-counter');
-
         const modal = document.getElementById('editModal');
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
+        modal.classList.remove('invisible', 'opacity-0');
     }
 
     function closeEditModal() {
         const modal = document.getElementById('editModal');
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
+        modal.classList.add('invisible', 'opacity-0');
     }
 
     let formToSubmit = null;

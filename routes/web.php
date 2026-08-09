@@ -131,6 +131,13 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         ->parameters(['pengurus' => 'pengurus'])
         ->except(['show']);
 
+    // Penanggung Jawab Kelas Bahasa
+    Route::post('/language-coordinators/reorder', [\App\Http\Controllers\Admin\LanguageClassCoordinatorController::class, 'reorder'])
+        ->name('language-coordinators.reorder');
+    Route::resource('language-coordinators', \App\Http\Controllers\Admin\LanguageClassCoordinatorController::class)
+        ->parameters(['language-coordinators' => 'languageCoordinator'])
+        ->except(['show']);
+
     // Mitra
     Route::post('/mitra/reorder', [\App\Http\Controllers\Admin\MitraController::class, 'reorder'])
         ->name('mitra.reorder');

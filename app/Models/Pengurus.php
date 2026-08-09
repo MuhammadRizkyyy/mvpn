@@ -14,6 +14,7 @@ class Pengurus extends Model
         'sekretaris' => 'Sekretaris',
         'ekonomi' => 'Ekonomi',
         'internasional' => 'Internasional',
+        'kerjasama_id_jerman' => 'Direktorat Kerjasama Indonesia - Jerman',
         'itdev' => 'IT Development',
     ];
 

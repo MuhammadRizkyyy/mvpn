@@ -23,6 +23,8 @@
     .mvpn-splash {
         position: fixed;
         inset: 0;
+        height: 100vh;
+        height: 100dvh;
         z-index: 99999;
         display: flex;
         align-items: flex-end;
@@ -81,8 +83,9 @@
     .mvpn-splash-name {
         font-family: var(--font-display, 'Poppins', sans-serif);
         font-weight: 800;
-        letter-spacing: 4px;
-        font-size: clamp(1.5rem, 4vw, 2.2rem);
+        letter-spacing: clamp(1px, .8vw, 4px);
+        font-size: clamp(1.3rem, 6vw, 2.2rem);
+        white-space: nowrap;
         background: linear-gradient(120deg, #FBEFD2, #E8B84B 45%, #D4A017 70%, #FBEFD2);
         background-size: 220% auto;
         -webkit-background-clip: text;
@@ -107,11 +110,20 @@
         .mvpn-splash-brand { margin-bottom: 7vh; }
     }
 
+    @media (max-width: 575.98px) and (max-height: 500px) {
+        .mvpn-splash-brand { margin-bottom: 4vh; }
+        .mvpn-splash-logo { width: 40px; margin-bottom: 6px; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
         .mvpn-splash-brand { transition: none; }
     }
 
-    body.mvpn-splash-lock { overflow: hidden; height: 100vh; }
+    body.mvpn-splash-lock {
+        overflow: hidden;
+        height: 100vh;
+        height: 100dvh;
+    }
 </style>
 
 <script>

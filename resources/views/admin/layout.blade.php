@@ -71,6 +71,13 @@
                     Struktur Pengurus
                 </x-admin.nav-item>
 
+                <x-admin.nav-item :href="route('admin.language-coordinators.index')" :active="request()->routeIs('admin.language-coordinators.*')">
+                    <x-slot:icon>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 8 4v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6l8-4Z"/><path d="m9 12 2 2 4-4"/></svg>
+                    </x-slot:icon>
+                    PJ Kelas Bahasa
+                </x-admin.nav-item>
+
                 <x-admin.nav-item :href="route('admin.kegiatan.index')" :active="request()->routeIs('admin.kegiatan.*')">
                     <x-slot:icon>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11 3 6.5 9 2l6 4.5L9 11Z"/><path d="M9 11v11"/><path d="m15 6.5 6 4.5-6 4.5"/><path d="M15 11v11"/></svg>
