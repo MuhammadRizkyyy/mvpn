@@ -2,6 +2,10 @@
 
 return [
 
+    'meta' => [
+        'description' => 'MVP.N (Muda Visioner Penggerak Nasional) is a non-profit youth community in Sukabumi, Indonesia, focused on training, education, and cross-sector partnerships to empower Indonesia\'s young generation.',
+    ],
+
     'nav' => [
         'beranda' => 'Home',
         'tentang' => 'About Us',

@@ -3,7 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'MVP.N' }}</title>
+    @php
+        $seoTitle = $title ?? 'MVP.N — Muda Visioner Penggerak Nasional';
+        $seoDescription = $metaDescription ?? __('site.meta.description');
+        $seoImage = $ogImage ?? asset('assets/img/mvpn.png');
+        $seoUrl = $canonicalUrl ?? url()->current();
+    @endphp
+    <title>{{ $seoTitle }}</title>
+    <meta name="description" content="{{ $seoDescription }}">
+    <link rel="canonical" href="{{ $seoUrl }}">
+
+    <meta property="og:type" content="{{ $ogType ?? 'website' }}">
+    <meta property="og:site_name" content="MVP.N">
+    <meta property="og:title" content="{{ $seoTitle }}">
+    <meta property="og:description" content="{{ $seoDescription }}">
+    <meta property="og:image" content="{{ $seoImage }}">
+    <meta property="og:url" content="{{ $seoUrl }}">
+    <meta property="og:locale" content="{{ str_replace('-', '_', app()->getLocale()) }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoTitle }}">
+    <meta name="twitter:description" content="{{ $seoDescription }}">
+    <meta name="twitter:image" content="{{ $seoImage }}">
     <script>
         // Halaman ini sekarang satu halaman panjang (semua section jadi satu URL "/").
         // Setiap kali halaman dibuka/reload harus selalu mulai dari Beranda (atas),
@@ -22,9 +43,9 @@
     <link rel="apple-touch-icon" href="{{ asset('assets/img/mvpn.png') }}">
     <link rel="stylesheet" href="/css/style.css">
 
-
-
-
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">

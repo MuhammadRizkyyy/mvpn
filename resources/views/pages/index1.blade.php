@@ -1,4 +1,25 @@
+@php
+    $title = 'MVP.N — Muda Visioner Penggerak Nasional';
+    $metaDescription = __('site.meta.description');
+@endphp
 @include('layouts.header')
+
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "MVP.N (Muda Visioner Penggerak Nasional)",
+    "url": "{{ url('/') }}",
+    "logo": "{{ asset('assets/img/mvpn.png') }}",
+    "description": {!! json_encode(__('site.meta.description')) !!},
+    "foundingDate": "2023",
+    "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Sukabumi",
+        "addressCountry": "ID"
+    }
+}
+</script>
 
 @php
     $galleries = \Illuminate\Support\Facades\Cache::remember('home.galleries', 3600, fn () => App\Models\Gallery::orderBy('order')->latest('id')->take(3)->get());
@@ -304,7 +325,7 @@ html {
                     $about = \Illuminate\Support\Facades\Cache::remember('home.about', 3600, fn () => \App\Models\About::singleton());
                 @endphp
                 <span class="section-eyebrow">{{ __('site.nav.tentang') }}</span>
-                <h1 class="tentang-title mb-4 reveal-stagger"><x-stagger-words :text="__('site.tentang.title')" /></h1>
+                <h2 class="tentang-title mb-4 reveal-stagger"><x-stagger-words :text="__('site.tentang.title')" /></h2>
                 <p class="tentang-text">{{ app()->getLocale() === 'id' && $about->paragraph_1 ? $about->paragraph_1 : __('site.tentang.p1') }}</p>
                 <p class="tentang-text">{{ app()->getLocale() === 'id' && $about->paragraph_2 ? $about->paragraph_2 : __('site.tentang.p2') }}</p>
                 <p class="tentang-text">{{ app()->getLocale() === 'id' && $about->paragraph_3 ? $about->paragraph_3 : __('site.tentang.p3') }}</p>
@@ -582,9 +603,10 @@ html {
     text-align: center;
 }
 
-.member-info h5 {
+.member-info h4 {
     font-weight: 700;
     margin-bottom: 4px;
+    font-size: 1.25rem;
 }
 
 .member-info p {
@@ -676,11 +698,11 @@ html {
                 @php $isFirst = ! $firstOpened; $firstOpened = true; @endphp
 
                 <div class="accordion-item">
-                    <h2 class="accordion-header">
+                    <h3 class="accordion-header">
                         <button class="accordion-button @unless($isFirst) collapsed @endunless" data-bs-toggle="collapse" data-bs-target="#{{ $sectionKey }}">
                             {{ $strukturSectionLabels[$sectionKey] ?? $fallbackLabel }}
                         </button>
-                    </h2>
+                    </h3>
                     <div id="{{ $sectionKey }}" class="accordion-collapse collapse @if($isFirst) show @endif" data-bs-parent="#strukturAccordion">
                         <div class="accordion-body">
                             <div class="row justify-content-center g-4">
@@ -695,7 +717,7 @@ html {
                                                 </div>
                                             @endif
                                             <div class="member-info">
-                                                <h5>{{ $member->name }}</h5>
+                                                <h4>{{ $member->name }}</h4>
                                                 <p>{{ $member->position }}</p>
                                                 <div class="member-socials">
                                                     @if($member->instagram_url)
@@ -963,7 +985,7 @@ button.lang-pill:focus-visible {
     <div class="proker-wrapper">
     <div class="text-center reveal">
         <span class="section-eyebrow">{{ __('site.nav.proker') }}</span>
-        <h1 class="proker-title reveal-stagger"><x-stagger-words :text="__('site.proker.title')" /></h1>
+        <h2 class="proker-title reveal-stagger"><x-stagger-words :text="__('site.proker.title')" /></h2>
     </div>
 
     <div class="proker-shell reveal">
@@ -1595,7 +1617,8 @@ body.lang-modal-open {
     padding: 18px 20px;
 }
 
-.gallery-body h5 {
+.gallery-body h3 {
+    font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 6px;
     display: -webkit-box;
@@ -1720,7 +1743,7 @@ body.lang-modal-open {
             <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}" loading="lazy">
         </div>
         <div class="gallery-body">
-            <h5>{{ $item->title ?? __('site.dokumentasi.default_title') }}</h5>
+            <h3>{{ $item->title ?? __('site.dokumentasi.default_title') }}</h3>
             <p>{{ $item->description }}</p>
         </div>
     </div>
@@ -1923,7 +1946,7 @@ a.mitra-logo {
     <div class="container">
         <div class="text-center reveal mitra-intro">
             <span class="section-eyebrow">{{ __('site.nav.kemitraan') }}</span>
-            <h1 class="mitra-heading reveal-stagger"><x-stagger-words :text="__('site.mitra.title')" /></h1>
+            <h2 class="mitra-heading reveal-stagger"><x-stagger-words :text="__('site.mitra.title')" /></h2>
             <p class="mitra-desc">{{ __('site.mitra.description') }}</p>
         </div>
 
@@ -2122,12 +2145,17 @@ a.mitra-logo {
 @media (max-width: 575.98px) {
     .artikel-section { padding: 56px 0; }
 }
+
+.artikel-heading {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 700;
+}
 </style>
 <section id="artikel" class="artikel-section">
     <div class="container">
         <div class="text-center reveal artikel-intro">
             <span class="section-eyebrow">{{ __('site.nav.artikel') }}</span>
-            <h1 class="artikel-heading reveal-stagger"><x-stagger-words :text="__('site.artikel.title')" /></h1>
+            <h2 class="artikel-heading reveal-stagger"><x-stagger-words :text="__('site.artikel.title')" /></h2>
             <p class="artikel-desc">{{ __('site.artikel.description') }}</p>
         </div>
 

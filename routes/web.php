@@ -9,6 +9,14 @@ use App\Http\Controllers\Admin\AdminGalleryController;
 
 /*
 |--------------------------------------------------------------------------
+| SEO
+|--------------------------------------------------------------------------
+*/
+Route::get('/robots.txt', [\App\Http\Controllers\SeoController::class, 'robots']);
+Route::get('/sitemap.xml', [\App\Http\Controllers\SeoController::class, 'sitemap']);
+
+/*
+|--------------------------------------------------------------------------
 | LANGUAGE SWITCH
 |--------------------------------------------------------------------------
 */

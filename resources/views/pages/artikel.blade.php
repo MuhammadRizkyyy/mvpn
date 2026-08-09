@@ -1,3 +1,7 @@
+@php
+    $title = __('site.artikel.title') . ' — MVP.N';
+    $metaDescription = __('site.artikel.description');
+@endphp
 @include('layouts.header')
 
 <section class="artikel-page-section">
@@ -202,7 +206,7 @@
                                 <span class="artikel-badge">{{ $item->is_external ? $item->source_name : (\App\Models\Article::CATEGORIES[$item->category] ?? $item->category) }}</span>
                                 <span class="artikel-date">{{ $item->published_at?->translatedFormat('d M Y') }}</span>
                             </div>
-                            <h3 class="artikel-page-title">{{ $item->title }}</h3>
+                            <h2 class="artikel-page-title">{{ $item->title }}</h2>
                             <p class="artikel-page-excerpt">{{ $item->excerpt }}</p>
                             <span class="artikel-readmore">{{ __('site.artikel.read_more') }} <i class="bi {{ $item->is_external ? 'bi-box-arrow-up-right' : 'bi-arrow-right' }}"></i></span>
                         </div>

@@ -1,3 +1,7 @@
+@php
+    $title = __('site.dokumentasi.title') . ' — MVP.N';
+    $metaDescription = 'Dokumentasi kegiatan dan momen kolaborasi MVP.N (Muda Visioner Penggerak Nasional) bersama mitra, pemerintah, dan komunitas pemuda.';
+@endphp
 @include('layouts.header')
 <section class="gallery-section">
     <style>
@@ -96,7 +100,8 @@
             padding: 18px 20px;
         }
 
-        .gallery-body h5 {
+        .gallery-body h2 {
+            font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 6px;
             display: -webkit-box;
@@ -253,7 +258,7 @@
     </style>
 
      <div class="gallery-container">
-        <h2 class="section-title">{{ __('site.dokumentasi.title') }}</h2>
+        <h1 class="section-title">{{ __('site.dokumentasi.title') }}</h1>
         <div class="title-line"></div>
 
         <div class="gallery-grid">
@@ -264,7 +269,7 @@
             <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}" loading="lazy">
         </div>
         <div class="gallery-body">
-            <h5>{{ $item->title ?? __('site.dokumentasi.default_title') }}</h5>
+            <h2>{{ $item->title ?? __('site.dokumentasi.default_title') }}</h2>
             <p>{{ \Illuminate\Support\Str::limit(strip_tags($item->description), 120) }}</p>
         </div>
     </div>

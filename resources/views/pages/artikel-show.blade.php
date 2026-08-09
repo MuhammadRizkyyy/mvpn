@@ -1,4 +1,38 @@
+@php
+    $title = $article->title . ' — MVP.N';
+    $metaDescription = \Illuminate\Support\Str::limit(strip_tags($article->excerpt), 160);
+    $ogImage = $article->image;
+    $ogType = 'article';
+@endphp
 @include('layouts.header')
+
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@type": "Article",
+    "headline": {!! json_encode($article->title) !!},
+    "description": {!! json_encode(\Illuminate\Support\Str::limit(strip_tags($article->excerpt), 160)) !!},
+    "image": {!! json_encode($article->image) !!},
+    "datePublished": "{{ optional($article->published_at)->toAtomString() }}",
+    "dateModified": "{{ $article->updated_at->toAtomString() }}",
+    "author": {
+        "@type": "Organization",
+        "name": "MVP.N (Muda Visioner Penggerak Nasional)"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "MVP.N (Muda Visioner Penggerak Nasional)",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "{{ asset('assets/img/mvpn.png') }}"
+        }
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ route('artikel.show', $article) }}"
+    }
+}
+</script>
 
 <section class="artikel-show-section">
     <style>
