@@ -1826,12 +1826,26 @@ body.lang-modal-open {
 @media (max-width: 767.98px) {
     .mitra-row {
         grid-template-columns: 1fr;
-        gap: 16px;
-        padding: 24px 0;
+        gap: 14px;
+        padding: 20px 0;
     }
 
     .mitra-row-label {
         position: static;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .mitra-list {
+        margin-top: 28px;
+    }
+
+    .mitra-row {
+        padding: 16px 0;
+    }
+
+    .mitra-row-count {
+        margin-bottom: 2px;
     }
 }
 
@@ -1877,8 +1891,8 @@ a.mitra-logo {
 }
 
 .mitra-logo img {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 82%;
+    max-height: 82%;
     object-fit: contain;
     filter: grayscale(45%);
     opacity: 0.85;
@@ -1891,9 +1905,16 @@ a.mitra-logo {
 }
 
 @media (max-width: 575.98px) {
+    .mitra-row-logos {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
     .mitra-logo {
-        width: 100px;
-        height: 68px;
+        width: 100%;
+        height: 66px;
+        padding: 10px;
     }
 }
 </style>
