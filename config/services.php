@@ -39,4 +39,8 @@ return [
         'webhook_url' => env('GOOGLE_SHEETS_WEBHOOK_URL'),
     ],
 
+    'mymemory' => [
+        'email' => env('MYMEMORY_EMAIL'),
+    ],
+
 ];

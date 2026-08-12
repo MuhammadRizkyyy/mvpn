@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\MisiItem;
 use App\Models\VisiMisi;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 
 class VisiMisiController extends Controller
@@ -17,11 +18,17 @@ class VisiMisiController extends Controller
         return view('admin.visimisi.edit', compact('visiMisi', 'misiItems'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, TranslationService $translator)
     {
         $validated = $request->validate([
             'visi_text' => 'nullable|string',
         ]);
+
+        $validated['translations'] = $translator->translateFields(
+            $validated,
+            config('translation.target_locales'),
+            config('translation.source_locale')
+        );
 
         VisiMisi::singleton()->update($validated);
 

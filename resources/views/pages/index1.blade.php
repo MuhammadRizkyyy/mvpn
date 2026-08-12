@@ -326,9 +326,9 @@ html {
                 @endphp
                 <span class="section-eyebrow">{{ __('site.nav.tentang') }}</span>
                 <h2 class="tentang-title mb-4 reveal-stagger"><x-stagger-words :text="__('site.tentang.title')" /></h2>
-                <p class="tentang-text">{{ app()->getLocale() === 'id' && $about->paragraph_1 ? $about->paragraph_1 : __('site.tentang.p1') }}</p>
-                <p class="tentang-text">{{ app()->getLocale() === 'id' && $about->paragraph_2 ? $about->paragraph_2 : __('site.tentang.p2') }}</p>
-                <p class="tentang-text">{{ app()->getLocale() === 'id' && $about->paragraph_3 ? $about->paragraph_3 : __('site.tentang.p3') }}</p>
+                <p class="tentang-text">{{ $about->translated('paragraph_1') ?: __('site.tentang.p1') }}</p>
+                <p class="tentang-text">{{ $about->translated('paragraph_2') ?: __('site.tentang.p2') }}</p>
+                <p class="tentang-text">{{ $about->translated('paragraph_3') ?: __('site.tentang.p3') }}</p>
             </div>
 
             <div class="col-md-5 text-center reveal reveal-delay-2">
@@ -485,7 +485,7 @@ html {
             <div class="col-md-6">
                 <div class="vm-panel visi-panel reveal-left">
                     <span class="vm-label">{{ __('site.visimisi.visi_label') }}</span>
-                    <p class="visi-panel-text">{{ app()->getLocale() === 'id' && $visiMisi->visi_text ? $visiMisi->visi_text : __('site.visimisi.visi_text') }}</p>
+                    <p class="visi-panel-text">{{ $visiMisi->translated('visi_text') ?: __('site.visimisi.visi_text') }}</p>
                 </div>
             </div>
 
@@ -497,8 +497,8 @@ html {
                         <div class="icon-badge icon-badge-navy" style="margin-bottom:0"><i class="bi bi-rocket-takeoff-fill"></i></div>
                     </div>
                     <ul class="misi-list reveal-stagger">
-                        @forelse(app()->getLocale() === 'id' ? $misiItems : [] as $item)
-                            <li class="stagger-item" style="--i:{{ $loop->index }}">{{ $item->text }}</li>
+                        @forelse($misiItems as $item)
+                            <li class="stagger-item" style="--i:{{ $loop->index }}">{{ $item->translated('text') }}</li>
                         @empty
                             <li class="stagger-item" style="--i:0">{{ __('site.visimisi.misi_1') }}</li>
                             <li class="stagger-item" style="--i:1">{{ __('site.visimisi.misi_2') }}</li>

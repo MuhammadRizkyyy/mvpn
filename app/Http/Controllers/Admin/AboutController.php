@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\About;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 
 class AboutController extends Controller
@@ -15,13 +16,19 @@ class AboutController extends Controller
         return view('admin.about.edit', compact('about'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, TranslationService $translator)
     {
         $validated = $request->validate([
             'paragraph_1' => 'nullable|string',
             'paragraph_2' => 'nullable|string',
             'paragraph_3' => 'nullable|string',
         ]);
+
+        $validated['translations'] = $translator->translateFields(
+            $validated,
+            config('translation.target_locales'),
+            config('translation.source_locale')
+        );
 
         About::singleton()->update($validated);
 
