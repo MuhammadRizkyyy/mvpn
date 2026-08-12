@@ -2,6 +2,10 @@
 
 return [
 
+    'meta' => [
+        'description' => 'MVP.N (Muda Visioner Penggerak Nasional) est une communauté de jeunes à but non lucratif à Sukabumi, en Indonésie, dédiée à la formation, à l\'éducation et aux partenariats intersectoriels.',
+    ],
+
     'nav' => [
         'beranda' => 'Accueil',
         'tentang' => 'À Propos de Nous',
@@ -10,6 +14,7 @@ return [
         'proker' => 'Programmes de Travail',
         'galeri' => 'Galerie',
         'kemitraan' => 'Partenariat',
+        'artikel' => 'Articles',
         'kerjasama' => 'Collaboration',
         'alih_bahasa' => 'Changer de Langue',
     ],
@@ -21,6 +26,14 @@ return [
     'home' => [
         'hero_title' => 'MUDA VISIONER PENGGERAK NASIONAL',
         'hero_subtitle' => 'VOLE HAUT & TOUCHE LE CIEL',
+        'cta_primary' => 'Proposer une Collaboration',
+        'cta_secondary' => 'Voir les Programmes',
+        'stat_1_value' => '2023',
+        'stat_1_label' => 'Fondée en',
+        'stat_2_value' => '3',
+        'stat_2_label' => 'Domaines de Programme',
+        'stat_3_value' => '8+',
+        'stat_3_label' => 'Catégories de Partenariat',
     ],
 
     'tentang' => [
@@ -45,7 +58,7 @@ return [
         'bod' => 'Conseil d\'Administration',
         'president' => 'Président',
         'vice_president' => 'Vice-Président',
-        'sekretaris_section' => 'Secrétaire',
+        'sekretaris_section' => 'Secrétariat Général',
         'sekretaris' => 'Secrétaire',
         'wakil_sekretaris' => 'Vice-Secrétaire',
         'ekonomi_section' => 'Direction des Relations Économiques & Régionales',
@@ -54,9 +67,11 @@ return [
         'internasional_section' => 'Direction des Relations Internationales',
         'hi_asean' => 'Relations Internationales ASEAN',
         'hi_timteng' => 'Relations Internationales Moyen-Orient',
-        'itdev_section' => 'Développement Informatique',
+        'kerjasama_id_jerman_section' => 'Direction de la Coopération Indonésie - Allemagne',
+        'itdev_section' => 'Direction du Numérique et de la Technologie',
         'frontend_dev' => 'Développeur Web Frontend',
         'instagram' => 'Instagram',
+        'linkedin' => 'LinkedIn',
     ],
 
     'proker' => [
@@ -64,6 +79,10 @@ return [
         'tab_pendidikan' => 'Éducation',
         'tab_wirausaha' => 'Entrepreneuriat',
         'tab_sdm' => 'Développement des Ressources Humaines',
+        'card_pendidikan_desc' => 'Classes d\'équivalence, développement personnel et formation en langues étrangères.',
+        'card_wirausaha_desc' => 'PME Go Export et mise en relation commerciale avec des acheteurs nationaux et internationaux.',
+        'card_sdm_desc' => 'Formation aux compétences techniques, leadership local et autonomisation sociale.',
+        'card_cta' => 'Voir les Détails',
         'pendidikan_title' => 'Éducation',
         'pkbm' => 'Classes PKBM (Programme d\'Équivalence Package A, B, C)',
         'self_improvement' => 'Développement Personnel / Prise de Parole en Public',
@@ -79,6 +98,7 @@ return [
         'lang_isyarat' => 'Langue des Signes',
         'lang_urdu' => 'Ourdou',
         'coming_soon' => '(bientôt disponible)',
+        'coming_soon_badge' => 'Bientôt Disponible',
         'wirausaha_title' => 'Entrepreneuriat',
         'umkm_export' => 'PME Go Export',
         'business_matching' => 'Mise en Relation Commerciale avec des Acheteurs Nationaux et Internationaux',
@@ -96,10 +116,13 @@ return [
     'dokumentasi' => [
         'title' => 'Galerie d\'Activités',
         'default_title' => 'Documentation',
+        'view_all' => 'Voir Toute la Galerie',
     ],
 
     'mitra' => [
         'title' => 'Nos Partenariats',
+        'description' => 'Nos collaborations couvrent plusieurs secteurs — médias, communauté, gouvernement — pour élargir notre impact pour la jeunesse indonésienne.',
+        'partner_unit' => 'Partenaires',
         'media' => 'Partenariat Média',
         'community' => 'Partenariat Communautaire',
         'government' => 'Partenariat Gouvernemental',
@@ -110,17 +133,33 @@ return [
         'ip_trade' => 'Partenariat du Centre de Promotion du Commerce International',
     ],
 
+    'artikel' => [
+        'title' => 'Articles & Actualités',
+        'description' => 'Les dernières nouvelles sur les activités, communiqués de presse et annonces de MVP.N.',
+        'empty' => 'Aucun article n\'a encore été publié.',
+        'read_more' => 'Lire la Suite',
+        'view_all' => 'Voir Tous les Articles',
+        'back' => 'Retour aux Articles',
+        'related' => 'Articles Similaires',
+    ],
+
     'kerjasama' => [
-        'title' => 'Formulaire de Collaboration',
+        'title' => 'Collaborons Ensemble',
         'subtitle' => 'Construisons ensemble une collaboration percutante et professionnelle.',
+        'point_1' => 'Une portée auprès des jeunes dans toute l\'Indonésie',
+        'point_2' => 'Processus de soumission rapide & transparent',
+        'point_3' => 'Ouvert aux partenaires et organisations intersectoriels',
         'nama_institusi' => 'Nom de l\'Institution',
         'nama_pic' => 'Nom du Contact Référent',
         'email' => 'Email',
         'rangkuman' => 'Résumé de la Collaboration',
         'proposal' => 'Proposition / Profil de l\'Entreprise',
         'submit' => 'Envoyer la Demande de Collaboration',
+        'error_title' => 'Échec de l\'envoi, veuillez vérifier les champs suivants :',
+        'toast_error_title' => 'Échec de l\'envoi',
+        'toast_upload_title' => 'Échec du téléversement de la proposition',
         'success_title' => 'Demande Envoyée',
-        'success_text' => 'Merci, votre proposition a été envoyée avec succès 🚀',
+        'success_text' => 'Merci, votre proposition a été envoyée avec succès',
         'close' => 'Fermer',
     ],
 

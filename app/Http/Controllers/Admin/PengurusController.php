@@ -1,0 +1,113 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Pengurus;
+use App\Services\CloudinaryImageService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+
+class PengurusController extends Controller
+{
+    public function __construct(private CloudinaryImageService $cloudinary)
+    {
+    }
+
+    public function index()
+    {
+        $pengurus = Pengurus::orderBy('section')->orderBy('order')->get()->groupBy('section');
+
+        return view('admin.pengurus.index', compact('pengurus'));
+    }
+
+    public function create()
+    {
+        return view('admin.pengurus.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'section' => 'required|in:' . implode(',', array_keys(Pengurus::SECTIONS)),
+            'name' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+            'instagram_url' => 'nullable|url|max:255',
+            'linkedin_url' => 'nullable|url|max:255',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            $uploaded = $this->cloudinary->upload($request->file('photo'), 'pengurus');
+            $validated['photo'] = $uploaded['url'];
+            $validated['photo_public_id'] = $uploaded['public_id'];
+        }
+
+        $validated['order'] = (int) Pengurus::where('section', $validated['section'])->max('order') + 1;
+
+        Pengurus::create($validated);
+
+        return redirect()->route('admin.pengurus.index')->with('success', 'Pengurus ditambahkan');
+    }
+
+    public function edit(Pengurus $pengurus)
+    {
+        return view('admin.pengurus.edit', compact('pengurus'));
+    }
+
+    public function update(Request $request, Pengurus $pengurus)
+    {
+        $validated = $request->validate([
+            'section' => 'required|in:' . implode(',', array_keys(Pengurus::SECTIONS)),
+            'name' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+            'instagram_url' => 'nullable|url|max:255',
+            'linkedin_url' => 'nullable|url|max:255',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            $uploaded = $this->cloudinary->upload($request->file('photo'), 'pengurus');
+            $validated['photo'] = $uploaded['url'];
+            $validated['photo_public_id'] = $uploaded['public_id'];
+
+            $this->cloudinary->deferredDelete($pengurus->photo_public_id);
+        }
+
+        $pengurus->update($validated);
+
+        return redirect()->route('admin.pengurus.index')->with('success', 'Pengurus diperbarui');
+    }
+
+    public function destroy(Pengurus $pengurus)
+    {
+        $this->cloudinary->deferredDelete($pengurus->photo_public_id);
+
+        $pengurus->delete();
+
+        return back()->with('success', 'Pengurus dihapus');
+    }
+
+    public function reorder(Request $request)
+    {
+        $validated = $request->validate([
+            'section' => 'required|in:' . implode(',', array_keys(Pengurus::SECTIONS)),
+            'ids' => 'required|array',
+            'ids.*' => 'integer|exists:pengurus,id',
+        ]);
+
+        $ids = Pengurus::where('section', $validated['section'])
+            ->whereIn('id', $validated['ids'])
+            ->pluck('id');
+
+        foreach ($validated['ids'] as $index => $id) {
+            if ($ids->contains($id)) {
+                Pengurus::where('id', $id)->update(['order' => $index]);
+            }
+        }
+
+        Cache::forget('home.pengurus');
+
+        return response()->json(['status' => 'ok']);
+    }
+}

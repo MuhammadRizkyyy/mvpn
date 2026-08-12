@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.mvpn-spinner {
+    display: inline-block;
+    width: 0.9em;
+    height: 0.9em;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: mvpn-spin 0.6s linear infinite;
+    vertical-align: -0.15em;
+    margin-right: 6px;
+}
+
+@keyframes mvpn-spin {
+    to { transform: rotate(360deg); }
+}

@@ -2,6 +2,10 @@
 
 return [
 
+    'meta' => [
+        'description' => 'MVP.N (Muda Visioner Penggerak Nasional) adalah komunitas non-profit pemuda di Sukabumi yang bergerak di bidang pelatihan, pendidikan, dan kemitraan lintas sektor untuk membangun generasi muda Indonesia.',
+    ],
+
     'nav' => [
         'beranda' => 'Beranda',
         'tentang' => 'Tentang Kami',
@@ -10,6 +14,7 @@ return [
         'proker' => 'Program Kerja',
         'galeri' => 'Galeri',
         'kemitraan' => 'Kemitraan',
+        'artikel' => 'Artikel',
         'kerjasama' => 'Kerjasama',
         'alih_bahasa' => 'Alih Bahasa',
     ],
@@ -21,6 +26,14 @@ return [
     'home' => [
         'hero_title' => 'MUDA VISIONER PENGGERAK NASIONAL',
         'hero_subtitle' => 'TERBANG TINGGI & SENTUH LANGIT',
+        'cta_primary' => 'Ajukan Kerjasama',
+        'cta_secondary' => 'Lihat Program Kerja',
+        'stat_1_value' => '2023',
+        'stat_1_label' => 'Tahun Berdiri',
+        'stat_2_value' => '3',
+        'stat_2_label' => 'Bidang Program Kerja',
+        'stat_3_value' => '8+',
+        'stat_3_label' => 'Kategori Kemitraan',
     ],
 
     'tentang' => [
@@ -45,7 +58,7 @@ return [
         'bod' => 'Dewan Direksi',
         'president' => 'Presiden',
         'vice_president' => 'Wakil Presiden',
-        'sekretaris_section' => 'Sekretaris',
+        'sekretaris_section' => 'Sekretariat Umum',
         'sekretaris' => 'Sekretaris',
         'wakil_sekretaris' => 'Wakil Sekretaris',
         'ekonomi_section' => 'Direktorat Hubungan Ekonomi & Regional',
@@ -54,9 +67,11 @@ return [
         'internasional_section' => 'Direktorat Hubungan Internasional',
         'hi_asean' => 'Hubungan Internasional ASEAN',
         'hi_timteng' => 'Hubungan Internasional Timur Tengah',
-        'itdev_section' => 'IT Development',
+        'kerjasama_id_jerman_section' => 'Direktorat Kerjasama Indonesia - Jerman',
+        'itdev_section' => 'Direktorat Digital & Teknologi',
         'frontend_dev' => 'Frontend Web Developer',
         'instagram' => 'Instagram',
+        'linkedin' => 'LinkedIn',
     ],
 
     'proker' => [
@@ -64,6 +79,10 @@ return [
         'tab_pendidikan' => 'Pendidikan',
         'tab_wirausaha' => 'Kewirausahaan',
         'tab_sdm' => 'Pengembangan SDM',
+        'card_pendidikan_desc' => 'Kelas kejar paket, self improvement, dan pelatihan bahasa asing.',
+        'card_wirausaha_desc' => 'UMKM go export dan business matching dengan buyer dalam & luar negeri.',
+        'card_sdm_desc' => 'Pelatihan keterampilan teknis, kepemimpinan lokal, dan pemberdayaan sosial.',
+        'card_cta' => 'Lihat Detail',
         'pendidikan_title' => 'Pendidikan',
         'pkbm' => 'Kelas PKBM (Kejar Paket A,B,C)',
         'self_improvement' => 'Self Improvement / Public Speaking',
@@ -79,6 +98,7 @@ return [
         'lang_isyarat' => 'Isyarat',
         'lang_urdu' => 'Urdu',
         'coming_soon' => '(segera hadir)',
+        'coming_soon_badge' => 'Segera Hadir',
         'wirausaha_title' => 'Kewirausahaan',
         'umkm_export' => 'UMKM Go Export',
         'business_matching' => 'Business Matching dengan Buyer Dalam & Luar Negeri',
@@ -96,10 +116,13 @@ return [
     'dokumentasi' => [
         'title' => 'Galeri Kegiatan',
         'default_title' => 'Dokumentasi',
+        'view_all' => 'Lihat Semua Galeri',
     ],
 
     'mitra' => [
         'title' => 'Kemitraan Kami',
+        'description' => 'Kolaborasi kami tersebar di berbagai sektor — mulai dari media, komunitas, hingga pemerintahan — untuk memperluas dampak bagi generasi muda Indonesia.',
+        'partner_unit' => 'Mitra',
         'media' => 'Kemitraan Media',
         'community' => 'Kemitraan Komunitas',
         'government' => 'Kemitraan Pemerintah',
@@ -110,17 +133,33 @@ return [
         'ip_trade' => 'Kemitraan Pusat Promosi Perdagangan Internasional',
     ],
 
+    'artikel' => [
+        'title' => 'Artikel & Berita',
+        'description' => 'Kabar terbaru seputar kegiatan, siaran pers, dan pengumuman dari MVP.N.',
+        'empty' => 'Belum ada artikel yang diterbitkan.',
+        'read_more' => 'Baca Selengkapnya',
+        'view_all' => 'Lihat Semua Artikel',
+        'back' => 'Kembali ke Artikel',
+        'related' => 'Artikel Terkait',
+    ],
+
     'kerjasama' => [
-        'title' => 'Form Kerjasama',
+        'title' => 'Mari Berkolaborasi',
         'subtitle' => 'Mari bangun kolaborasi yang berdampak dan profesional.',
+        'point_1' => 'Jangkauan pemuda di seluruh Indonesia',
+        'point_2' => 'Proses pengajuan cepat & transparan',
+        'point_3' => 'Terbuka untuk lintas sektor & organisasi',
         'nama_institusi' => 'Nama Institusi',
         'nama_pic' => 'Nama PIC',
         'email' => 'Email',
         'rangkuman' => 'Rangkuman Kerjasama',
         'proposal' => 'Proposal / Company Profile',
         'submit' => 'Kirim Pengajuan Kerjasama',
+        'error_title' => 'Pengajuan gagal, mohon periksa kembali data berikut:',
+        'toast_error_title' => 'Pengajuan Gagal',
+        'toast_upload_title' => 'Upload Proposal Gagal',
         'success_title' => 'Pengajuan Terkirim',
-        'success_text' => 'Terima kasih, proposal kamu berhasil dikirim 🚀',
+        'success_text' => 'Terima kasih, proposal kamu berhasil dikirim',
         'close' => 'Tutup',
     ],
 

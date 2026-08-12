@@ -2,6 +2,10 @@
 
 return [
 
+    'meta' => [
+        'description' => 'MVP.N (Muda Visioner Penggerak Nasional) es una comunidad juvenil sin fines de lucro en Sukabumi, Indonesia, dedicada a la formación, la educación y las alianzas intersectoriales.',
+    ],
+
     'nav' => [
         'beranda' => 'Inicio',
         'tentang' => 'Sobre Nosotros',
@@ -10,6 +14,7 @@ return [
         'proker' => 'Programas de Trabajo',
         'galeri' => 'Galería',
         'kemitraan' => 'Alianzas',
+        'artikel' => 'Artículos',
         'kerjasama' => 'Colaboración',
         'alih_bahasa' => 'Cambiar Idioma',
     ],
@@ -21,6 +26,14 @@ return [
     'home' => [
         'hero_title' => 'MUDA VISIONER PENGGERAK NASIONAL',
         'hero_subtitle' => 'VUELA ALTO & TOCA EL CIELO',
+        'cta_primary' => 'Proponer una Colaboración',
+        'cta_secondary' => 'Ver Programas de Trabajo',
+        'stat_1_value' => '2023',
+        'stat_1_label' => 'Fundada en',
+        'stat_2_value' => '3',
+        'stat_2_label' => 'Áreas de Programa',
+        'stat_3_value' => '8+',
+        'stat_3_label' => 'Categorías de Alianza',
     ],
 
     'tentang' => [
@@ -45,7 +58,7 @@ return [
         'bod' => 'Junta Directiva',
         'president' => 'Presidente',
         'vice_president' => 'Vicepresidente',
-        'sekretaris_section' => 'Secretaría',
+        'sekretaris_section' => 'Secretaría General',
         'sekretaris' => 'Secretaria',
         'wakil_sekretaris' => 'Vicesecretaria',
         'ekonomi_section' => 'Dirección de Relaciones Económicas y Regionales',
@@ -54,9 +67,11 @@ return [
         'internasional_section' => 'Dirección de Relaciones Internacionales',
         'hi_asean' => 'Relaciones Internacionales ASEAN',
         'hi_timteng' => 'Relaciones Internacionales Medio Oriente',
-        'itdev_section' => 'Desarrollo de TI',
+        'kerjasama_id_jerman_section' => 'Dirección de Cooperación Indonesia - Alemania',
+        'itdev_section' => 'Dirección de Digital y Tecnología',
         'frontend_dev' => 'Desarrollador Web Frontend',
         'instagram' => 'Instagram',
+        'linkedin' => 'LinkedIn',
     ],
 
     'proker' => [
@@ -64,6 +79,10 @@ return [
         'tab_pendidikan' => 'Educación',
         'tab_wirausaha' => 'Emprendimiento',
         'tab_sdm' => 'Desarrollo de Recursos Humanos',
+        'card_pendidikan_desc' => 'Clases de equivalencia, desarrollo personal y capacitación en idiomas extranjeros.',
+        'card_wirausaha_desc' => 'PYME Go Export y encuentros de negocios con compradores nacionales e internacionales.',
+        'card_sdm_desc' => 'Capacitación en habilidades técnicas, liderazgo local y empoderamiento social.',
+        'card_cta' => 'Ver Detalles',
         'pendidikan_title' => 'Educación',
         'pkbm' => 'Clases PKBM (Programa de Equivalencia Paquete A, B, C)',
         'self_improvement' => 'Desarrollo Personal / Oratoria',
@@ -79,6 +98,7 @@ return [
         'lang_isyarat' => 'Lengua de Señas',
         'lang_urdu' => 'Urdu',
         'coming_soon' => '(próximamente)',
+        'coming_soon_badge' => 'Próximamente',
         'wirausaha_title' => 'Emprendimiento',
         'umkm_export' => 'PYME Go Export',
         'business_matching' => 'Encuentro de Negocios con Compradores Nacionales e Internacionales',
@@ -96,10 +116,13 @@ return [
     'dokumentasi' => [
         'title' => 'Galería de Actividades',
         'default_title' => 'Documentación',
+        'view_all' => 'Ver Toda la Galería',
     ],
 
     'mitra' => [
         'title' => 'Nuestras Alianzas',
+        'description' => 'Nuestras colaboraciones abarcan varios sectores — medios, comunidad, gobierno — para ampliar nuestro impacto en la juventud indonesia.',
+        'partner_unit' => 'Socios',
         'media' => 'Alianza de Medios',
         'community' => 'Alianza Comunitaria',
         'government' => 'Alianza Gubernamental',
@@ -110,17 +133,33 @@ return [
         'ip_trade' => 'Alianza del Centro de Promoción de Comercio Internacional',
     ],
 
+    'artikel' => [
+        'title' => 'Artículos & Noticias',
+        'description' => 'Últimas novedades sobre actividades, comunicados de prensa y anuncios de MVP.N.',
+        'empty' => 'Aún no se ha publicado ningún artículo.',
+        'read_more' => 'Leer Más',
+        'view_all' => 'Ver Todos los Artículos',
+        'back' => 'Volver a Artículos',
+        'related' => 'Artículos Relacionados',
+    ],
+
     'kerjasama' => [
-        'title' => 'Formulario de Colaboración',
+        'title' => 'Colaboremos',
         'subtitle' => 'Construyamos una colaboración impactante y profesional.',
+        'point_1' => 'Alcance a jóvenes en toda Indonesia',
+        'point_2' => 'Proceso de envío rápido y transparente',
+        'point_3' => 'Abierto a socios y organizaciones intersectoriales',
         'nama_institusi' => 'Nombre de la Institución',
         'nama_pic' => 'Nombre de la Persona de Contacto',
         'email' => 'Correo Electrónico',
         'rangkuman' => 'Resumen de la Colaboración',
         'proposal' => 'Propuesta / Perfil de la Empresa',
         'submit' => 'Enviar Solicitud de Colaboración',
+        'error_title' => 'Envío fallido, por favor revisa los siguientes campos:',
+        'toast_error_title' => 'Envío Fallido',
+        'toast_upload_title' => 'Error al Subir la Propuesta',
         'success_title' => 'Solicitud Enviada',
-        'success_text' => 'Gracias, tu propuesta se envió correctamente 🚀',
+        'success_text' => 'Gracias, tu propuesta se envió correctamente',
         'close' => 'Cerrar',
     ],
 

@@ -2,6 +2,10 @@
 
 return [
 
+    'meta' => [
+        'description' => 'MVP.N (Muda Visioner Penggerak Nasional) is a non-profit youth community in Sukabumi, Indonesia, focused on training, education, and cross-sector partnerships to empower Indonesia\'s young generation.',
+    ],
+
     'nav' => [
         'beranda' => 'Home',
         'tentang' => 'About Us',
@@ -10,6 +14,7 @@ return [
         'proker' => 'Work Programs',
         'galeri' => 'Gallery',
         'kemitraan' => 'Partnership',
+        'artikel' => 'Articles',
         'kerjasama' => 'Collaboration',
         'alih_bahasa' => 'Change Language',
     ],
@@ -21,6 +26,14 @@ return [
     'home' => [
         'hero_title' => 'MUDA VISIONER PENGGERAK NASIONAL',
         'hero_subtitle' => 'FLY HIGH & TOUCH THE SKY',
+        'cta_primary' => 'Propose a Partnership',
+        'cta_secondary' => 'View Work Programs',
+        'stat_1_value' => '2023',
+        'stat_1_label' => 'Founded',
+        'stat_2_value' => '3',
+        'stat_2_label' => 'Program Focus Areas',
+        'stat_3_value' => '8+',
+        'stat_3_label' => 'Partnership Categories',
     ],
 
     'tentang' => [
@@ -45,7 +58,7 @@ return [
         'bod' => 'Board Of Director',
         'president' => 'President',
         'vice_president' => 'Vice President',
-        'sekretaris_section' => 'Secretary',
+        'sekretaris_section' => 'General Secretariat',
         'sekretaris' => 'Secretary',
         'wakil_sekretaris' => 'Vice Secretary',
         'ekonomi_section' => 'Directorate of Economic & Regional Affairs',
@@ -54,9 +67,11 @@ return [
         'internasional_section' => 'Directorate of International Affairs',
         'hi_asean' => 'ASEAN International Affairs',
         'hi_timteng' => 'Middle East International Affairs',
-        'itdev_section' => 'IT Development',
+        'kerjasama_id_jerman_section' => 'Directorate of Indonesia - Germany Cooperation',
+        'itdev_section' => 'Directorate of Digital & Technology',
         'frontend_dev' => 'Frontend Web Developer',
         'instagram' => 'Instagram',
+        'linkedin' => 'LinkedIn',
     ],
 
     'proker' => [
@@ -64,6 +79,10 @@ return [
         'tab_pendidikan' => 'Education',
         'tab_wirausaha' => 'Entrepreneurship',
         'tab_sdm' => 'Human Resource Development',
+        'card_pendidikan_desc' => 'Equivalency classes, self improvement, and foreign language training.',
+        'card_wirausaha_desc' => 'MSME go export and business matching with domestic & international buyers.',
+        'card_sdm_desc' => 'Technical skills training, local leadership, and social empowerment.',
+        'card_cta' => 'View Details',
         'pendidikan_title' => 'Education',
         'pkbm' => 'PKBM Classes (Package A, B, C Equivalency Program)',
         'self_improvement' => 'Self Improvement / Public Speaking',
@@ -79,6 +98,7 @@ return [
         'lang_isyarat' => 'Sign Language',
         'lang_urdu' => 'Urdu',
         'coming_soon' => '(coming soon)',
+        'coming_soon_badge' => 'Coming Soon',
         'wirausaha_title' => 'Entrepreneurship',
         'umkm_export' => 'MSME Go Export',
         'business_matching' => 'Business Matching with Domestic & International Buyers',
@@ -96,10 +116,13 @@ return [
     'dokumentasi' => [
         'title' => 'Activity Gallery',
         'default_title' => 'Documentation',
+        'view_all' => 'View All Gallery',
     ],
 
     'mitra' => [
         'title' => 'Our Partnerships',
+        'description' => 'Our collaborations span across sectors — from media and community to government — widening our impact for Indonesian youth.',
+        'partner_unit' => 'Partners',
         'media' => 'Media Partnership',
         'community' => 'Community Partnership',
         'government' => 'Government Partnership',
@@ -110,17 +133,33 @@ return [
         'ip_trade' => 'International Promotion Trade Center Partnership',
     ],
 
+    'artikel' => [
+        'title' => 'Articles & News',
+        'description' => 'Latest updates on activities, press releases, and announcements from MVP.N.',
+        'empty' => 'No articles have been published yet.',
+        'read_more' => 'Read More',
+        'view_all' => 'View All Articles',
+        'back' => 'Back to Articles',
+        'related' => 'Related Articles',
+    ],
+
     'kerjasama' => [
-        'title' => 'Collaboration Form',
+        'title' => 'Let\'s Collaborate',
         'subtitle' => 'Let\'s build an impactful and professional collaboration.',
+        'point_1' => 'Reaching youth across Indonesia',
+        'point_2' => 'Fast & transparent submission process',
+        'point_3' => 'Open to cross-sector partners & organizations',
         'nama_institusi' => 'Institution Name',
         'nama_pic' => 'Contact Person Name',
         'email' => 'Email',
         'rangkuman' => 'Collaboration Summary',
         'proposal' => 'Proposal / Company Profile',
         'submit' => 'Submit Collaboration Request',
+        'error_title' => 'Submission failed, please check the following fields:',
+        'toast_error_title' => 'Submission Failed',
+        'toast_upload_title' => 'Proposal Upload Failed',
         'success_title' => 'Submission Sent',
-        'success_text' => 'Thank you, your proposal has been sent successfully 🚀',
+        'success_text' => 'Thank you, your proposal has been sent successfully',
         'close' => 'Close',
     ],
 
