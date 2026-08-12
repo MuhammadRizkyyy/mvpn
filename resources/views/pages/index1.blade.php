@@ -1744,7 +1744,7 @@ body.lang-modal-open {
         </div>
         <div class="gallery-body">
             <h3>{{ $item->title ?? __('site.dokumentasi.default_title') }}</h3>
-            <p>{{ $item->description }}</p>
+            <p>{{ \Illuminate\Support\Str::limit(html_entity_decode(strip_tags($item->description), ENT_QUOTES), 120) }}</p>
         </div>
     </div>
 @endforeach

@@ -104,7 +104,7 @@
                                 <div class="min-w-0">
                                     <p class="truncate font-medium text-neutral-800">{{ $item->title ?: 'Tanpa judul' }}</p>
                                     @if($item->description)
-                                        <p class="mt-0.5 line-clamp-1 text-xs text-neutral-500">{{ $item->description }}</p>
+                                        <p class="mt-0.5 line-clamp-1 text-xs text-neutral-500">{{ \Illuminate\Support\Str::limit(html_entity_decode(strip_tags($item->description), ENT_QUOTES), 120) }}</p>
                                     @endif
                                 </div>
                             </div>

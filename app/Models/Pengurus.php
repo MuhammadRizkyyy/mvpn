@@ -11,11 +11,11 @@ class Pengurus extends Model
 
     public const SECTIONS = [
         'bod' => 'Board of Directors',
-        'sekretaris' => 'Sekretaris',
+        'sekretaris' => 'Sekretariat Umum',
         'ekonomi' => 'Ekonomi',
         'internasional' => 'Internasional',
         'kerjasama_id_jerman' => 'Direktorat Kerjasama Indonesia - Jerman',
-        'itdev' => 'IT Development',
+        'itdev' => 'Direktorat Digital & Teknologi',
     ];
 
     protected $fillable = [

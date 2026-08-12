@@ -270,7 +270,7 @@
         </div>
         <div class="gallery-body">
             <h2>{{ $item->title ?? __('site.dokumentasi.default_title') }}</h2>
-            <p>{{ \Illuminate\Support\Str::limit(strip_tags($item->description), 120) }}</p>
+            <p>{{ \Illuminate\Support\Str::limit(html_entity_decode(strip_tags($item->description), ENT_QUOTES), 120) }}</p>
         </div>
     </div>
 @endforeach
