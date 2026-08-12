@@ -30,11 +30,13 @@ class Article extends Model
         'is_published',
         'published_at',
         'order',
+        'translations',
     ];
 
     protected $casts = [
         'is_published' => 'boolean',
         'published_at' => 'datetime',
+        'translations' => 'array',
     ];
 
     protected static function booted(): void
@@ -100,6 +102,50 @@ class Article extends Model
         }
 
         return $this->content;
+    }
+
+    public function translated(string $field): string
+    {
+        $source = (string) ($this->{$field} ?? '');
+        $locale = app()->getLocale();
+
+        if ($locale === 'id' || $source === '') {
+            return $source;
+        }
+
+        $value = $this->translations[$locale][$field] ?? null;
+
+        return filled($value) ? $value : $source;
+    }
+
+    /**
+     * Plain-text (tag-free) content, translated when the active locale isn't
+     * the source locale. Rich formatting/links are only preserved for the
+     * source (Indonesian) content — see translatedContentHtml().
+     */
+    public function translatedContentPlain(): string
+    {
+        $plain = html_entity_decode(strip_tags((string) $this->content), ENT_QUOTES);
+        $locale = app()->getLocale();
+
+        if ($locale === 'id' || $plain === '') {
+            return $plain;
+        }
+
+        $value = $this->translations[$locale]['content'] ?? null;
+
+        return filled($value) ? $value : $plain;
+    }
+
+    public function translatedContentHtml(): string
+    {
+        if (app()->getLocale() === 'id') {
+            return $this->content_html;
+        }
+
+        $text = $this->translatedContentPlain();
+
+        return $text === '' ? '' : nl2br(e($text));
     }
 
     public static function sanitizeContent(?string $html): ?string

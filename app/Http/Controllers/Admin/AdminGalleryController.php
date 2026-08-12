@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Gallery;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +18,7 @@ class AdminGalleryController extends Controller
         return view('admin.gallery.index', compact('galleries'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, TranslationService $translator)
     {
         $request->validate([
             'image' => 'required|image|mimes:jpg,jpeg,png|max:5120',
@@ -26,12 +27,14 @@ class AdminGalleryController extends Controller
         ]);
 
         $path = $request->file('image')->store('gallery', 'public');
+        $description = Article::sanitizeContent($request->description);
 
         Gallery::create([
             'image' => $path,
             'title' => $request->title,
-            'description' => Article::sanitizeContent($request->description),
+            'description' => $description,
             'order' => (int) Gallery::max('order') + 1,
+            'translations' => $this->translateFields($translator, $request->title, $description),
         ]);
 
         return back()->with('success', 'Foto berhasil diupload');
@@ -53,7 +56,7 @@ class AdminGalleryController extends Controller
         return response()->json(['status' => 'ok']);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, TranslationService $translator)
     {
         $gallery = Gallery::findOrFail($id);
 
@@ -63,9 +66,12 @@ class AdminGalleryController extends Controller
             'description' => 'nullable|string',
         ]);
 
+        $description = Article::sanitizeContent($request->description);
+
         $data = [
             'title' => $request->title,
-            'description' => Article::sanitizeContent($request->description),
+            'description' => $description,
+            'translations' => $this->translateFields($translator, $request->title, $description),
         ];
 
         if ($request->hasFile('image')) {
@@ -76,6 +82,20 @@ class AdminGalleryController extends Controller
         $gallery->update($data);
 
         return back()->with('success', 'Foto berhasil diperbarui');
+    }
+
+    /**
+     * @return array<string, array<string, string>>
+     */
+    private function translateFields(TranslationService $translator, ?string $title, ?string $description): array
+    {
+        $plainDescription = html_entity_decode(strip_tags((string) $description), ENT_QUOTES);
+
+        return $translator->translateFields(
+            ['title' => (string) $title, 'description' => $plainDescription],
+            config('translation.target_locales'),
+            config('translation.source_locale')
+        );
     }
 
     public function destroy($id)

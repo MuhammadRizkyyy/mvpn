@@ -199,15 +199,15 @@
                 @foreach($articles as $item)
                     <a href="{{ $item->url }}" @if($item->is_external) target="_blank" rel="noopener" @endif class="artikel-page-card">
                         <div class="artikel-page-img">
-                            <img src="{{ $item->image }}" alt="{{ $item->title }}" loading="lazy">
+                            <img src="{{ $item->image }}" alt="{{ $item->translated('title') }}" loading="lazy">
                         </div>
                         <div class="artikel-page-body">
                             <div class="artikel-page-meta">
                                 <span class="artikel-badge">{{ $item->is_external ? $item->source_name : (\App\Models\Article::CATEGORIES[$item->category] ?? $item->category) }}</span>
                                 <span class="artikel-date">{{ $item->published_at?->translatedFormat('d M Y') }}</span>
                             </div>
-                            <h2 class="artikel-page-title">{{ $item->title }}</h2>
-                            <p class="artikel-page-excerpt">{{ $item->excerpt }}</p>
+                            <h2 class="artikel-page-title">{{ $item->translated('title') }}</h2>
+                            <p class="artikel-page-excerpt">{{ $item->translated('excerpt') }}</p>
                             <span class="artikel-readmore">{{ __('site.artikel.read_more') }} <i class="bi {{ $item->is_external ? 'bi-box-arrow-up-right' : 'bi-arrow-right' }}"></i></span>
                         </div>
                     </a>

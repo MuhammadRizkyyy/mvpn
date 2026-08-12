@@ -1746,13 +1746,13 @@ body.lang-modal-open {
         <div class="gallery-grid">
 @foreach($galleries as $item)
     <div class="gallery-card reveal reveal-delay-{{ ($loop->index % 5) + 1 }}"
-         onclick="openHomeGalleryLightbox({{ Js::from(asset('storage/'.$item->image)) }}, {{ Js::from($item->title ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->description) }})">
+         onclick="openHomeGalleryLightbox({{ Js::from(asset('storage/'.$item->image)) }}, {{ Js::from($item->translatedTitle() ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->translatedDescriptionPlain()) }})">
         <div class="gallery-img">
-            <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}" loading="lazy">
+            <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->translatedTitle() }}" loading="lazy">
         </div>
         <div class="gallery-body">
-            <h3>{{ $item->title ?? __('site.dokumentasi.default_title') }}</h3>
-            <p>{{ \Illuminate\Support\Str::limit(html_entity_decode(strip_tags($item->description), ENT_QUOTES), 120) }}</p>
+            <h3>{{ $item->translatedTitle() ?? __('site.dokumentasi.default_title') }}</h3>
+            <p>{{ \Illuminate\Support\Str::limit($item->translatedDescriptionPlain(), 120) }}</p>
         </div>
     </div>
 @endforeach
@@ -2174,15 +2174,15 @@ a.mitra-logo {
                 @foreach($latestArticles as $i => $item)
                     <a href="{{ $item->url }}" @if($item->is_external) target="_blank" rel="noopener" @endif class="artikel-card reveal reveal-delay-{{ $i + 1 }}">
                         <div class="artikel-card-img">
-                            <img src="{{ $item->image }}" alt="{{ $item->title }}" loading="lazy">
+                            <img src="{{ $item->image }}" alt="{{ $item->translated('title') }}" loading="lazy">
                         </div>
                         <div class="artikel-card-body">
                             <div class="artikel-meta">
                                 <span class="artikel-badge">{{ $item->is_external ? $item->source_name : (\App\Models\Article::CATEGORIES[$item->category] ?? $item->category) }}</span>
                                 <span class="artikel-date">{{ $item->published_at?->translatedFormat('d M Y') }}</span>
                             </div>
-                            <h3 class="artikel-title">{{ $item->title }}</h3>
-                            <p class="artikel-excerpt">{{ $item->excerpt }}</p>
+                            <h3 class="artikel-title">{{ $item->translated('title') }}</h3>
+                            <p class="artikel-excerpt">{{ $item->translated('excerpt') }}</p>
                             <span class="artikel-readmore">{{ __('site.artikel.read_more') }} <i class="bi {{ $item->is_external ? 'bi-box-arrow-up-right' : 'bi-arrow-right' }}"></i></span>
                         </div>
                     </a>

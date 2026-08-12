@@ -1,6 +1,6 @@
 @php
-    $title = $article->title . ' — MVP.N';
-    $metaDescription = \Illuminate\Support\Str::limit(strip_tags($article->excerpt), 160);
+    $title = $article->translated('title') . ' — MVP.N';
+    $metaDescription = \Illuminate\Support\Str::limit(strip_tags($article->translated('excerpt')), 160);
     $ogImage = $article->image;
     $ogType = 'article';
 @endphp
@@ -10,8 +10,8 @@
 {
     "@@context": "https://schema.org",
     "@type": "Article",
-    "headline": {!! json_encode($article->title) !!},
-    "description": {!! json_encode(\Illuminate\Support\Str::limit(strip_tags($article->excerpt), 160)) !!},
+    "headline": {!! json_encode($article->translated('title')) !!},
+    "description": {!! json_encode(\Illuminate\Support\Str::limit(strip_tags($article->translated('excerpt')), 160)) !!},
     "image": {!! json_encode($article->image) !!},
     "datePublished": "{{ optional($article->published_at)->toAtomString() }}",
     "dateModified": "{{ $article->updated_at->toAtomString() }}",
@@ -233,13 +233,13 @@
                 <span class="artikel-show-date">{{ $article->published_at?->translatedFormat('d M Y') }}</span>
             </div>
 
-            <h1 class="artikel-show-title">{{ $article->title }}</h1>
+            <h1 class="artikel-show-title">{{ $article->translated('title') }}</h1>
 
             <div class="artikel-show-img">
-                <img src="{{ $article->image }}" alt="{{ $article->title }}">
+                <img src="{{ $article->image }}" alt="{{ $article->translated('title') }}">
             </div>
 
-            <div class="artikel-show-body">{!! $article->content_html !!}</div>
+            <div class="artikel-show-body">{!! $article->translatedContentHtml() !!}</div>
         </div>
 
         @if($related->isNotEmpty())
@@ -249,10 +249,10 @@
                     @foreach($related as $item)
                         <a href="{{ $item->url }}" @if($item->is_external) target="_blank" rel="noopener" @endif class="artikel-related-card">
                             <div class="artikel-related-img">
-                                <img src="{{ $item->image }}" alt="{{ $item->title }}" loading="lazy">
+                                <img src="{{ $item->image }}" alt="{{ $item->translated('title') }}" loading="lazy">
                             </div>
                             <div class="artikel-related-body">
-                                <h4>{{ $item->title }}</h4>
+                                <h4>{{ $item->translated('title') }}</h4>
                             </div>
                         </a>
                     @endforeach

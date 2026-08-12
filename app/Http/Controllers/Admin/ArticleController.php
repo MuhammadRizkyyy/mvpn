@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Services\CloudinaryImageService;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
-    public function __construct(private CloudinaryImageService $cloudinary)
-    {
+    public function __construct(
+        private CloudinaryImageService $cloudinary,
+        private TranslationService $translator,
+    ) {
     }
 
     public function index()
@@ -113,6 +116,17 @@ class ArticleController extends Controller
 
         $validated['is_published'] = $request->boolean('is_published');
         $validated['content'] = Article::sanitizeContent($validated['content'] ?? null);
+
+        $plainContent = html_entity_decode(strip_tags((string) $validated['content']), ENT_QUOTES);
+        $validated['translations'] = $this->translator->translateFields(
+            [
+                'title' => $validated['title'],
+                'excerpt' => $validated['excerpt'],
+                'content' => $plainContent,
+            ],
+            config('translation.target_locales'),
+            config('translation.source_locale')
+        );
 
         return $validated;
     }
