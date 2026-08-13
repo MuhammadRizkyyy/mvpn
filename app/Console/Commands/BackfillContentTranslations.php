@@ -38,7 +38,16 @@ class BackfillContentTranslations extends Command
         return self::SUCCESS;
     }
 
-    private function needsTranslation(?array $translations, array $targetLocales): bool
+    /**
+     * TranslationService::translate() silently falls back to the source text
+     * when the API call fails, and that fallback gets persisted just like a
+     * real translation. So a locale bucket that's merely non-blank isn't
+     * proof it was actually translated — compare each field against the
+     * source text too, since an untouched fallback is byte-identical to it.
+     *
+     * @param  array<string, string>  $sourceFields
+     */
+    private function needsTranslation(array $sourceFields, ?array $translations, array $targetLocales): bool
     {
         if ($this->option('force') || blank($translations)) {
             return true;
@@ -47,6 +56,12 @@ class BackfillContentTranslations extends Command
         foreach ($targetLocales as $locale) {
             if (blank($translations[$locale] ?? null)) {
                 return true;
+            }
+
+            foreach ($sourceFields as $key => $value) {
+                if (trim($value) !== '' && trim((string) ($translations[$locale][$key] ?? '')) === trim($value)) {
+                    return true;
+                }
             }
         }
 
@@ -59,21 +74,18 @@ class BackfillContentTranslations extends Command
         $this->info("Articles: checking {$articles->count()} rows...");
 
         foreach ($articles as $article) {
-            if (! $this->needsTranslation($article->translations, $targetLocales)) {
+            $plainContent = html_entity_decode(strip_tags((string) $article->content), ENT_QUOTES);
+            $fields = [
+                'title' => (string) $article->title,
+                'excerpt' => (string) $article->excerpt,
+                'content' => $plainContent,
+            ];
+
+            if (! $this->needsTranslation($fields, $article->translations, $targetLocales)) {
                 continue;
             }
 
-            $plainContent = html_entity_decode(strip_tags((string) $article->content), ENT_QUOTES);
-
-            $article->translations = $translator->translateFields(
-                [
-                    'title' => (string) $article->title,
-                    'excerpt' => (string) $article->excerpt,
-                    'content' => $plainContent,
-                ],
-                $targetLocales,
-                $sourceLocale
-            );
+            $article->translations = $translator->translateFields($fields, $targetLocales, $sourceLocale);
             $article->saveQuietly();
 
             $this->line("  translated article #{$article->id}: {$article->title}");
@@ -86,17 +98,14 @@ class BackfillContentTranslations extends Command
         $this->info("Galleries: checking {$galleries->count()} rows...");
 
         foreach ($galleries as $gallery) {
-            if (! $this->needsTranslation($gallery->translations, $targetLocales)) {
+            $plainDescription = html_entity_decode(strip_tags((string) $gallery->description), ENT_QUOTES);
+            $fields = ['title' => (string) $gallery->title, 'description' => $plainDescription];
+
+            if (! $this->needsTranslation($fields, $gallery->translations, $targetLocales)) {
                 continue;
             }
 
-            $plainDescription = html_entity_decode(strip_tags((string) $gallery->description), ENT_QUOTES);
-
-            $gallery->translations = $translator->translateFields(
-                ['title' => (string) $gallery->title, 'description' => $plainDescription],
-                $targetLocales,
-                $sourceLocale
-            );
+            $gallery->translations = $translator->translateFields($fields, $targetLocales, $sourceLocale);
             $gallery->saveQuietly();
 
             $this->line("  translated gallery #{$gallery->id}: {$gallery->title}");
