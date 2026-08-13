@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Article;
 use App\Models\Kegiatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -30,6 +31,7 @@ class KegiatanController extends Controller
             'is_coming_soon' => 'nullable|boolean',
         ]);
         $validated['is_coming_soon'] = $request->boolean('is_coming_soon');
+        $validated['description'] = Article::sanitizeContent($validated['description'] ?? null);
         $validated['order'] = Kegiatan::where('category', $validated['category'])->max('order') + 1;
 
         Kegiatan::create($validated);
@@ -51,6 +53,7 @@ class KegiatanController extends Controller
             'is_coming_soon' => 'nullable|boolean',
         ]);
         $validated['is_coming_soon'] = $request->boolean('is_coming_soon');
+        $validated['description'] = Article::sanitizeContent($validated['description'] ?? null);
 
         $kegiatan->update($validated);
 

@@ -25,6 +25,19 @@ class Kegiatan extends Model
         'is_coming_soon' => 'boolean',
     ];
 
+    public function getDescriptionHtmlAttribute(): string
+    {
+        if (blank($this->description)) {
+            return '';
+        }
+
+        if ($this->description === strip_tags($this->description)) {
+            return nl2br(e($this->description));
+        }
+
+        return $this->description;
+    }
+
     protected static function booted(): void
     {
         static::saved(fn () => Cache::forget('home.kegiatans'));

@@ -27,11 +27,14 @@
            class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">
 </div>
 
-<div>
-    <label for="description" class="mb-1.5 block text-xs font-medium text-neutral-600">Deskripsi <span class="font-normal text-neutral-400">(opsional)</span></label>
-    <textarea name="description" id="description" rows="3"
-              class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">{{ old('description', $kegiatan->description ?? '') }}</textarea>
-</div>
+@include('admin.articles._content-editor', [
+    'fieldId' => 'description',
+    'name' => 'description',
+    'label' => 'Deskripsi',
+    'help' => '(opsional)',
+    'value' => $kegiatan->description ?? '',
+    'minHeight' => '160px',
+])
 
 <div class="flex items-center gap-2">
     <input type="checkbox" name="is_coming_soon" id="is_coming_soon" value="1"
