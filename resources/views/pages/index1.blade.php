@@ -1760,9 +1760,9 @@ body.lang-modal-open {
         <div class="gallery-grid">
 @foreach($galleries as $item)
     <div class="gallery-card reveal reveal-delay-{{ ($loop->index % 5) + 1 }}"
-         onclick="openHomeGalleryLightbox({{ Js::from(asset('storage/'.$item->image)) }}, {{ Js::from($item->translatedTitle() ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->translatedDescriptionPlain()) }})">
+         onclick="openHomeGalleryLightbox({{ Js::from($item->image) }}, {{ Js::from($item->translatedTitle() ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->translatedDescriptionPlain()) }})">
         <div class="gallery-img">
-            <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->translatedTitle() }}" loading="lazy">
+            <img src="{{ $item->image }}" alt="{{ $item->translatedTitle() }}" loading="lazy">
         </div>
         <div class="gallery-body">
             <h3>{{ $item->translatedTitle() ?? __('site.dokumentasi.default_title') }}</h3>

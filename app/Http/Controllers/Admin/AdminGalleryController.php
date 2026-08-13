@@ -5,13 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Gallery;
+use App\Services\CloudinaryImageService;
 use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 
 class AdminGalleryController extends Controller
 {
+    public function __construct(
+        private CloudinaryImageService $cloudinary,
+    ) {
+    }
+
     public function index()
     {
         $galleries = Gallery::orderBy('order')->orderByDesc('id')->get();
@@ -26,11 +31,12 @@ class AdminGalleryController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $path = $request->file('image')->store('gallery', 'public');
+        $uploaded = $this->cloudinary->upload($request->file('image'), 'gallery');
         $description = Article::sanitizeContent($request->description);
 
         Gallery::create([
-            'image' => $path,
+            'image' => $uploaded['url'],
+            'image_public_id' => $uploaded['public_id'],
             'title' => $request->title,
             'description' => $description,
             'order' => (int) Gallery::max('order') + 1,
@@ -75,8 +81,11 @@ class AdminGalleryController extends Controller
         ];
 
         if ($request->hasFile('image')) {
-            Storage::disk('public')->delete($gallery->image);
-            $data['image'] = $request->file('image')->store('gallery', 'public');
+            $uploaded = $this->cloudinary->upload($request->file('image'), 'gallery');
+            $data['image'] = $uploaded['url'];
+            $data['image_public_id'] = $uploaded['public_id'];
+
+            $this->cloudinary->deferredDelete($gallery->image_public_id);
         }
 
         $gallery->update($data);
@@ -102,7 +111,7 @@ class AdminGalleryController extends Controller
     {
         $gallery = Gallery::findOrFail($id);
 
-        Storage::disk('public')->delete($gallery->image);
+        $this->cloudinary->deferredDelete($gallery->image_public_id);
         $gallery->delete();
 
         return back()->with('success', 'Foto dihapus');
