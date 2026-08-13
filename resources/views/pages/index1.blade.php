@@ -326,9 +326,9 @@ html {
                 @endphp
                 <span class="section-eyebrow">{{ __('site.nav.tentang') }}</span>
                 <h2 class="tentang-title mb-4 reveal-stagger"><x-stagger-words :text="__('site.tentang.title')" /></h2>
-                <p class="tentang-text">{{ app()->getLocale() === 'id' && $about->paragraph_1 ? $about->paragraph_1 : __('site.tentang.p1') }}</p>
-                <p class="tentang-text">{{ app()->getLocale() === 'id' && $about->paragraph_2 ? $about->paragraph_2 : __('site.tentang.p2') }}</p>
-                <p class="tentang-text">{{ app()->getLocale() === 'id' && $about->paragraph_3 ? $about->paragraph_3 : __('site.tentang.p3') }}</p>
+                <p class="tentang-text">{{ $about->translated('paragraph_1') ?: __('site.tentang.p1') }}</p>
+                <p class="tentang-text">{{ $about->translated('paragraph_2') ?: __('site.tentang.p2') }}</p>
+                <p class="tentang-text">{{ $about->translated('paragraph_3') ?: __('site.tentang.p3') }}</p>
             </div>
 
             <div class="col-md-5 text-center reveal reveal-delay-2">
@@ -485,7 +485,7 @@ html {
             <div class="col-md-6">
                 <div class="vm-panel visi-panel reveal-left">
                     <span class="vm-label">{{ __('site.visimisi.visi_label') }}</span>
-                    <p class="visi-panel-text">{{ app()->getLocale() === 'id' && $visiMisi->visi_text ? $visiMisi->visi_text : __('site.visimisi.visi_text') }}</p>
+                    <p class="visi-panel-text">{{ $visiMisi->translated('visi_text') ?: __('site.visimisi.visi_text') }}</p>
                 </div>
             </div>
 
@@ -497,8 +497,8 @@ html {
                         <div class="icon-badge icon-badge-navy" style="margin-bottom:0"><i class="bi bi-rocket-takeoff-fill"></i></div>
                     </div>
                     <ul class="misi-list reveal-stagger">
-                        @forelse(app()->getLocale() === 'id' ? $misiItems : [] as $item)
-                            <li class="stagger-item" style="--i:{{ $loop->index }}">{{ $item->text }}</li>
+                        @forelse($misiItems as $item)
+                            <li class="stagger-item" style="--i:{{ $loop->index }}">{{ $item->translated('text') }}</li>
                         @empty
                             <li class="stagger-item" style="--i:0">{{ __('site.visimisi.misi_1') }}</li>
                             <li class="stagger-item" style="--i:1">{{ __('site.visimisi.misi_2') }}</li>
@@ -905,6 +905,14 @@ html {
     line-height: 1;
 }
 
+.checklist > li .proker-item-desc {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--color-neutral-500, #6b7280);
+}
+
 /* Language tags — pill grid instead of a nested bullet list */
 .lang-pills {
     display: flex;
@@ -1009,7 +1017,7 @@ button.lang-pill:focus-visible {
                 <h2>{{ __('site.proker.pendidikan_title') }}</h2>
                 <ul class="checklist">
                     @forelse(app()->getLocale() === 'id' ? $kegiatans->get('pendidikan', collect()) : collect() as $item)
-                        <li>{{ $item->title }}@if($item->is_coming_soon)<span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span>@endif</li>
+                        <li>{{ $item->title }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<span class="proker-item-desc">{{ $item->description }}</span>@endif</li>
                     @empty
                         <li>{{ __('site.proker.pkbm') }}</li>
                         <li>{{ __('site.proker.self_improvement') }}</li>
@@ -1036,7 +1044,7 @@ button.lang-pill:focus-visible {
                 <h2>{{ __('site.proker.wirausaha_title') }}</h2>
                 <ul class="checklist">
                     @forelse(app()->getLocale() === 'id' ? $kegiatans->get('wirausaha', collect()) : collect() as $item)
-                        <li>{{ $item->title }}@if($item->is_coming_soon)<span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span>@endif</li>
+                        <li>{{ $item->title }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<span class="proker-item-desc">{{ $item->description }}</span>@endif</li>
                     @empty
                         <li>{{ __('site.proker.umkm_export') }}</li>
                         <li>{{ __('site.proker.business_matching') }}</li>
@@ -1049,7 +1057,7 @@ button.lang-pill:focus-visible {
                 <h2>{{ __('site.proker.sdm_title') }}</h2>
                 <ul class="checklist">
                     @forelse(app()->getLocale() === 'id' ? $kegiatans->get('sdm', collect()) : collect() as $item)
-                        <li>{{ $item->title }}@if($item->is_coming_soon)<span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span>@endif</li>
+                        <li>{{ $item->title }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<span class="proker-item-desc">{{ $item->description }}</span>@endif</li>
                     @empty
                         <li>{{ __('site.proker.sdm_1') }}</li>
                         <li>{{ __('site.proker.sdm_2') }}</li>
@@ -1738,13 +1746,13 @@ body.lang-modal-open {
         <div class="gallery-grid">
 @foreach($galleries as $item)
     <div class="gallery-card reveal reveal-delay-{{ ($loop->index % 5) + 1 }}"
-         onclick="openHomeGalleryLightbox({{ Js::from(asset('storage/'.$item->image)) }}, {{ Js::from($item->title ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->description) }})">
+         onclick="openHomeGalleryLightbox({{ Js::from(asset('storage/'.$item->image)) }}, {{ Js::from($item->translatedTitle() ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->translatedDescriptionPlain()) }})">
         <div class="gallery-img">
-            <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}" loading="lazy">
+            <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->translatedTitle() }}" loading="lazy">
         </div>
         <div class="gallery-body">
-            <h3>{{ $item->title ?? __('site.dokumentasi.default_title') }}</h3>
-            <p>{{ \Illuminate\Support\Str::limit(html_entity_decode(strip_tags($item->description), ENT_QUOTES), 120) }}</p>
+            <h3>{{ $item->translatedTitle() ?? __('site.dokumentasi.default_title') }}</h3>
+            <p>{{ \Illuminate\Support\Str::limit($item->translatedDescriptionPlain(), 120) }}</p>
         </div>
     </div>
 @endforeach
@@ -2166,15 +2174,15 @@ a.mitra-logo {
                 @foreach($latestArticles as $i => $item)
                     <a href="{{ $item->url }}" @if($item->is_external) target="_blank" rel="noopener" @endif class="artikel-card reveal reveal-delay-{{ $i + 1 }}">
                         <div class="artikel-card-img">
-                            <img src="{{ $item->image }}" alt="{{ $item->title }}" loading="lazy">
+                            <img src="{{ $item->image }}" alt="{{ $item->translated('title') }}" loading="lazy">
                         </div>
                         <div class="artikel-card-body">
                             <div class="artikel-meta">
                                 <span class="artikel-badge">{{ $item->is_external ? $item->source_name : (\App\Models\Article::CATEGORIES[$item->category] ?? $item->category) }}</span>
                                 <span class="artikel-date">{{ $item->published_at?->translatedFormat('d M Y') }}</span>
                             </div>
-                            <h3 class="artikel-title">{{ $item->title }}</h3>
-                            <p class="artikel-excerpt">{{ $item->excerpt }}</p>
+                            <h3 class="artikel-title">{{ $item->translated('title') }}</h3>
+                            <p class="artikel-excerpt">{{ $item->translated('excerpt') }}</p>
                             <span class="artikel-readmore">{{ __('site.artikel.read_more') }} <i class="bi {{ $item->is_external ? 'bi-box-arrow-up-right' : 'bi-arrow-right' }}"></i></span>
                         </div>
                     </a>

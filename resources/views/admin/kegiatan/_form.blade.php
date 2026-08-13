@@ -39,10 +39,3 @@
            class="h-4 w-4 rounded border-neutral-300 text-primary-500 focus:ring-primary-500">
     <label for="is_coming_soon" class="text-sm text-neutral-700">Tandai sebagai "Segera Hadir" (badge)</label>
 </div>
-
-<div>
-    <label for="order" class="mb-1.5 block text-xs font-medium text-neutral-600">Urutan Tampil</label>
-    <input type="number" name="order" id="order" min="0" value="{{ old('order', $kegiatan->order ?? 0) }}"
-           class="block w-32 rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">
-    <p class="mt-1 text-xs text-neutral-400">Angka lebih kecil tampil lebih dulu.</p>
-</div>

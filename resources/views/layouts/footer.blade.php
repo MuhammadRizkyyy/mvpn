@@ -31,7 +31,14 @@
 
         <hr class="footer-divider">
 
-        <p class="mb-0 text-center text-md-start footer-copy">{{ __('site.footer.copyright', ['year' => date('Y')]) }}</p>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <p class="mb-0 text-center text-md-start footer-copy">{{ __('site.footer.copyright', ['year' => date('Y')]) }}</p>
+            <p class="mb-0 footer-visitor-count">
+                {{ __('site.footer.today_visitors') }}: {{ number_format(\Illuminate\Support\Facades\Cache::remember('footer.today_visitors', 300, fn () => \App\Models\Visit::todayCount()), 0, ',', '.') }}
+                &middot;
+                {{ __('site.footer.total_visitors') }}: {{ number_format(\Illuminate\Support\Facades\Cache::remember('footer.total_visitors', 300, fn () => \App\Models\Visit::totalUniqueCount()), 0, ',', '.') }}
+            </p>
+        </div>
     </div>
 </footer>
 <style>
@@ -88,6 +95,11 @@
     }
 
     .footer-copy {
+        opacity: 0.6;
+        font-size: 0.85rem;
+    }
+
+    .footer-visitor-count {
         opacity: 0.6;
         font-size: 0.85rem;
     }

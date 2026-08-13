@@ -264,13 +264,13 @@
         <div class="gallery-grid">
 @foreach($galleries as $item)
     <div class="gallery-card"
-         onclick="openLightbox({{ Js::from(asset('storage/'.$item->image)) }}, {{ Js::from($item->title ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->description_html) }})">
+         onclick="openLightbox({{ Js::from(asset('storage/'.$item->image)) }}, {{ Js::from($item->translatedTitle() ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->translatedDescriptionHtml()) }})">
         <div class="gallery-img">
-            <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}" loading="lazy">
+            <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->translatedTitle() }}" loading="lazy">
         </div>
         <div class="gallery-body">
-            <h2>{{ $item->title ?? __('site.dokumentasi.default_title') }}</h2>
-            <p>{{ \Illuminate\Support\Str::limit(html_entity_decode(strip_tags($item->description), ENT_QUOTES), 120) }}</p>
+            <h2>{{ $item->translatedTitle() ?? __('site.dokumentasi.default_title') }}</h2>
+            <p>{{ \Illuminate\Support\Str::limit($item->translatedDescriptionPlain(), 120) }}</p>
         </div>
     </div>
 @endforeach

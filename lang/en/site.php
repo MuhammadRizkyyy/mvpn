@@ -21,6 +21,8 @@ return [
 
     'footer' => [
         'copyright' => '© :year MVP.N – All Rights Reserved',
+        'today_visitors' => 'Visitors Today',
+        'total_visitors' => 'Total Visitors',
     ],
 
     'home' => [

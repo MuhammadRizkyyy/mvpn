@@ -11,6 +11,22 @@
 
 <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
 
+    <div class="rounded-2xl border border-emerald-500/20 bg-emerald-50 p-4">
+        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-emerald-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+        </span>
+        <p class="mt-3 font-display text-2xl font-bold text-neutral-950">{{ $pengunjungHariIni }}</p>
+        <p class="text-xs font-medium text-neutral-600">Pengunjung Hari Ini</p>
+    </div>
+
+    <div class="rounded-2xl border border-sky-500/20 bg-sky-50 p-4">
+        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-sky-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        </span>
+        <p class="mt-3 font-display text-2xl font-bold text-neutral-950">{{ $totalPengunjung }}</p>
+        <p class="text-xs font-medium text-neutral-600">Total Pengunjung</p>
+    </div>
+
     <div class="rounded-2xl border border-gold-500/20 bg-gold-100 p-4">
         <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-gold-600">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>

@@ -11,11 +11,30 @@ class VisiMisi extends Model
 
     protected $fillable = [
         'visi_text',
+        'translations',
+    ];
+
+    protected $casts = [
+        'translations' => 'array',
     ];
 
     protected static function booted(): void
     {
         static::saved(fn () => Cache::forget('home.visimisi'));
+    }
+
+    public function translated(string $field): string
+    {
+        $source = (string) ($this->{$field} ?? '');
+        $locale = app()->getLocale();
+
+        if ($locale === 'id' || $source === '') {
+            return $source;
+        }
+
+        $value = $this->translations[$locale][$field] ?? null;
+
+        return filled($value) ? $value : $source;
     }
 
     public static function singleton(): self

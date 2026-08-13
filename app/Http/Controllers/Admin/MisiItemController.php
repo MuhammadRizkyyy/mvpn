@@ -4,29 +4,42 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\MisiItem;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class MisiItemController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request, TranslationService $translator)
     {
         $validated = $request->validate([
             'text' => 'required|string',
             'order' => 'nullable|integer|min:0',
         ]);
+
+        $validated['translations'] = $translator->translateFields(
+            ['text' => $validated['text']],
+            config('translation.target_locales'),
+            config('translation.source_locale')
+        );
 
         MisiItem::create($validated);
 
         return back()->with('success', 'Poin misi ditambahkan');
     }
 
-    public function update(Request $request, MisiItem $misiItem)
+    public function update(Request $request, MisiItem $misiItem, TranslationService $translator)
     {
         $validated = $request->validate([
             'text' => 'required|string',
             'order' => 'nullable|integer|min:0',
         ]);
+
+        $validated['translations'] = $translator->translateFields(
+            ['text' => $validated['text']],
+            config('translation.target_locales'),
+            config('translation.source_locale')
+        );
 
         $misiItem->update($validated);
 

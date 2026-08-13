@@ -28,9 +28,9 @@ class KegiatanController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'is_coming_soon' => 'nullable|boolean',
-            'order' => 'nullable|integer|min:0',
         ]);
         $validated['is_coming_soon'] = $request->boolean('is_coming_soon');
+        $validated['order'] = Kegiatan::where('category', $validated['category'])->max('order') + 1;
 
         Kegiatan::create($validated);
 
@@ -49,7 +49,6 @@ class KegiatanController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'is_coming_soon' => 'nullable|boolean',
-            'order' => 'nullable|integer|min:0',
         ]);
         $validated['is_coming_soon'] = $request->boolean('is_coming_soon');
 
