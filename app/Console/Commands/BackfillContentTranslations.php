@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Models\Article;
 use App\Models\Gallery;
 use App\Models\Kegiatan;
+use App\Models\LanguageClassCoordinator;
+use App\Models\Pengurus;
 use App\Services\TranslationService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
@@ -33,10 +35,13 @@ class BackfillContentTranslations extends Command
         $this->backfillArticles($translator, $targetLocales, $sourceLocale);
         $this->backfillGalleries($translator, $targetLocales, $sourceLocale);
         $this->backfillKegiatans($translator, $targetLocales, $sourceLocale);
+        $this->backfillPeople($translator, $targetLocales, $sourceLocale);
 
         Cache::forget('home.articles');
         Cache::forget('home.galleries');
         Cache::forget('home.kegiatans');
+        Cache::forget('home.pengurus');
+        Cache::forget('home.language_coordinators');
 
         return self::SUCCESS;
     }
@@ -134,6 +139,30 @@ class BackfillContentTranslations extends Command
             $kegiatan->saveQuietly();
 
             $this->line("  translated kegiatan #{$kegiatan->id}: {$kegiatan->title}");
+        }
+    }
+
+    /**
+     * Jabatan pengurus & PJ kelas bahasa. Nama orang tidak diterjemahkan.
+     */
+    private function backfillPeople(TranslationService $translator, array $targetLocales, string $sourceLocale): void
+    {
+        $rows = Pengurus::all()->map(fn ($p) => [$p, 'position'])
+            ->concat(LanguageClassCoordinator::all()->map(fn ($p) => [$p, 'role']));
+
+        $this->info("People: checking {$rows->count()} rows...");
+
+        foreach ($rows as [$row, $field]) {
+            $fields = [$field => (string) $row->{$field}];
+
+            if (! $this->needsTranslation($fields, $row->translations, $targetLocales)) {
+                continue;
+            }
+
+            $row->translations = $translator->translateFields($fields, $targetLocales, $sourceLocale);
+            $row->saveQuietly();
+
+            $this->line("  translated {$row->name}: {$row->{$field}}");
         }
     }
 }

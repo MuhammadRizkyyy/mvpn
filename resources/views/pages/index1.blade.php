@@ -718,7 +718,7 @@ html {
                                             @endif
                                             <div class="member-info">
                                                 <h4>{{ $member->name }}</h4>
-                                                <p>{{ $member->position }}</p>
+                                                <p>{{ $member->translated('position') }}</p>
                                                 <div class="member-socials">
                                                     @if($member->instagram_url)
                                                         <a href="{{ $member->instagram_url }}" class="ig-btn" title="{{ __('site.struktur.instagram') }}" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
@@ -996,7 +996,7 @@ button.lang-pill:focus-visible {
             'certificate' => optional($members->first(fn ($p) => $p->certificate))->certificate,
             'people' => $members->map(fn ($p) => [
                 'name' => $p->name,
-                'role' => $p->role,
+                'role' => $p->translated('role'),
                 'photo' => $p->photo,
                 'period' => $p->period,
             ])->values(),

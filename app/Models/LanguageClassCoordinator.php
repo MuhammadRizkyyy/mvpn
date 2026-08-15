@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasAutoTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class LanguageClassCoordinator extends Model
 {
+    use HasAutoTranslations;
+
     public const LANGUAGES = [
         'inggris' => 'Inggris',
         'jerman' => 'Jerman',
@@ -27,6 +30,11 @@ class LanguageClassCoordinator extends Model
         'certificate',
         'certificate_public_id',
         'order',
+        'translations',
+    ];
+
+    protected $casts = [
+        'translations' => 'array',
     ];
 
     protected static function booted(): void
