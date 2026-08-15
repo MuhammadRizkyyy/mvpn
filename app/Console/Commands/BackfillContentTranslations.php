@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Article;
 use App\Models\Gallery;
+use App\Models\Kegiatan;
 use App\Services\TranslationService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
@@ -31,9 +32,11 @@ class BackfillContentTranslations extends Command
 
         $this->backfillArticles($translator, $targetLocales, $sourceLocale);
         $this->backfillGalleries($translator, $targetLocales, $sourceLocale);
+        $this->backfillKegiatans($translator, $targetLocales, $sourceLocale);
 
         Cache::forget('home.articles');
         Cache::forget('home.galleries');
+        Cache::forget('home.kegiatans');
 
         return self::SUCCESS;
     }
@@ -109,6 +112,28 @@ class BackfillContentTranslations extends Command
             $gallery->saveQuietly();
 
             $this->line("  translated gallery #{$gallery->id}: {$gallery->title}");
+        }
+    }
+
+    private function backfillKegiatans(TranslationService $translator, array $targetLocales, string $sourceLocale): void
+    {
+        $kegiatans = Kegiatan::all();
+        $this->info("Kegiatans: checking {$kegiatans->count()} rows...");
+
+        foreach ($kegiatans as $kegiatan) {
+            $fields = [
+                'title' => (string) $kegiatan->title,
+                'description' => TranslationService::htmlToPlain($kegiatan->description),
+            ];
+
+            if (! $this->needsTranslation($fields, $kegiatan->translations, $targetLocales)) {
+                continue;
+            }
+
+            $kegiatan->translations = $translator->translateFields($fields, $targetLocales, $sourceLocale);
+            $kegiatan->saveQuietly();
+
+            $this->line("  translated kegiatan #{$kegiatan->id}: {$kegiatan->title}");
         }
     }
 }

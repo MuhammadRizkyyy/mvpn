@@ -1030,8 +1030,8 @@ button.lang-pill:focus-visible {
                 <p class="proker-panel-desc">{{ __('site.proker.card_pendidikan_desc') }}</p>
                 <h2>{{ __('site.proker.pendidikan_title') }}</h2>
                 <ul class="checklist">
-                    @forelse(app()->getLocale() === 'id' ? $kegiatans->get('pendidikan', collect()) : collect() as $item)
-                        <li>{{ $item->title }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<div class="proker-item-desc">{!! $item->description_html !!}</div>@endif</li>
+                    @forelse($kegiatans->get('pendidikan', collect()) as $item)
+                        <li>{{ $item->translatedTitle() }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<div class="proker-item-desc">{!! $item->translatedDescriptionHtml() !!}</div>@endif</li>
                     @empty
                         <li>{{ __('site.proker.pkbm') }}</li>
                         <li>{{ __('site.proker.self_improvement') }}</li>
@@ -1057,8 +1057,8 @@ button.lang-pill:focus-visible {
                 <p class="proker-panel-desc">{{ __('site.proker.card_wirausaha_desc') }}</p>
                 <h2>{{ __('site.proker.wirausaha_title') }}</h2>
                 <ul class="checklist">
-                    @forelse(app()->getLocale() === 'id' ? $kegiatans->get('wirausaha', collect()) : collect() as $item)
-                        <li>{{ $item->title }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<div class="proker-item-desc">{!! $item->description_html !!}</div>@endif</li>
+                    @forelse($kegiatans->get('wirausaha', collect()) as $item)
+                        <li>{{ $item->translatedTitle() }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<div class="proker-item-desc">{!! $item->translatedDescriptionHtml() !!}</div>@endif</li>
                     @empty
                         <li>{{ __('site.proker.umkm_export') }}</li>
                         <li>{{ __('site.proker.business_matching') }}</li>
@@ -1070,8 +1070,8 @@ button.lang-pill:focus-visible {
                 <p class="proker-panel-desc">{{ __('site.proker.card_sdm_desc') }}</p>
                 <h2>{{ __('site.proker.sdm_title') }}</h2>
                 <ul class="checklist">
-                    @forelse(app()->getLocale() === 'id' ? $kegiatans->get('sdm', collect()) : collect() as $item)
-                        <li>{{ $item->title }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<div class="proker-item-desc">{!! $item->description_html !!}</div>@endif</li>
+                    @forelse($kegiatans->get('sdm', collect()) as $item)
+                        <li>{{ $item->translatedTitle() }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<div class="proker-item-desc">{!! $item->translatedDescriptionHtml() !!}</div>@endif</li>
                     @empty
                         <li>{{ __('site.proker.sdm_1') }}</li>
                         <li>{{ __('site.proker.sdm_2') }}</li>
