@@ -718,7 +718,7 @@ html {
                                             @endif
                                             <div class="member-info">
                                                 <h4>{{ $member->name }}</h4>
-                                                <p>{{ $member->position }}</p>
+                                                <p>{{ $member->translated('position') }}</p>
                                                 <div class="member-socials">
                                                     @if($member->instagram_url)
                                                         <a href="{{ $member->instagram_url }}" class="ig-btn" title="{{ __('site.struktur.instagram') }}" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
@@ -912,6 +912,20 @@ html {
     font-weight: 400;
     color: var(--color-neutral-500, #6b7280);
 }
+.checklist > li .proker-item-desc p {
+    margin: 0 0 6px;
+}
+.checklist > li .proker-item-desc p:last-child {
+    margin-bottom: 0;
+}
+.checklist > li .proker-item-desc ul,
+.checklist > li .proker-item-desc ol {
+    margin: 4px 0 6px;
+    padding-left: 1.25em;
+}
+.checklist > li .proker-item-desc li {
+    margin-bottom: 2px;
+}
 
 /* Language tags — pill grid instead of a nested bullet list */
 .lang-pills {
@@ -982,7 +996,7 @@ button.lang-pill:focus-visible {
             'certificate' => optional($members->first(fn ($p) => $p->certificate))->certificate,
             'people' => $members->map(fn ($p) => [
                 'name' => $p->name,
-                'role' => $p->role,
+                'role' => $p->translated('role'),
                 'photo' => $p->photo,
                 'period' => $p->period,
             ])->values(),
@@ -1016,8 +1030,8 @@ button.lang-pill:focus-visible {
                 <p class="proker-panel-desc">{{ __('site.proker.card_pendidikan_desc') }}</p>
                 <h2>{{ __('site.proker.pendidikan_title') }}</h2>
                 <ul class="checklist">
-                    @forelse(app()->getLocale() === 'id' ? $kegiatans->get('pendidikan', collect()) : collect() as $item)
-                        <li>{{ $item->title }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<span class="proker-item-desc">{{ $item->description }}</span>@endif</li>
+                    @forelse($kegiatans->get('pendidikan', collect()) as $item)
+                        <li>{{ $item->translatedTitle() }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<div class="proker-item-desc">{!! $item->translatedDescriptionHtml() !!}</div>@endif</li>
                     @empty
                         <li>{{ __('site.proker.pkbm') }}</li>
                         <li>{{ __('site.proker.self_improvement') }}</li>
@@ -1043,8 +1057,8 @@ button.lang-pill:focus-visible {
                 <p class="proker-panel-desc">{{ __('site.proker.card_wirausaha_desc') }}</p>
                 <h2>{{ __('site.proker.wirausaha_title') }}</h2>
                 <ul class="checklist">
-                    @forelse(app()->getLocale() === 'id' ? $kegiatans->get('wirausaha', collect()) : collect() as $item)
-                        <li>{{ $item->title }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<span class="proker-item-desc">{{ $item->description }}</span>@endif</li>
+                    @forelse($kegiatans->get('wirausaha', collect()) as $item)
+                        <li>{{ $item->translatedTitle() }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<div class="proker-item-desc">{!! $item->translatedDescriptionHtml() !!}</div>@endif</li>
                     @empty
                         <li>{{ __('site.proker.umkm_export') }}</li>
                         <li>{{ __('site.proker.business_matching') }}</li>
@@ -1056,8 +1070,8 @@ button.lang-pill:focus-visible {
                 <p class="proker-panel-desc">{{ __('site.proker.card_sdm_desc') }}</p>
                 <h2>{{ __('site.proker.sdm_title') }}</h2>
                 <ul class="checklist">
-                    @forelse(app()->getLocale() === 'id' ? $kegiatans->get('sdm', collect()) : collect() as $item)
-                        <li>{{ $item->title }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<span class="proker-item-desc">{{ $item->description }}</span>@endif</li>
+                    @forelse($kegiatans->get('sdm', collect()) as $item)
+                        <li>{{ $item->translatedTitle() }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<div class="proker-item-desc">{!! $item->translatedDescriptionHtml() !!}</div>@endif</li>
                     @empty
                         <li>{{ __('site.proker.sdm_1') }}</li>
                         <li>{{ __('site.proker.sdm_2') }}</li>
@@ -1746,9 +1760,9 @@ body.lang-modal-open {
         <div class="gallery-grid">
 @foreach($galleries as $item)
     <div class="gallery-card reveal reveal-delay-{{ ($loop->index % 5) + 1 }}"
-         onclick="openHomeGalleryLightbox({{ Js::from(asset('storage/'.$item->image)) }}, {{ Js::from($item->translatedTitle() ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->translatedDescriptionPlain()) }})">
+         onclick="openHomeGalleryLightbox({{ Js::from($item->image) }}, {{ Js::from($item->translatedTitle() ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->translatedDescriptionPlain()) }})">
         <div class="gallery-img">
-            <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->translatedTitle() }}" loading="lazy">
+            <img src="{{ $item->image }}" alt="{{ $item->translatedTitle() }}" loading="lazy">
         </div>
         <div class="gallery-body">
             <h3>{{ $item->translatedTitle() ?? __('site.dokumentasi.default_title') }}</h3>

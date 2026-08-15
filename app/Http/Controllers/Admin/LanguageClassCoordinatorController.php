@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\LanguageClassCoordinator;
 use App\Services\CloudinaryImageService;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -26,7 +27,7 @@ class LanguageClassCoordinatorController extends Controller
         return view('admin.language-coordinators.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, TranslationService $translator)
     {
         $validated = $request->validate([
             'language' => 'required|in:' . implode(',', array_keys(LanguageClassCoordinator::LANGUAGES)),
@@ -50,6 +51,7 @@ class LanguageClassCoordinatorController extends Controller
         }
 
         $validated['order'] = (int) LanguageClassCoordinator::where('language', $validated['language'])->max('order') + 1;
+        $validated['translations'] = $this->translateFields($translator, ['role' => $validated['role']]);
 
         LanguageClassCoordinator::create($validated);
 
@@ -61,7 +63,7 @@ class LanguageClassCoordinatorController extends Controller
         return view('admin.language-coordinators.edit', ['coordinator' => $languageCoordinator]);
     }
 
-    public function update(Request $request, LanguageClassCoordinator $languageCoordinator)
+    public function update(Request $request, LanguageClassCoordinator $languageCoordinator, TranslationService $translator)
     {
         $validated = $request->validate([
             'language' => 'required|in:' . implode(',', array_keys(LanguageClassCoordinator::LANGUAGES)),
@@ -87,6 +89,8 @@ class LanguageClassCoordinatorController extends Controller
 
             $this->cloudinary->deferredDelete($languageCoordinator->certificate_public_id);
         }
+
+        $validated['translations'] = $this->translateFields($translator, ['role' => $validated['role']]);
 
         $languageCoordinator->update($validated);
 
@@ -124,5 +128,17 @@ class LanguageClassCoordinatorController extends Controller
         Cache::forget('home.language_coordinators');
 
         return response()->json(['status' => 'ok']);
+    }
+
+    /**
+     * @return array<string, array<string, string>>
+     */
+    private function translateFields(TranslationService $translator, array $fields): array
+    {
+        return $translator->translateFields(
+            $fields,
+            config('translation.target_locales'),
+            config('translation.source_locale')
+        );
     }
 }

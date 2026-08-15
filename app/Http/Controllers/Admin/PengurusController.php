@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Pengurus;
 use App\Services\CloudinaryImageService;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -26,7 +27,7 @@ class PengurusController extends Controller
         return view('admin.pengurus.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, TranslationService $translator)
     {
         $validated = $request->validate([
             'section' => 'required|in:' . implode(',', array_keys(Pengurus::SECTIONS)),
@@ -44,6 +45,7 @@ class PengurusController extends Controller
         }
 
         $validated['order'] = (int) Pengurus::where('section', $validated['section'])->max('order') + 1;
+        $validated['translations'] = $this->translateFields($translator, ['position' => $validated['position']]);
 
         Pengurus::create($validated);
 
@@ -55,7 +57,7 @@ class PengurusController extends Controller
         return view('admin.pengurus.edit', compact('pengurus'));
     }
 
-    public function update(Request $request, Pengurus $pengurus)
+    public function update(Request $request, Pengurus $pengurus, TranslationService $translator)
     {
         $validated = $request->validate([
             'section' => 'required|in:' . implode(',', array_keys(Pengurus::SECTIONS)),
@@ -73,6 +75,8 @@ class PengurusController extends Controller
 
             $this->cloudinary->deferredDelete($pengurus->photo_public_id);
         }
+
+        $validated['translations'] = $this->translateFields($translator, ['position' => $validated['position']]);
 
         $pengurus->update($validated);
 
@@ -109,5 +113,17 @@ class PengurusController extends Controller
         Cache::forget('home.pengurus');
 
         return response()->json(['status' => 'ok']);
+    }
+
+    /**
+     * @return array<string, array<string, string>>
+     */
+    private function translateFields(TranslationService $translator, array $fields): array
+    {
+        return $translator->translateFields(
+            $fields,
+            config('translation.target_locales'),
+            config('translation.source_locale')
+        );
     }
 }

@@ -264,9 +264,9 @@
         <div class="gallery-grid">
 @foreach($galleries as $item)
     <div class="gallery-card"
-         onclick="openLightbox({{ Js::from(asset('storage/'.$item->image)) }}, {{ Js::from($item->translatedTitle() ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->translatedDescriptionHtml()) }})">
+         onclick="openLightbox({{ Js::from($item->image) }}, {{ Js::from($item->translatedTitle() ?? __('site.dokumentasi.default_title')) }}, {{ Js::from($item->translatedDescriptionHtml()) }})">
         <div class="gallery-img">
-            <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->translatedTitle() }}" loading="lazy">
+            <img src="{{ $item->image }}" alt="{{ $item->translatedTitle() }}" loading="lazy">
         </div>
         <div class="gallery-body">
             <h2>{{ $item->translatedTitle() ?? __('site.dokumentasi.default_title') }}</h2>

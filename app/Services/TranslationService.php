@@ -32,12 +32,37 @@ class TranslationService
         return $result;
     }
 
+    /**
+     * Strip HTML down to plain text while keeping the block structure as
+     * newlines (list items become bullets), so translated content still
+     * renders as separate lines instead of one run-on paragraph.
+     */
+    public static function htmlToPlain(?string $html): string
+    {
+        $text = preg_replace('/<li[^>]*>/i', '• ', (string) $html);
+        $text = preg_replace('/<\/(li|p|div|h[1-6]|tr)>/i', "\n", $text);
+        $text = preg_replace('/<br\s*\/?>/i', "\n", $text);
+        $text = html_entity_decode(strip_tags($text), ENT_QUOTES);
+
+        return trim(preg_replace("/\n{3,}/", "\n\n", $text));
+    }
+
     public function translate(string $text, string $targetLocale, string $sourceLocale = 'id'): string
     {
         $text = trim($text);
 
         if ($text === '' || $targetLocale === $sourceLocale) {
             return $text;
+        }
+
+        // Multi-line text is translated line by line so the layout survives.
+        if (str_contains($text, "\n")) {
+            $lines = array_map(
+                fn ($line) => trim($line) === '' ? '' : $this->translate($line, $targetLocale, $sourceLocale),
+                explode("\n", $text)
+            );
+
+            return implode("\n", $lines);
         }
 
         $translatedChunks = [];

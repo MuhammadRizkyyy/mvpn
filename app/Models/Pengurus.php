@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasAutoTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class Pengurus extends Model
 {
+    use HasAutoTranslations;
+
     protected $table = 'pengurus';
 
     public const SECTIONS = [
@@ -27,6 +30,11 @@ class Pengurus extends Model
         'instagram_url',
         'linkedin_url',
         'order',
+        'translations',
+    ];
+
+    protected $casts = [
+        'translations' => 'array',
     ];
 
     protected static function booted(): void

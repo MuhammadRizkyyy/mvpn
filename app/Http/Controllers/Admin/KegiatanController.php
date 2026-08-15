@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Article;
 use App\Models\Kegiatan;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -21,7 +23,7 @@ class KegiatanController extends Controller
         return view('admin.kegiatan.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, TranslationService $translator)
     {
         $validated = $request->validate([
             'category' => 'required|in:' . implode(',', array_keys(Kegiatan::CATEGORIES)),
@@ -30,7 +32,9 @@ class KegiatanController extends Controller
             'is_coming_soon' => 'nullable|boolean',
         ]);
         $validated['is_coming_soon'] = $request->boolean('is_coming_soon');
+        $validated['description'] = Article::sanitizeContent($validated['description'] ?? null);
         $validated['order'] = Kegiatan::where('category', $validated['category'])->max('order') + 1;
+        $validated['translations'] = $this->translateFields($translator, $validated['title'], $validated['description']);
 
         Kegiatan::create($validated);
 
@@ -42,7 +46,7 @@ class KegiatanController extends Controller
         return view('admin.kegiatan.edit', compact('kegiatan'));
     }
 
-    public function update(Request $request, Kegiatan $kegiatan)
+    public function update(Request $request, Kegiatan $kegiatan, TranslationService $translator)
     {
         $validated = $request->validate([
             'category' => 'required|in:' . implode(',', array_keys(Kegiatan::CATEGORIES)),
@@ -51,10 +55,25 @@ class KegiatanController extends Controller
             'is_coming_soon' => 'nullable|boolean',
         ]);
         $validated['is_coming_soon'] = $request->boolean('is_coming_soon');
+        $validated['description'] = Article::sanitizeContent($validated['description'] ?? null);
+
+        $validated['translations'] = $this->translateFields($translator, $validated['title'], $validated['description']);
 
         $kegiatan->update($validated);
 
         return redirect()->route('admin.kegiatan.index')->with('success', 'Program kerja diperbarui');
+    }
+
+    /**
+     * @return array<string, array<string, string>>
+     */
+    private function translateFields(TranslationService $translator, ?string $title, ?string $description): array
+    {
+        return $translator->translateFields(
+            ['title' => (string) $title, 'description' => TranslationService::htmlToPlain($description)],
+            config('translation.target_locales'),
+            config('translation.source_locale')
+        );
     }
 
     public function destroy(Kegiatan $kegiatan)

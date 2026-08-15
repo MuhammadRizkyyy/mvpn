@@ -40,6 +40,7 @@
     </div>
 
     <textarea name="{{ $fieldName }}" id="{{ $fieldId }}" class="hidden">{{ $editorValue }}</textarea>
+    <p id="{{ $fieldId }}-counter" class="mt-1 text-right text-xs text-neutral-400"></p>
 </div>
 
 <style>
@@ -66,6 +67,20 @@
 
         window.__quillEditors = window.__quillEditors || {};
         window.__quillEditors['{{ $fieldId }}'] = quill;
+
+        // Keep in sync with TranslationService::MAX_CHUNK_LENGTH (per-sentence translate limit).
+        var TRANSLATE_CHUNK_LIMIT = 450;
+        var counter = document.getElementById('{{ $fieldId }}-counter');
+
+        function updateCounter() {
+            var length = quill.getText().trim().length;
+            var overLimit = length > TRANSLATE_CHUNK_LIMIT;
+            counter.textContent = length + ' karakter' + (overLimit ? ' — sebaiknya dipersingkat atau dipecah dengan tanda titik, kalimat panjang tanpa titik bisa gagal diterjemahkan otomatis' : '');
+            counter.className = 'mt-1 text-right text-xs ' + (overLimit ? 'text-primary-600' : 'text-neutral-400');
+        }
+
+        quill.on('text-change', updateCounter);
+        updateCounter();
 
         var form = textarea.closest('form');
         if (form) {

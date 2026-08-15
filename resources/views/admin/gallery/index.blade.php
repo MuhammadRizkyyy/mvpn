@@ -100,7 +100,7 @@
                         </td>
                         <td class="px-5 py-3">
                             <div class="flex items-center gap-3">
-                                <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title ?? 'Foto kegiatan' }}" class="h-10 w-14 shrink-0 rounded-md object-cover" draggable="false">
+                                <img src="{{ $item->image }}" alt="{{ $item->title ?? 'Foto kegiatan' }}" class="h-10 w-14 shrink-0 rounded-md object-cover" draggable="false">
                                 <div class="min-w-0">
                                     <p class="truncate font-medium text-neutral-800">{{ $item->title ?: 'Tanpa judul' }}</p>
                                     @if($item->description)
@@ -112,7 +112,7 @@
                         <td class="px-5 py-3 text-right">
                             <div class="flex items-center justify-end gap-3">
                                 <button type="button"
-                                        onclick="openEditModal({{ $item->id }}, {{ Js::from($item->title) }}, {{ Js::from($item->description) }}, {{ Js::from(asset('storage/'.$item->image)) }})"
+                                        onclick="openEditModal({{ $item->id }}, {{ Js::from($item->title) }}, {{ Js::from($item->description) }}, {{ Js::from($item->image) }})"
                                         class="text-xs font-medium text-navy-500 hover:text-navy-700">
                                     Edit
                                 </button>
