@@ -126,7 +126,7 @@ return [
         'description' => 'Nos collaborations couvrent plusieurs secteurs — médias, communauté, gouvernement — pour élargir notre impact pour la jeunesse indonésienne.',
         'partner_unit' => 'Partenaires',
         'media' => 'Partenariat Média',
-        'community' => 'Partenariat Communautaire',
+        'community' => 'Partenariat Communautaire / Fondation / Organisation',
         'government' => 'Partenariat Gouvernemental',
         'hospitality_campus' => 'Partenariat Hôtellerie & Campus',
         'hotel' => 'Partenariat Hôtelier',

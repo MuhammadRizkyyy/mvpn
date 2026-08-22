@@ -126,7 +126,7 @@ return [
         'description' => 'Kolaborasi kami tersebar di berbagai sektor — mulai dari media, komunitas, hingga pemerintahan — untuk memperluas dampak bagi generasi muda Indonesia.',
         'partner_unit' => 'Mitra',
         'media' => 'Kemitraan Media',
-        'community' => 'Kemitraan Komunitas',
+        'community' => 'Kemitraan Komunitas / Yayasan / Organisasi',
         'government' => 'Kemitraan Pemerintah',
         'hospitality_campus' => 'Kemitraan Hospitality & Kampus',
         'hotel' => 'Kemitraan Hotel',

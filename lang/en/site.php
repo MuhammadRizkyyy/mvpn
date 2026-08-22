@@ -126,7 +126,7 @@ return [
         'description' => 'Our collaborations span across sectors — from media and community to government — widening our impact for Indonesian youth.',
         'partner_unit' => 'Partners',
         'media' => 'Media Partnership',
-        'community' => 'Community Partnership',
+        'community' => 'Community / Foundation / Organization Partnership',
         'government' => 'Government Partnership',
         'hospitality_campus' => 'Hospitality & Campus Partnership',
         'hotel' => 'Hotel Partnership',

@@ -126,7 +126,7 @@ return [
         'description' => 'Nuestras colaboraciones abarcan varios sectores — medios, comunidad, gobierno — para ampliar nuestro impacto en la juventud indonesia.',
         'partner_unit' => 'Socios',
         'media' => 'Alianza de Medios',
-        'community' => 'Alianza Comunitaria',
+        'community' => 'Alianza Comunitaria / Fundación / Organización',
         'government' => 'Alianza Gubernamental',
         'hospitality_campus' => 'Alianza de Hospitalidad y Campus',
         'hotel' => 'Alianza Hotelera',
