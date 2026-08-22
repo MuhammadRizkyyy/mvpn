@@ -64,8 +64,14 @@ html {
     animation-delay: 0.3s;
 }
 
-.global-map {
+.sticky-reveal {
     position: relative;
+}
+
+.global-map {
+    position: sticky;
+    top: 0;
+    z-index: 0;
     height: 100vh;
     background: linear-gradient(180deg, var(--color-navy-900) 0%, var(--color-navy-700) 100%);
     overflow: hidden;
@@ -227,6 +233,7 @@ html {
 }
 </style>
 
+<div class="sticky-reveal">
 <section id="beranda" class="global-map">
     <div class="map-overlay">
         <h1 class="map-title reveal-stagger"><x-stagger-words :text="__('site.home.hero_title')" /></h1>
@@ -309,6 +316,14 @@ html {
     filter: drop-shadow(0 20px 40px rgba(18,35,59,0.14));
 }
 
+#tentang {
+    position: relative;
+    z-index: 5;
+    background: #fff;
+    border-radius: 40px 40px 0 0;
+    margin-top: -40px;
+}
+
 @media (max-width: 575.98px) {
     .tentang-logo {
         width: 220px;
@@ -343,6 +358,7 @@ html {
         </div>
     </div>
 </section>
+</div>
 
 {{-- ======================= VISI & MISI ======================= --}}
 <style>
