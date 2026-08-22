@@ -47,7 +47,7 @@
                                 @endif
                             </p>
                             @if($item->description)
-                                <p class="mt-0.5 line-clamp-1 text-xs text-neutral-500">{{ $item->description }}</p>
+                                <p class="mt-0.5 line-clamp-1 text-xs text-neutral-500">{{ html_entity_decode(strip_tags($item->description)) }}</p>
                             @endif
                         </div>
                         <div class="flex shrink-0 items-center gap-2">
