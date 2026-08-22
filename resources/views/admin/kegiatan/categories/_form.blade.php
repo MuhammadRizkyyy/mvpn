@@ -44,13 +44,3 @@
               placeholder="Kalimat pengantar yang tampil di atas daftar program kerja."
               class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">{{ old('description', $category->description ?? '') }}</textarea>
 </div>
-
-<label class="flex items-start gap-2.5">
-    <input type="hidden" name="show_language_pills" value="0">
-    <input type="checkbox" name="show_language_pills" value="1" @checked(old('show_language_pills', $category->show_language_pills ?? false))
-           class="mt-0.5 rounded border-neutral-300 text-primary-500 focus:ring-primary-500">
-    <span class="text-sm text-neutral-700">
-        Tampilkan daftar kelas bahasa
-        <span class="block text-xs text-neutral-400">Menambahkan tombol bahasa (Inggris, Jerman, dst.) yang membuka info PJ Kelas Bahasa.</span>
-    </span>
-</label>
