@@ -14,8 +14,8 @@
     <label for="category" class="mb-1.5 block text-xs font-medium text-neutral-600">Kategori</label>
     <select name="category" id="category" required
             class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">
-        @foreach(\App\Models\Kegiatan::CATEGORIES as $key => $label)
-            <option value="{{ $key }}" @selected(old('category', $kegiatan->category ?? '') === $key)>{{ $label }}</option>
+        @foreach($categories as $category)
+            <option value="{{ $category->slug }}" @selected(old('category', $kegiatan->category ?? '') === $category->slug)>{{ $category->name }}</option>
         @endforeach
     </select>
 </div>

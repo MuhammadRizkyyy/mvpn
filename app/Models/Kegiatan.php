@@ -7,12 +7,6 @@ use Illuminate\Support\Facades\Cache;
 
 class Kegiatan extends Model
 {
-    public const CATEGORIES = [
-        'pendidikan' => 'Pendidikan',
-        'wirausaha' => 'Wirausaha',
-        'sdm' => 'SDM',
-    ];
-
     protected $fillable = [
         'category',
         'title',

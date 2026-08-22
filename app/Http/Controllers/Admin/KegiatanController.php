@@ -14,19 +14,22 @@ class KegiatanController extends Controller
     public function index()
     {
         $kegiatans = Kegiatan::orderBy('category')->orderBy('order')->get()->groupBy('category');
+        $categories = \App\Models\KegiatanCategory::ordered();
 
-        return view('admin.kegiatan.index', compact('kegiatans'));
+        return view('admin.kegiatan.index', compact('kegiatans', 'categories'));
     }
 
     public function create()
     {
-        return view('admin.kegiatan.create');
+        $categories = \App\Models\KegiatanCategory::ordered();
+
+        return view('admin.kegiatan.create', compact('categories'));
     }
 
     public function store(Request $request, TranslationService $translator)
     {
         $validated = $request->validate([
-            'category' => 'required|in:' . implode(',', array_keys(Kegiatan::CATEGORIES)),
+            'category' => 'required|exists:kegiatan_categories,slug',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'is_coming_soon' => 'nullable|boolean',
@@ -43,13 +46,15 @@ class KegiatanController extends Controller
 
     public function edit(Kegiatan $kegiatan)
     {
-        return view('admin.kegiatan.edit', compact('kegiatan'));
+        $categories = \App\Models\KegiatanCategory::ordered();
+
+        return view('admin.kegiatan.edit', compact('kegiatan', 'categories'));
     }
 
     public function update(Request $request, Kegiatan $kegiatan, TranslationService $translator)
     {
         $validated = $request->validate([
-            'category' => 'required|in:' . implode(',', array_keys(Kegiatan::CATEGORIES)),
+            'category' => 'required|exists:kegiatan_categories,slug',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'is_coming_soon' => 'nullable|boolean',
@@ -86,7 +91,7 @@ class KegiatanController extends Controller
     public function reorder(Request $request)
     {
         $validated = $request->validate([
-            'category' => 'required|in:' . implode(',', array_keys(Kegiatan::CATEGORIES)),
+            'category' => 'required|exists:kegiatan_categories,slug',
             'ids' => 'required|array',
             'ids.*' => 'integer|exists:kegiatans,id',
         ]);

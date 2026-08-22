@@ -98,12 +98,31 @@
                     PJ Kelas Bahasa
                 </x-admin.nav-item>
 
-                <x-admin.nav-item :href="route('admin.kegiatan.index')" :active="request()->routeIs('admin.kegiatan.*')">
-                    <x-slot:icon>
+                <details class="group/proker mb-0.5" @if(request()->routeIs('admin.kegiatan.*') || request()->routeIs('admin.kegiatan-categories.*')) open @endif>
+                <summary class="flex cursor-pointer list-none items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800 [&::-webkit-details-marker]:hidden">
+                    <span class="h-4 w-4 shrink-0 text-neutral-400">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11 3 6.5 9 2l6 4.5L9 11Z"/><path d="M9 11v11"/><path d="m15 6.5 6 4.5-6 4.5"/><path d="M15 11v11"/></svg>
-                    </x-slot:icon>
-                    Program Kerja
-                </x-admin.nav-item>
+                    </span>
+                    <span class="min-w-0 flex-1 truncate">Program Kerja</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0 text-neutral-400 transition-transform group-open/proker:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </summary>
+
+                <div class="ml-[26px] mt-0.5 border-l border-neutral-200 pl-3">
+                    <x-admin.nav-item :href="route('admin.kegiatan.index')" :active="request()->routeIs('admin.kegiatan.*')">
+                        <x-slot:icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        </x-slot:icon>
+                        Isi Program
+                    </x-admin.nav-item>
+
+                    <x-admin.nav-item :href="route('admin.kegiatan-categories.index')" :active="request()->routeIs('admin.kegiatan-categories.*')">
+                        <x-slot:icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h3l2 2h9a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
+                        </x-slot:icon>
+                        Tab Program
+                    </x-admin.nav-item>
+                </div>
+                </details>
 
                 <x-admin.nav-item :href="route('admin.mitra.index')" :active="request()->routeIs('admin.mitra.*')">
                     <x-slot:icon>

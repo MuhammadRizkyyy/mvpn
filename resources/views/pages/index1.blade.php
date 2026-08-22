@@ -980,6 +980,7 @@ button.lang-pill:focus-visible {
 
 @php
     $kegiatans = \Illuminate\Support\Facades\Cache::remember('home.kegiatans', 3600, fn () => \App\Models\Kegiatan::orderBy('category')->orderBy('order')->get()->groupBy('category'));
+    $prokerCategories = \App\Models\KegiatanCategory::cached();
     $languageCoordinators = \Illuminate\Support\Facades\Cache::remember('home.language_coordinators', 3600, fn () => \App\Models\LanguageClassCoordinator::orderBy('language')->orderBy('order')->get()->groupBy('language'));
     $languageCoordinatorsJson = collect(\App\Models\LanguageClassCoordinator::LANGUAGES)->mapWithKeys(function ($label, $key) use ($languageCoordinators) {
         $members = $languageCoordinators->get($key, collect());
@@ -1006,77 +1007,44 @@ button.lang-pill:focus-visible {
     <div class="proker-shell reveal">
         <div class="proker-tabbar-wrap">
             <div class="proker-tabbar" role="tablist">
-                <button type="button" class="proker-pill tab-btn active" data-tab="pendidikan">
-                    <i class="bi bi-mortarboard-fill"></i> {{ __('site.proker.tab_pendidikan') }}
-                </button>
-                <button type="button" class="proker-pill tab-btn" data-tab="wirausaha">
-                    <i class="bi bi-graph-up-arrow"></i> {{ __('site.proker.tab_wirausaha') }}
-                </button>
-                <button type="button" class="proker-pill tab-btn" data-tab="sdm">
-                    <i class="bi bi-people-fill"></i> {{ __('site.proker.tab_sdm') }}
-                </button>
+                @foreach($prokerCategories as $category)
+                    <button type="button" class="proker-pill tab-btn @if($loop->first) active @endif" data-tab="{{ $category->slug }}">
+                        <i class="bi {{ $category->icon }}"></i> {{ $category->translated('name') }}
+                    </button>
+                @endforeach
             </div>
         </div>
 
         <div class="proker-panel">
-            <div class="tab-content active" id="pendidikan">
-                <p class="proker-panel-desc">{{ __('site.proker.card_pendidikan_desc') }}</p>
-                <h2>{{ __('site.proker.pendidikan_title') }}</h2>
-                <ul class="checklist">
-                    @forelse($kegiatans->get('pendidikan', collect()) as $item)
-                        <li>{{ $item->translatedTitle() }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<div class="proker-item-desc">{!! $item->translatedDescriptionHtml() !!}</div>@endif</li>
-                    @empty
-                        <li>{{ __('site.proker.pkbm') }}</li>
-                        <li>{{ __('site.proker.self_improvement') }}</li>
-                    @endforelse
-                        <li>{{ __('site.proker.bahasa_asing') }}
-                            <div class="lang-pills">
-                                <button type="button" class="lang-pill" data-language="inggris">{{ __('site.proker.lang_inggris') }}</button>
-                                <button type="button" class="lang-pill" data-language="jerman">{{ __('site.proker.lang_jerman') }}</button>
-                                <button type="button" class="lang-pill" data-language="prancis">{{ __('site.proker.lang_prancis') }}</button>
-                                <button type="button" class="lang-pill" data-language="mandarin">{{ __('site.proker.lang_mandarin') }}</button>
-                                <button type="button" class="lang-pill" data-language="arab">{{ __('site.proker.lang_arab') }}</button>
-                                <button type="button" class="lang-pill" data-language="turki">{{ __('site.proker.lang_turki') }}</button>
-                                <button type="button" class="lang-pill" data-language="korea">{{ __('site.proker.lang_korea') }}</button>
-                                <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_thailand') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
-                                <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_isyarat') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
-                                <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_urdu') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
-                            </div>
-                        </li>
-                </ul>
-            </div>
-
-            <div class="tab-content" id="wirausaha">
-                <p class="proker-panel-desc">{{ __('site.proker.card_wirausaha_desc') }}</p>
-                <h2>{{ __('site.proker.wirausaha_title') }}</h2>
-                <ul class="checklist">
-                    @forelse($kegiatans->get('wirausaha', collect()) as $item)
-                        <li>{{ $item->translatedTitle() }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<div class="proker-item-desc">{!! $item->translatedDescriptionHtml() !!}</div>@endif</li>
-                    @empty
-                        <li>{{ __('site.proker.umkm_export') }}</li>
-                        <li>{{ __('site.proker.business_matching') }}</li>
-                    @endforelse
-                </ul>
-            </div>
-
-            <div class="tab-content" id="sdm">
-                <p class="proker-panel-desc">{{ __('site.proker.card_sdm_desc') }}</p>
-                <h2>{{ __('site.proker.sdm_title') }}</h2>
-                <ul class="checklist">
-                    @forelse($kegiatans->get('sdm', collect()) as $item)
-                        <li>{{ $item->translatedTitle() }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<div class="proker-item-desc">{!! $item->translatedDescriptionHtml() !!}</div>@endif</li>
-                    @empty
-                        <li>{{ __('site.proker.sdm_1') }}</li>
-                        <li>{{ __('site.proker.sdm_2') }}</li>
-                        <li>{{ __('site.proker.sdm_3') }}</li>
-                        <li>{{ __('site.proker.sdm_4') }}</li>
-                        <li>{{ __('site.proker.sdm_5') }}</li>
-                        <li>{{ __('site.proker.sdm_6') }}</li>
-                        <li>{{ __('site.proker.sdm_7') }}</li>
-                        <li>{{ __('site.proker.sdm_8') }}</li>
-                    @endforelse
-                </ul>
-            </div>
+            @foreach($prokerCategories as $category)
+                <div class="tab-content @if($loop->first) active @endif" id="{{ $category->slug }}">
+                    @if($category->description)
+                        <p class="proker-panel-desc">{{ $category->translated('description') }}</p>
+                    @endif
+                    <h2>{{ $category->translated('name') }}</h2>
+                    <ul class="checklist">
+                        @foreach($kegiatans->get($category->slug, collect()) as $item)
+                            <li>{{ $item->translatedTitle() }}@if($item->is_coming_soon) <span class="soon-badge">{{ __('site.proker.coming_soon_badge') }}</span> @endif @if($item->description)<div class="proker-item-desc">{!! $item->translatedDescriptionHtml() !!}</div>@endif</li>
+                        @endforeach
+                        @if($category->show_language_pills)
+                            <li>{{ __('site.proker.bahasa_asing') }}
+                                <div class="lang-pills">
+                                    <button type="button" class="lang-pill" data-language="inggris">{{ __('site.proker.lang_inggris') }}</button>
+                                    <button type="button" class="lang-pill" data-language="jerman">{{ __('site.proker.lang_jerman') }}</button>
+                                    <button type="button" class="lang-pill" data-language="prancis">{{ __('site.proker.lang_prancis') }}</button>
+                                    <button type="button" class="lang-pill" data-language="mandarin">{{ __('site.proker.lang_mandarin') }}</button>
+                                    <button type="button" class="lang-pill" data-language="arab">{{ __('site.proker.lang_arab') }}</button>
+                                    <button type="button" class="lang-pill" data-language="turki">{{ __('site.proker.lang_turki') }}</button>
+                                    <button type="button" class="lang-pill" data-language="korea">{{ __('site.proker.lang_korea') }}</button>
+                                    <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_thailand') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
+                                    <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_isyarat') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
+                                    <span class="lang-pill lang-pill-soon">{{ __('site.proker.lang_urdu') }} <span class="lang-pill-tag">{{ __('site.proker.coming_soon') }}</span></span>
+                                </div>
+                            </li>
+                        @endif
+                    </ul>
+                </div>
+            @endforeach
         </div>
     </div>
     </div>

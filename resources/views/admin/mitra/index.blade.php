@@ -31,9 +31,9 @@
                 <p class="text-sm text-neutral-500">Belum ada mitra di kategori {{ $label }}.</p>
             </div>
         @else
-            <div class="js-reorder-grid grid grid-cols-2 gap-3 p-5 sm:grid-cols-3 lg:grid-cols-4" data-reorder-category="{{ $key }}">
+            <div class="grid grid-cols-2 gap-3 p-5 sm:grid-cols-3 lg:grid-cols-4" data-reorder-url="{{ route('admin.mitra.reorder') }}" data-reorder-key="category" data-reorder-value="{{ $key }}">
                 @foreach($items as $item)
-                    <div class="js-reorder-card group relative overflow-hidden rounded-lg border border-neutral-200 bg-white transition-shadow" data-id="{{ $item->id }}" draggable="false">
+                    <div class="js-reorder-item group relative overflow-hidden rounded-lg border border-neutral-200 bg-white transition-shadow" data-id="{{ $item->id }}" draggable="false">
                         <button type="button"
                                 class="js-drag-handle touch-none absolute left-1.5 top-1.5 z-10 flex h-7 w-7 cursor-grab items-center justify-center rounded-md bg-white/90 text-neutral-400 shadow-sm hover:text-neutral-600 active:cursor-grabbing"
                                 aria-label="Seret untuk mengubah urutan" title="Seret untuk mengubah urutan">
@@ -61,88 +61,5 @@
 @endforeach
 </div>
 
-<script>
-document.querySelectorAll('.js-reorder-grid').forEach(function (grid) {
-    let draggedCard = null;
-
-    grid.querySelectorAll('.js-drag-handle').forEach(function (handle) {
-        // MOUSE (native HTML5 drag-and-drop)
-        handle.addEventListener('mousedown', function () {
-            handle.closest('.js-reorder-card').draggable = true;
-        });
-        handle.addEventListener('mouseup', function () {
-            handle.closest('.js-reorder-card').draggable = false;
-        });
-
-        // TOUCH (HTML5 DnD has no touch support, so this is a separate path)
-        handle.addEventListener('touchstart', function () {
-            draggedCard = handle.closest('.js-reorder-card');
-            draggedCard.classList.add('opacity-40');
-        }, { passive: true });
-
-        handle.addEventListener('touchmove', function (e) {
-            if (!draggedCard) return;
-            e.preventDefault();
-            const touch = e.touches[0];
-            const target = document.elementFromPoint(touch.clientX, touch.clientY);
-            const card = target && target.closest('.js-reorder-card');
-            if (!card || card === draggedCard || !grid.contains(card)) return;
-            const rect = card.getBoundingClientRect();
-            const isAfter = touch.clientX > rect.left + rect.width / 2;
-            card.parentNode.insertBefore(draggedCard, isAfter ? card.nextSibling : card);
-        }, { passive: false });
-
-        handle.addEventListener('touchend', function () {
-            if (!draggedCard) return;
-            draggedCard.classList.remove('opacity-40');
-            persistOrder(grid);
-            draggedCard = null;
-        });
-    });
-
-    grid.addEventListener('dragstart', function (e) {
-        const card = e.target.closest('.js-reorder-card');
-        if (!card) return;
-        draggedCard = card;
-        e.dataTransfer.effectAllowed = 'move';
-        setTimeout(function () { card.classList.add('opacity-40'); }, 0);
-    });
-
-    grid.addEventListener('dragover', function (e) {
-        e.preventDefault();
-        const card = e.target.closest('.js-reorder-card');
-        if (!card || card === draggedCard || !draggedCard) return;
-        const rect = card.getBoundingClientRect();
-        const isAfter = e.clientX > rect.left + rect.width / 2;
-        card.parentNode.insertBefore(draggedCard, isAfter ? card.nextSibling : card);
-    });
-
-    grid.addEventListener('dragend', function () {
-        if (!draggedCard) return;
-        draggedCard.classList.remove('opacity-40');
-        draggedCard.draggable = false;
-        persistOrder(grid);
-        draggedCard = null;
-    });
-
-    function persistOrder(grid) {
-        const ids = Array.from(grid.querySelectorAll('.js-reorder-card')).map(function (el) {
-            return el.dataset.id;
-        });
-
-        fetch('{{ route("admin.mitra.reorder") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            },
-            body: JSON.stringify({
-                category: grid.dataset.reorderCategory,
-                ids: ids,
-            }),
-        });
-    }
-});
-</script>
 
 @endsection

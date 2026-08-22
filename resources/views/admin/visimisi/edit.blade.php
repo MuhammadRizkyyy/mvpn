@@ -59,9 +59,9 @@
             </div>
         @else
             <p class="border-b border-neutral-100 px-6 py-2 text-xs text-neutral-500">Seret pakai ikon titik-titik untuk mengubah urutan tampil di halaman utama.</p>
-            <ul class="js-reorder-grid divide-y divide-neutral-100">
+            <ul class="divide-y divide-neutral-100" data-reorder-url="{{ route('admin.misi.reorder') }}">
                 @foreach($misiItems as $item)
-                    <li class="js-reorder-card flex items-start justify-between gap-3 bg-white px-6 py-3" data-id="{{ $item->id }}" draggable="false">
+                    <li class="js-reorder-item flex items-start justify-between gap-3 bg-white px-6 py-3" data-id="{{ $item->id }}" draggable="false">
                         <button type="button"
                                 class="js-drag-handle touch-none flex h-7 w-7 shrink-0 cursor-grab items-center justify-center rounded-md text-neutral-400 hover:text-neutral-600 active:cursor-grabbing"
                                 aria-label="Seret untuk mengubah urutan" title="Seret untuk mengubah urutan">
@@ -116,85 +116,5 @@
     Teks di atas mengisi bagian "Visi & Misi" di halaman utama (bahasa Indonesia). Jika kosong, halaman publik otomatis kembali menampilkan teks default dari file bahasa.
 </div>
 
-<script>
-document.querySelectorAll('.js-reorder-grid').forEach(function (grid) {
-    let draggedCard = null;
-
-    grid.querySelectorAll('.js-drag-handle').forEach(function (handle) {
-        // MOUSE (native HTML5 drag-and-drop)
-        handle.addEventListener('mousedown', function () {
-            handle.closest('.js-reorder-card').draggable = true;
-        });
-        handle.addEventListener('mouseup', function () {
-            handle.closest('.js-reorder-card').draggable = false;
-        });
-
-        // TOUCH (HTML5 DnD has no touch support, so this is a separate path)
-        handle.addEventListener('touchstart', function () {
-            draggedCard = handle.closest('.js-reorder-card');
-            draggedCard.classList.add('opacity-40');
-        }, { passive: true });
-
-        handle.addEventListener('touchmove', function (e) {
-            if (!draggedCard) return;
-            e.preventDefault();
-            const touch = e.touches[0];
-            const target = document.elementFromPoint(touch.clientX, touch.clientY);
-            const card = target && target.closest('.js-reorder-card');
-            if (!card || card === draggedCard || !grid.contains(card)) return;
-            const rect = card.getBoundingClientRect();
-            const isAfter = touch.clientY > rect.top + rect.height / 2;
-            card.parentNode.insertBefore(draggedCard, isAfter ? card.nextSibling : card);
-        }, { passive: false });
-
-        handle.addEventListener('touchend', function () {
-            if (!draggedCard) return;
-            draggedCard.classList.remove('opacity-40');
-            persistOrder(grid);
-            draggedCard = null;
-        });
-    });
-
-    grid.addEventListener('dragstart', function (e) {
-        const card = e.target.closest('.js-reorder-card');
-        if (!card) return;
-        draggedCard = card;
-        e.dataTransfer.effectAllowed = 'move';
-        setTimeout(function () { card.classList.add('opacity-40'); }, 0);
-    });
-
-    grid.addEventListener('dragover', function (e) {
-        e.preventDefault();
-        const card = e.target.closest('.js-reorder-card');
-        if (!card || card === draggedCard || !draggedCard) return;
-        const rect = card.getBoundingClientRect();
-        const isAfter = e.clientY > rect.top + rect.height / 2;
-        card.parentNode.insertBefore(draggedCard, isAfter ? card.nextSibling : card);
-    });
-
-    grid.addEventListener('dragend', function () {
-        if (!draggedCard) return;
-        draggedCard.classList.remove('opacity-40');
-        draggedCard.draggable = false;
-        persistOrder(grid);
-        draggedCard = null;
-    });
-
-    function persistOrder(grid) {
-        const ids = Array.from(grid.querySelectorAll('.js-reorder-card')).map(function (el) {
-            return el.dataset.id;
-        });
-
-        fetch('{{ route("admin.misi.reorder") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            },
-            body: JSON.stringify({ ids: ids }),
-        });
-    }
-});
-</script>
 
 @endsection
