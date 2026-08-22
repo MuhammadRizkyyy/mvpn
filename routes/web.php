@@ -133,6 +133,16 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         ->name('misi.reorder');
 
     // Struktur Pengurus
+    Route::get('/divisi', [\App\Http\Controllers\Admin\PengurusSectionController::class, 'index'])
+        ->name('pengurus-sections.index');
+    Route::post('/divisi', [\App\Http\Controllers\Admin\PengurusSectionController::class, 'store'])
+        ->name('pengurus-sections.store');
+    Route::post('/divisi/reorder', [\App\Http\Controllers\Admin\PengurusSectionController::class, 'reorder'])
+        ->name('pengurus-sections.reorder');
+    Route::put('/divisi/{pengurusSection}', [\App\Http\Controllers\Admin\PengurusSectionController::class, 'update'])
+        ->name('pengurus-sections.update');
+    Route::delete('/divisi/{pengurusSection}', [\App\Http\Controllers\Admin\PengurusSectionController::class, 'destroy'])
+        ->name('pengurus-sections.destroy');
     Route::post('/pengurus/reorder', [\App\Http\Controllers\Admin\PengurusController::class, 'reorder'])
         ->name('pengurus.reorder');
     Route::resource('pengurus', \App\Http\Controllers\Admin\PengurusController::class)

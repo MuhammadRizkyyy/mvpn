@@ -12,15 +12,6 @@ class Pengurus extends Model
 
     protected $table = 'pengurus';
 
-    public const SECTIONS = [
-        'bod' => 'Board of Directors',
-        'sekretaris' => 'Sekretariat Umum',
-        'ekonomi' => 'Ekonomi',
-        'internasional' => 'Internasional',
-        'kerjasama_id_jerman' => 'Direktorat Kerjasama Indonesia - Jerman',
-        'itdev' => 'Direktorat Digital & Teknologi',
-    ];
-
     protected $fillable = [
         'section',
         'name',

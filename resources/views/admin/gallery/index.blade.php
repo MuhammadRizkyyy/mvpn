@@ -88,7 +88,7 @@
                         <th class="px-5 py-3 font-medium text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="js-reorder-list divide-y divide-neutral-100">
+                <tbody class="divide-y divide-neutral-100" data-reorder-url="{{ route('gallery.reorder') }}">
                 @foreach($galleries as $item)
                     <tr class="js-reorder-item" data-id="{{ $item->id }}">
                         <td class="px-3 py-3">
@@ -264,90 +264,6 @@
         if (formToSubmit) formToSubmit.submit();
     });
 
-    document.querySelectorAll('.js-reorder-list').forEach(function (list) {
-        let draggedItem = null;
-
-        function moveItem(item) {
-            if (!item || item === draggedItem || !list.contains(item)) return;
-            const items = Array.from(list.children);
-            const draggedIndex = items.indexOf(draggedItem);
-            const targetIndex = items.indexOf(item);
-            if (draggedIndex < targetIndex) {
-                item.after(draggedItem);
-            } else {
-                item.before(draggedItem);
-            }
-        }
-
-        list.querySelectorAll('.js-drag-handle').forEach(function (handle) {
-            // MOUSE (native HTML5 drag-and-drop)
-            handle.addEventListener('mousedown', function () {
-                handle.closest('.js-reorder-item').draggable = true;
-            });
-            handle.addEventListener('mouseup', function () {
-                handle.closest('.js-reorder-item').draggable = false;
-            });
-
-            // TOUCH (HTML5 DnD has no touch support, so this is a separate path)
-            handle.addEventListener('touchstart', function () {
-                draggedItem = handle.closest('.js-reorder-item');
-                draggedItem.classList.add('opacity-40');
-            }, { passive: true });
-
-            handle.addEventListener('touchmove', function (e) {
-                if (!draggedItem) return;
-                e.preventDefault();
-                const touch = e.touches[0];
-                const target = document.elementFromPoint(touch.clientX, touch.clientY);
-                const item = target && target.closest('.js-reorder-item');
-                moveItem(item);
-            }, { passive: false });
-
-            handle.addEventListener('touchend', function () {
-                if (!draggedItem) return;
-                draggedItem.classList.remove('opacity-40');
-                persistOrder(list);
-                draggedItem = null;
-            });
-        });
-
-        list.addEventListener('dragstart', function (e) {
-            const item = e.target.closest('.js-reorder-item');
-            if (!item) return;
-            draggedItem = item;
-            e.dataTransfer.effectAllowed = 'move';
-            setTimeout(function () { item.classList.add('opacity-40'); }, 0);
-        });
-
-        list.addEventListener('dragover', function (e) {
-            e.preventDefault();
-            const item = e.target.closest('.js-reorder-item');
-            moveItem(item);
-        });
-
-        list.addEventListener('dragend', function () {
-            if (!draggedItem) return;
-            draggedItem.classList.remove('opacity-40');
-            draggedItem.draggable = false;
-            persistOrder(list);
-            draggedItem = null;
-        });
-
-        function persistOrder(list) {
-            const ids = Array.from(list.querySelectorAll('.js-reorder-item')).map(function (el) {
-                return el.dataset.id;
-            });
-
-            fetch('{{ route("gallery.reorder") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                },
-                body: JSON.stringify({ ids: ids }),
-            });
-        }
-    });
 </script>
 
 @endsection

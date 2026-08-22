@@ -673,14 +673,7 @@ html {
 
 @php
     $pengurusBySection = \Illuminate\Support\Facades\Cache::remember('home.pengurus', 3600, fn () => \App\Models\Pengurus::orderBy('section')->orderBy('order')->get()->groupBy('section'));
-    $strukturSectionLabels = [
-        'bod' => __('site.struktur.bod'),
-        'sekretaris' => __('site.struktur.sekretaris_section'),
-        'ekonomi' => __('site.struktur.ekonomi_section'),
-        'internasional' => __('site.struktur.internasional_section'),
-        'kerjasama_id_jerman' => __('site.struktur.kerjasama_id_jerman_section'),
-        'itdev' => __('site.struktur.itdev_section'),
-    ];
+    $strukturSections = \App\Models\PengurusSection::cached();
 @endphp
 
 <section id="struktur" class="container py-5 struktur-page">
@@ -692,18 +685,18 @@ html {
     <div class="struktur-wrapper reveal">
         <div class="accordion" id="strukturAccordion">
             @php $firstOpened = false; @endphp
-            @foreach(\App\Models\Pengurus::SECTIONS as $sectionKey => $fallbackLabel)
-                @php $members = $pengurusBySection->get($sectionKey, collect()); @endphp
+            @foreach($strukturSections as $strukturSection)
+                @php $sectionKey = $strukturSection->slug; $members = $pengurusBySection->get($sectionKey, collect()); @endphp
                 @continue($members->isEmpty())
                 @php $isFirst = ! $firstOpened; $firstOpened = true; @endphp
 
                 <div class="accordion-item">
                     <h3 class="accordion-header">
-                        <button class="accordion-button @unless($isFirst) collapsed @endunless" data-bs-toggle="collapse" data-bs-target="#{{ $sectionKey }}">
-                            {{ $strukturSectionLabels[$sectionKey] ?? $fallbackLabel }}
+                        <button class="accordion-button @unless($isFirst) collapsed @endunless" data-bs-toggle="collapse" data-bs-target="#sec-{{ $sectionKey }}">
+                            {{ $strukturSection->translated('name') }}
                         </button>
                     </h3>
-                    <div id="{{ $sectionKey }}" class="accordion-collapse collapse @if($isFirst) show @endif" data-bs-parent="#strukturAccordion">
+                    <div id="sec-{{ $sectionKey }}" class="accordion-collapse collapse @if($isFirst) show @endif" data-bs-parent="#strukturAccordion">
                         <div class="accordion-body">
                             <div class="row justify-content-center g-4">
                                 @foreach($members as $member)

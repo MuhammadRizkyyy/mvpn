@@ -65,12 +65,31 @@
                     Visi &amp; Misi
                 </x-admin.nav-item>
 
-                <x-admin.nav-item :href="route('admin.pengurus.index')" :active="request()->routeIs('admin.pengurus.*')">
-                    <x-slot:icon>
+                <details class="group/struktur mb-0.5" @if(request()->routeIs('admin.pengurus.*') || request()->routeIs('admin.pengurus-sections.*')) open @endif>
+                <summary class="flex cursor-pointer list-none items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800 [&::-webkit-details-marker]:hidden">
+                    <span class="h-4 w-4 shrink-0 text-neutral-400">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M2 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1"/><circle cx="18" cy="8" r="2.2"/><path d="M22 21v-1a5 5 0 0 0-3.5-4.8"/></svg>
-                    </x-slot:icon>
-                    Struktur Pengurus
-                </x-admin.nav-item>
+                    </span>
+                    <span class="min-w-0 flex-1 truncate">Struktur Komunitas</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0 text-neutral-400 transition-transform group-open/struktur:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </summary>
+
+                <div class="ml-[26px] mt-0.5 border-l border-neutral-200 pl-3">
+                    <x-admin.nav-item :href="route('admin.pengurus.index')" :active="request()->routeIs('admin.pengurus.*')">
+                        <x-slot:icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 21v-1.2A5.8 5.8 0 0 1 10.8 14h2.4A5.8 5.8 0 0 1 19 19.8V21"/></svg>
+                        </x-slot:icon>
+                        Anggota Pengurus
+                    </x-admin.nav-item>
+
+                    <x-admin.nav-item :href="route('admin.pengurus-sections.index')" :active="request()->routeIs('admin.pengurus-sections.*')">
+                        <x-slot:icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="16" width="6" height="5" rx="1"/><rect x="16" y="16" width="6" height="5" rx="1"/><path d="M12 7v4M5 16v-2h14v2"/></svg>
+                        </x-slot:icon>
+                        Divisi
+                    </x-admin.nav-item>
+                </div>
+                </details>
 
                 <x-admin.nav-item :href="route('admin.language-coordinators.index')" :active="request()->routeIs('admin.language-coordinators.*')">
                     <x-slot:icon>
