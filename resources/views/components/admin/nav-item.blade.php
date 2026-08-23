@@ -2,7 +2,7 @@
 
 <a href="{{ $disabled ? '#' : $href }}"
    @if($disabled) aria-disabled="true" onclick="return false;" @endif
-   class="group mb-0.5 flex items-center gap-3 rounded-lg border-l-2 px-3 py-2 text-sm font-medium transition-colors
+   class="group relative mb-0.5 flex items-center gap-3 rounded-lg border-l-2 px-3 py-2 text-sm font-medium transition-colors
    {{ $active
         ? 'border-primary-500 bg-primary-50 text-primary-600'
         : ($disabled
@@ -11,6 +11,7 @@
     <span class="h-4 w-4 shrink-0 {{ $active ? 'text-primary-500' : ($disabled ? 'text-neutral-300' : 'text-neutral-400 group-hover:text-primary-500') }}">
         {{ $icon }}
     </span>
-    <span class="min-w-0 flex-1 truncate">{{ $slot }}</span>
-    @isset($trailing){{ $trailing }}@endisset
+    <span class="sidebar-label min-w-0 flex-1 truncate">{{ $slot }}</span>
+    @isset($trailing)<span class="sidebar-label">{{ $trailing }}</span>@endisset
+    <span class="sidebar-tooltip pointer-events-none absolute left-full top-1/2 z-50 ml-2 -translate-y-1/2 whitespace-nowrap rounded-md bg-neutral-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-lg">{{ $slot }}</span>
 </a>

@@ -31,7 +31,7 @@
                 <p class="text-sm text-neutral-500">Belum ada penanggung jawab untuk kelas {{ $label }}.</p>
             </div>
         @else
-            <ul class="js-reorder-list divide-y divide-neutral-100" data-reorder-section="{{ $key }}">
+            <ul class="divide-y divide-neutral-100" data-reorder-url="{{ route('admin.language-coordinators.reorder') }}" data-reorder-key="language" data-reorder-value="{{ $key }}">
                 @foreach($items as $item)
                     <li class="js-reorder-item flex items-center justify-between gap-4 px-5 py-3" data-id="{{ $item->id }}">
                         <div class="flex min-w-0 items-center gap-3">
@@ -78,88 +78,5 @@
 @endforeach
 </div>
 
-<script>
-document.querySelectorAll('.js-reorder-list').forEach(function (list) {
-    let draggedItem = null;
-
-    list.querySelectorAll('.js-drag-handle').forEach(function (handle) {
-        // MOUSE (native HTML5 drag-and-drop)
-        handle.addEventListener('mousedown', function () {
-            handle.closest('.js-reorder-item').draggable = true;
-        });
-        handle.addEventListener('mouseup', function () {
-            handle.closest('.js-reorder-item').draggable = false;
-        });
-
-        // TOUCH (HTML5 DnD has no touch support, so this is a separate path)
-        handle.addEventListener('touchstart', function () {
-            draggedItem = handle.closest('.js-reorder-item');
-            draggedItem.classList.add('opacity-40');
-        }, { passive: true });
-
-        handle.addEventListener('touchmove', function (e) {
-            if (!draggedItem) return;
-            e.preventDefault();
-            const touch = e.touches[0];
-            const target = document.elementFromPoint(touch.clientX, touch.clientY);
-            const item = target && target.closest('.js-reorder-item');
-            if (!item || item === draggedItem || !list.contains(item)) return;
-            const rect = item.getBoundingClientRect();
-            const isAfter = touch.clientY > rect.top + rect.height / 2;
-            item.parentNode.insertBefore(draggedItem, isAfter ? item.nextSibling : item);
-        }, { passive: false });
-
-        handle.addEventListener('touchend', function () {
-            if (!draggedItem) return;
-            draggedItem.classList.remove('opacity-40');
-            persistOrder(list);
-            draggedItem = null;
-        });
-    });
-
-    list.addEventListener('dragstart', function (e) {
-        const item = e.target.closest('.js-reorder-item');
-        if (!item) return;
-        draggedItem = item;
-        e.dataTransfer.effectAllowed = 'move';
-        setTimeout(function () { item.classList.add('opacity-40'); }, 0);
-    });
-
-    list.addEventListener('dragover', function (e) {
-        e.preventDefault();
-        const item = e.target.closest('.js-reorder-item');
-        if (!item || item === draggedItem || !draggedItem) return;
-        const rect = item.getBoundingClientRect();
-        const isAfter = e.clientY > rect.top + rect.height / 2;
-        item.parentNode.insertBefore(draggedItem, isAfter ? item.nextSibling : item);
-    });
-
-    list.addEventListener('dragend', function () {
-        if (!draggedItem) return;
-        draggedItem.classList.remove('opacity-40');
-        draggedItem.draggable = false;
-        persistOrder(list);
-        draggedItem = null;
-    });
-
-    function persistOrder(list) {
-        const ids = Array.from(list.querySelectorAll('.js-reorder-item')).map(function (el) {
-            return el.dataset.id;
-        });
-
-        fetch('{{ route("admin.language-coordinators.reorder") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            },
-            body: JSON.stringify({
-                language: list.dataset.reorderSection,
-                ids: ids,
-            }),
-        });
-    }
-});
-</script>
 
 @endsection

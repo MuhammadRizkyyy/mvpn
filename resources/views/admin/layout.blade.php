@@ -27,19 +27,19 @@
     </div>
 
     {{-- SIDEBAR --}}
-    <aside id="admin-sidebar" class="hidden w-full flex-col border-r border-neutral-200 bg-white lg:flex lg:w-64 lg:shrink-0 lg:sticky lg:top-0 lg:h-screen">
+    <aside id="admin-sidebar" class="hidden w-full flex-col border-r border-neutral-200 bg-white transition-[width] duration-200 lg:flex lg:w-64 lg:shrink-0 lg:sticky lg:top-0 lg:h-screen">
         <div class="hidden items-center gap-2 px-5 py-5 lg:flex">
-            <img src="{{ asset('assets/img/mvpn.png') }}" alt="Logo MVP.N" class="h-9 w-9 object-contain">
-            <div class="leading-tight">
+            <img src="{{ asset('assets/img/mvpn.png') }}" alt="Logo MVP.N" class="h-9 w-9 object-contain shrink-0">
+            <div class="sidebar-label leading-tight">
                 <p class="font-display text-sm font-semibold text-neutral-950">MVP.N Admin</p>
                 <p class="text-xs text-neutral-400">Panel Operator</p>
             </div>
         </div>
 
-        <nav class="flex-1 space-y-6 overflow-y-auto px-3 py-4 lg:py-0">
+        <nav class="flex-1 space-y-6 overflow-y-auto overflow-x-hidden px-3 py-4 lg:py-0">
 
             <div>
-                <p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">Overview</p>
+                <p class="sidebar-label px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">Overview</p>
                 <x-admin.nav-item :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                     <x-slot:icon>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
@@ -49,7 +49,7 @@
             </div>
 
             <div>
-                <p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">Konten Website</p>
+                <p class="sidebar-label px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">Konten Website</p>
 
                 <x-admin.nav-item :href="route('admin.about.edit')" :active="request()->routeIs('admin.about.*')">
                     <x-slot:icon>
@@ -65,12 +65,39 @@
                     Visi &amp; Misi
                 </x-admin.nav-item>
 
-                <x-admin.nav-item :href="route('admin.pengurus.index')" :active="request()->routeIs('admin.pengurus.*')">
-                    <x-slot:icon>
+                <div class="sidebar-group relative">
+                <details class="group/struktur mb-0.5" @if(request()->routeIs('admin.pengurus.*') || request()->routeIs('admin.pengurus-sections.*')) open @endif>
+                <summary class="flex cursor-pointer list-none items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800 [&::-webkit-details-marker]:hidden">
+                    <span class="h-4 w-4 shrink-0 text-neutral-400">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M2 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1"/><circle cx="18" cy="8" r="2.2"/><path d="M22 21v-1a5 5 0 0 0-3.5-4.8"/></svg>
-                    </x-slot:icon>
-                    Struktur Pengurus
-                </x-admin.nav-item>
+                    </span>
+                    <span class="sidebar-label min-w-0 flex-1 truncate">Struktur Komunitas</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="sidebar-label h-3.5 w-3.5 shrink-0 text-neutral-400 transition-transform group-open/struktur:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </summary>
+
+                <div class="sidebar-inline-submenu ml-[26px] mt-0.5 border-l border-neutral-200 pl-3">
+                    <x-admin.nav-item :href="route('admin.pengurus.index')" :active="request()->routeIs('admin.pengurus.*')">
+                        <x-slot:icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 21v-1.2A5.8 5.8 0 0 1 10.8 14h2.4A5.8 5.8 0 0 1 19 19.8V21"/></svg>
+                        </x-slot:icon>
+                        Anggota Pengurus
+                    </x-admin.nav-item>
+
+                    <x-admin.nav-item :href="route('admin.pengurus-sections.index')" :active="request()->routeIs('admin.pengurus-sections.*')">
+                        <x-slot:icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="16" width="6" height="5" rx="1"/><rect x="16" y="16" width="6" height="5" rx="1"/><path d="M12 7v4M5 16v-2h14v2"/></svg>
+                        </x-slot:icon>
+                        Divisi
+                    </x-admin.nav-item>
+                </div>
+                </details>
+
+                <div class="sidebar-flyout invisible absolute left-full top-0 z-50 ml-2 w-56 rounded-lg border border-neutral-200 bg-white py-2 opacity-0 shadow-lg">
+                    <p class="px-3 pb-1 text-xs font-semibold uppercase tracking-wider text-neutral-400">Struktur Komunitas</p>
+                    <a href="{{ route('admin.pengurus.index') }}" class="block px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-primary-600">Anggota Pengurus</a>
+                    <a href="{{ route('admin.pengurus-sections.index') }}" class="block px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-primary-600">Divisi</a>
+                </div>
+                </div>
 
                 <x-admin.nav-item :href="route('admin.language-coordinators.index')" :active="request()->routeIs('admin.language-coordinators.*')">
                     <x-slot:icon>
@@ -79,12 +106,39 @@
                     PJ Kelas Bahasa
                 </x-admin.nav-item>
 
-                <x-admin.nav-item :href="route('admin.kegiatan.index')" :active="request()->routeIs('admin.kegiatan.*')">
-                    <x-slot:icon>
+                <div class="sidebar-group relative">
+                <details class="group/proker mb-0.5" @if(request()->routeIs('admin.kegiatan.*') || request()->routeIs('admin.kegiatan-categories.*')) open @endif>
+                <summary class="flex cursor-pointer list-none items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800 [&::-webkit-details-marker]:hidden">
+                    <span class="h-4 w-4 shrink-0 text-neutral-400">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11 3 6.5 9 2l6 4.5L9 11Z"/><path d="M9 11v11"/><path d="m15 6.5 6 4.5-6 4.5"/><path d="M15 11v11"/></svg>
-                    </x-slot:icon>
-                    Program Kerja
-                </x-admin.nav-item>
+                    </span>
+                    <span class="sidebar-label min-w-0 flex-1 truncate">Program Kerja</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="sidebar-label h-3.5 w-3.5 shrink-0 text-neutral-400 transition-transform group-open/proker:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </summary>
+
+                <div class="sidebar-inline-submenu ml-[26px] mt-0.5 border-l border-neutral-200 pl-3">
+                    <x-admin.nav-item :href="route('admin.kegiatan.index')" :active="request()->routeIs('admin.kegiatan.*')">
+                        <x-slot:icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        </x-slot:icon>
+                        Isi Program
+                    </x-admin.nav-item>
+
+                    <x-admin.nav-item :href="route('admin.kegiatan-categories.index')" :active="request()->routeIs('admin.kegiatan-categories.*')">
+                        <x-slot:icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h3l2 2h9a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
+                        </x-slot:icon>
+                        Tab Program
+                    </x-admin.nav-item>
+                </div>
+                </details>
+
+                <div class="sidebar-flyout invisible absolute left-full top-0 z-50 ml-2 w-56 rounded-lg border border-neutral-200 bg-white py-2 opacity-0 shadow-lg">
+                    <p class="px-3 pb-1 text-xs font-semibold uppercase tracking-wider text-neutral-400">Program Kerja</p>
+                    <a href="{{ route('admin.kegiatan.index') }}" class="block px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-primary-600">Isi Program</a>
+                    <a href="{{ route('admin.kegiatan-categories.index') }}" class="block px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-primary-600">Tab Program</a>
+                </div>
+                </div>
 
                 <x-admin.nav-item :href="route('admin.mitra.index')" :active="request()->routeIs('admin.mitra.*')">
                     <x-slot:icon>
@@ -102,7 +156,7 @@
             </div>
 
             <div>
-                <p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">Interaksi</p>
+                <p class="sidebar-label px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">Interaksi</p>
 
                 <x-admin.nav-item :href="route('admin.partnerships.index')" :active="request()->routeIs('admin.partnerships.*')">
                     <x-slot:icon>
@@ -125,8 +179,8 @@
 
         <div class="border-t border-neutral-200 px-3 py-4">
             <div class="flex items-center gap-3 rounded-lg px-3 py-2">
-                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-primary-50 text-sm font-semibold text-primary-600">A</span>
-                <div class="min-w-0 flex-1 leading-tight">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-50 text-sm font-semibold text-primary-600">A</span>
+                <div class="sidebar-label min-w-0 flex-1 leading-tight">
                     <p class="truncate text-sm font-medium text-neutral-950">Admin</p>
                     <p class="truncate text-xs text-neutral-400">Operator</p>
                 </div>
@@ -135,7 +189,7 @@
                 @csrf
                 <button type="submit" class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-neutral-500 transition-colors hover:bg-primary-50 hover:text-primary-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                    Keluar
+                    <span class="sidebar-label">Keluar</span>
                 </button>
             </form>
         </div>
@@ -144,11 +198,17 @@
     {{-- MAIN --}}
     <div class="flex min-w-0 flex-1 flex-col">
         <header class="hidden items-center justify-between border-b border-neutral-200 bg-white px-6 py-3 lg:flex">
-            <nav class="text-sm text-neutral-500" aria-label="Breadcrumb">
-                <span class="text-neutral-400">Admin</span>
-                <span class="mx-1.5 text-neutral-300">/</span>
-                <span class="font-medium text-neutral-800">@yield('title', 'Dashboard')</span>
-            </nav>
+            <div class="flex items-center gap-3">
+                <button type="button" id="sidebar-collapse-toggle"
+                        class="rounded-md p-1.5 text-neutral-500 hover:bg-neutral-100" aria-label="Ciutkan/lebarkan sidebar">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+                </button>
+                <nav class="text-sm text-neutral-500" aria-label="Breadcrumb">
+                    <span class="text-neutral-400">Admin</span>
+                    <span class="mx-1.5 text-neutral-300">/</span>
+                    <span class="font-medium text-neutral-800">@yield('title', 'Dashboard')</span>
+                </nav>
+            </div>
 
             @if(($pendingReviewCount ?? 0) > 0)
                 <a href="{{ route('admin.partnerships.index') }}" class="flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-100 px-3 py-1.5 text-xs font-semibold text-gold-600 transition-colors hover:bg-gold-400/30">
@@ -164,5 +224,43 @@
     </div>
 </div>
 
+<style>
+    #admin-sidebar.is-collapsed { width: 4.5rem; }
+    #admin-sidebar.is-collapsed .sidebar-label { display: none; }
+    #admin-sidebar.is-collapsed .sidebar-inline-submenu { display: none; }
+    .sidebar-flyout {
+        transition: opacity .12s ease, visibility 0s linear .3s;
+    }
+    #admin-sidebar.is-collapsed .sidebar-group:hover .sidebar-flyout {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity .12s ease, visibility 0s linear 0s;
+    }
+    #admin-sidebar:not(.is-collapsed) .sidebar-tooltip,
+    #admin-sidebar:not(.is-collapsed) .sidebar-flyout {
+        display: none;
+    }
+    .sidebar-tooltip {
+        transition: opacity .12s ease .15s;
+    }
+    #admin-sidebar.is-collapsed .group:hover .sidebar-tooltip {
+        opacity: 1;
+        transition: opacity .12s ease;
+    }
+</style>
+<script>
+    (function () {
+        var sidebar = document.getElementById('admin-sidebar');
+        var toggle = document.getElementById('sidebar-collapse-toggle');
+        if (!sidebar || !toggle) return;
+        if (localStorage.getItem('admin-sidebar-collapsed') === '1') {
+            sidebar.classList.add('is-collapsed');
+        }
+        toggle.addEventListener('click', function () {
+            var collapsed = sidebar.classList.toggle('is-collapsed');
+            localStorage.setItem('admin-sidebar-collapsed', collapsed ? '1' : '0');
+        });
+    })();
+</script>
 </body>
 </html>

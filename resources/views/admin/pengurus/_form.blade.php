@@ -14,8 +14,8 @@
     <label for="section" class="mb-1.5 block text-xs font-medium text-neutral-600">Divisi</label>
     <select name="section" id="section" required
             class="block w-full rounded-lg border-neutral-300 text-sm focus:border-navy-500 focus:ring-navy-500">
-        @foreach(\App\Models\Pengurus::SECTIONS as $key => $label)
-            <option value="{{ $key }}" @selected(old('section', $pengurus->section ?? '') === $key)>{{ $label }}</option>
+        @foreach($sections as $section)
+            <option value="{{ $section->slug }}" @selected(old('section', $pengurus->section ?? '') === $section->slug)>{{ $section->name }}</option>
         @endforeach
     </select>
 </div>

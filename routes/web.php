@@ -107,6 +107,20 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         ->name('partnerships.destroy');
 
     // Program Kerja (Kegiatan)
+    Route::get('/tab-proker', [\App\Http\Controllers\Admin\KegiatanCategoryController::class, 'index'])
+        ->name('kegiatan-categories.index');
+    Route::get('/tab-proker/tambah', [\App\Http\Controllers\Admin\KegiatanCategoryController::class, 'create'])
+        ->name('kegiatan-categories.create');
+    Route::post('/tab-proker', [\App\Http\Controllers\Admin\KegiatanCategoryController::class, 'store'])
+        ->name('kegiatan-categories.store');
+    Route::post('/tab-proker/reorder', [\App\Http\Controllers\Admin\KegiatanCategoryController::class, 'reorder'])
+        ->name('kegiatan-categories.reorder');
+    Route::get('/tab-proker/{kegiatanCategory}/edit', [\App\Http\Controllers\Admin\KegiatanCategoryController::class, 'edit'])
+        ->name('kegiatan-categories.edit');
+    Route::put('/tab-proker/{kegiatanCategory}', [\App\Http\Controllers\Admin\KegiatanCategoryController::class, 'update'])
+        ->name('kegiatan-categories.update');
+    Route::delete('/tab-proker/{kegiatanCategory}', [\App\Http\Controllers\Admin\KegiatanCategoryController::class, 'destroy'])
+        ->name('kegiatan-categories.destroy');
     Route::post('/kegiatan/reorder', [\App\Http\Controllers\Admin\KegiatanController::class, 'reorder'])
         ->name('kegiatan.reorder');
     Route::resource('kegiatan', \App\Http\Controllers\Admin\KegiatanController::class)
@@ -133,6 +147,16 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         ->name('misi.reorder');
 
     // Struktur Pengurus
+    Route::get('/divisi', [\App\Http\Controllers\Admin\PengurusSectionController::class, 'index'])
+        ->name('pengurus-sections.index');
+    Route::post('/divisi', [\App\Http\Controllers\Admin\PengurusSectionController::class, 'store'])
+        ->name('pengurus-sections.store');
+    Route::post('/divisi/reorder', [\App\Http\Controllers\Admin\PengurusSectionController::class, 'reorder'])
+        ->name('pengurus-sections.reorder');
+    Route::put('/divisi/{pengurusSection}', [\App\Http\Controllers\Admin\PengurusSectionController::class, 'update'])
+        ->name('pengurus-sections.update');
+    Route::delete('/divisi/{pengurusSection}', [\App\Http\Controllers\Admin\PengurusSectionController::class, 'destroy'])
+        ->name('pengurus-sections.destroy');
     Route::post('/pengurus/reorder', [\App\Http\Controllers\Admin\PengurusController::class, 'reorder'])
         ->name('pengurus.reorder');
     Route::resource('pengurus', \App\Http\Controllers\Admin\PengurusController::class)

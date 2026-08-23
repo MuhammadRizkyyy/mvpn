@@ -18,19 +18,22 @@ class PengurusController extends Controller
     public function index()
     {
         $pengurus = Pengurus::orderBy('section')->orderBy('order')->get()->groupBy('section');
+        $sections = \App\Models\PengurusSection::ordered();
 
-        return view('admin.pengurus.index', compact('pengurus'));
+        return view('admin.pengurus.index', compact('pengurus', 'sections'));
     }
 
     public function create()
     {
-        return view('admin.pengurus.create');
+        $sections = \App\Models\PengurusSection::ordered();
+
+        return view('admin.pengurus.create', compact('sections'));
     }
 
     public function store(Request $request, TranslationService $translator)
     {
         $validated = $request->validate([
-            'section' => 'required|in:' . implode(',', array_keys(Pengurus::SECTIONS)),
+            'section' => 'required|exists:pengurus_sections,slug',
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
@@ -54,13 +57,15 @@ class PengurusController extends Controller
 
     public function edit(Pengurus $pengurus)
     {
-        return view('admin.pengurus.edit', compact('pengurus'));
+        $sections = \App\Models\PengurusSection::ordered();
+
+        return view('admin.pengurus.edit', compact('pengurus', 'sections'));
     }
 
     public function update(Request $request, Pengurus $pengurus, TranslationService $translator)
     {
         $validated = $request->validate([
-            'section' => 'required|in:' . implode(',', array_keys(Pengurus::SECTIONS)),
+            'section' => 'required|exists:pengurus_sections,slug',
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
@@ -95,7 +100,7 @@ class PengurusController extends Controller
     public function reorder(Request $request)
     {
         $validated = $request->validate([
-            'section' => 'required|in:' . implode(',', array_keys(Pengurus::SECTIONS)),
+            'section' => 'required|exists:pengurus_sections,slug',
             'ids' => 'required|array',
             'ids.*' => 'integer|exists:pengurus,id',
         ]);
