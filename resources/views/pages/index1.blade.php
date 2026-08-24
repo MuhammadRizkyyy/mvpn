@@ -121,17 +121,10 @@ html {
     padding: 0 20px;
 }
 
-@media (max-width: 767.98px) {
-    .hero-stats-strip {
-        margin-top: -40px;
-    }
-}
-
 .hero-stats {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: clamp(12px, 3vw, 20px);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(4px, 3vw, 20px);
     background: #fff;
     border-radius: var(--radius-lg, 22px);
     box-shadow: var(--shadow-lg);
@@ -139,9 +132,9 @@ html {
 }
 
 .hero-stat {
-    flex: 1 1 140px;
+    min-width: 0;
     text-align: center;
-    padding: clamp(10px, 2vw, 16px) clamp(12px, 2vw, 20px);
+    padding: clamp(10px, 2vw, 16px) clamp(4px, 2vw, 20px);
     border-radius: var(--radius-md, 16px);
     transition: transform .3s var(--ease-material, ease), background .3s;
 }
@@ -154,16 +147,16 @@ html {
 .hero-stat-value {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-size: clamp(1.4rem, 6vw, 2.6rem);
     color: var(--color-primary-500);
     line-height: 1;
 }
 
 .hero-stat-label {
     margin-top: 8px;
-    font-size: clamp(0.7rem, 1.4vw, 0.82rem);
+    font-size: clamp(0.62rem, 1.4vw, 0.82rem);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     color: var(--color-navy-500);
     font-weight: 600;
 }
@@ -191,6 +184,10 @@ html {
 @media (max-width: 991.98px) {
     .global-map {
         height: 90vh;
+    }
+
+    .hero-stats-strip {
+        margin-top: -40px;
     }
 }
 
