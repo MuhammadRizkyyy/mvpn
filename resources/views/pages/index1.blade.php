@@ -252,6 +252,9 @@ html {
     >
 </section>
 
+@php
+    $prokerCategoryCount = \App\Models\KegiatanCategory::cached()->count();
+@endphp
 <div class="hero-stats-strip">
     <div class="hero-stats">
         <div class="hero-stat">
@@ -259,7 +262,7 @@ html {
             <div class="hero-stat-label">{{ __('site.home.stat_1_label') }}</div>
         </div>
         <div class="hero-stat">
-            <div class="hero-stat-value">{{ __('site.home.stat_2_value') }}</div>
+            <div class="hero-stat-value">{{ $prokerCategoryCount }}</div>
             <div class="hero-stat-label">{{ __('site.home.stat_2_label') }}</div>
         </div>
         <div class="hero-stat">
