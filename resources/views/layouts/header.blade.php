@@ -548,6 +548,10 @@
                 <li class="nav-item">
                     <a class="nav-link" data-section="kerjasama" href="{{ request()->routeIs('index1') ? '#kerjasama' : '/#kerjasama' }}">{{ __('site.nav.kerjasama') }}</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('keanggotaan.*') ? 'active' : '' }}" href="{{ route('keanggotaan.form') }}">{{ __('site.nav.keanggotaan') }}</a>
+                </li>
             </ul>
 
             <ul class="navbar-nav lang-nav">

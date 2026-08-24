@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\PartnershipController;
+use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\Admin\PartnershipAdminController;
+use App\Http\Controllers\Admin\MembershipAdminController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminGalleryController;
 
@@ -68,6 +70,18 @@ Route::post('/partnership', [PartnershipController::class, 'store'])
 
 /*
 |--------------------------------------------------------------------------
+| KEANGGOTAAN (USER)
+|--------------------------------------------------------------------------
+*/
+Route::get('/keanggotaan', [MembershipController::class, 'create'])
+    ->name('keanggotaan.form');
+
+Route::post('/keanggotaan', [MembershipController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('keanggotaan.store');
+
+/*
+|--------------------------------------------------------------------------
 | ADMIN AUTH
 |--------------------------------------------------------------------------
 */
@@ -105,6 +119,28 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::delete('/partnerships/{id}', [PartnershipAdminController::class, 'destroy'])
         ->name('partnerships.destroy');
+
+    // Membership Management
+    Route::get('/memberships', [MembershipAdminController::class, 'index'])
+        ->name('memberships.index');
+
+    Route::get('/memberships/{id}', [MembershipAdminController::class, 'show'])
+        ->name('memberships.show');
+
+    Route::post('/memberships/{id}/verify', [MembershipAdminController::class, 'verify'])
+        ->name('memberships.verify');
+
+    Route::post('/memberships/{id}/interview', [MembershipAdminController::class, 'interview'])
+        ->name('memberships.interview');
+
+    Route::post('/memberships/{id}/accept', [MembershipAdminController::class, 'accept'])
+        ->name('memberships.accept');
+
+    Route::post('/memberships/{id}/reject', [MembershipAdminController::class, 'reject'])
+        ->name('memberships.reject');
+
+    Route::delete('/memberships/{id}', [MembershipAdminController::class, 'destroy'])
+        ->name('memberships.destroy');
 
     // Program Kerja (Kegiatan)
     Route::get('/tab-proker', [\App\Http\Controllers\Admin\KegiatanCategoryController::class, 'index'])
