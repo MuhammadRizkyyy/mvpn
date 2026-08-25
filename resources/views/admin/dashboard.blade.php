@@ -50,6 +50,14 @@
         <p class="mt-3 font-display text-2xl font-bold text-neutral-950">{{ $totalGaleri }}</p>
         <p class="text-xs font-medium text-neutral-600">Total Galeri</p>
     </div>
+
+    <a href="{{ route('admin.memberships.index') }}" class="rounded-2xl border border-emerald-500/20 bg-emerald-50/60 p-4 transition-colors hover:bg-emerald-50">
+        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-emerald-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        </span>
+        <p class="mt-3 font-display text-2xl font-bold text-neutral-950">{{ $pendingMembership }}</p>
+        <p class="text-xs font-medium text-neutral-600">Sedang Mendaftar Anggota</p>
+    </a>
 </div>
 
 <div class="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-3">

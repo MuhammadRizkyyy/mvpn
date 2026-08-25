@@ -6,15 +6,10 @@
 
 <style>
 .keang-hero {
-    background: linear-gradient(155deg, var(--color-navy-700), var(--color-navy-900));
-    color: #fff;
+    background: #fff;
+    color: var(--color-navy-900);
     padding: 72px 0 56px;
     text-align: center;
-}
-
-.keang-hero .section-eyebrow {
-    background: rgba(255,255,255,0.1);
-    color: var(--color-gold-500);
 }
 
 .keang-hero h1 {
@@ -23,12 +18,26 @@
     margin: 14px 0 10px;
 }
 
+.keang-hero h1 .stagger-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(14px);
+    animation: heroWordIn 0.6s var(--ease-material, ease) forwards;
+    animation-delay: calc(var(--i) * 0.06s);
+}
+
 .keang-hero p {
-    color: rgba(255,255,255,0.75);
+    color: #555;
     max-width: 560px;
     margin: 0 auto;
     font-size: 1rem;
     line-height: 1.6;
+}
+
+@keyframes heroWordIn { to { opacity: 1; transform: translateY(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .keang-hero h1 .stagger-word { animation: none; opacity: 1; transform: none; }
 }
 
 .keang-section {
@@ -119,13 +128,46 @@
     background: var(--color-primary-300);
 }
 
+.keang-stepper-item.is-active .keang-stepper-circle { animation: stepperPop 0.35s var(--ease-material, ease); }
+
+@keyframes stepperPop { 0% { transform: scale(0.8); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+
 @media (max-width: 575.98px) {
     .keang-stepper-label { display: none; }
+}
+
+/* Progress bar */
+.keang-progress {
+    height: 4px;
+    border-radius: 999px;
+    background: var(--color-navy-50);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.keang-progress-bar {
+    height: 100%;
+    width: 20%;
+    border-radius: 999px;
+    background: var(--color-primary-500);
+    transition: width 0.35s var(--ease-material, ease);
 }
 
 /* Wizard steps */
 .wizard-step { display: none; }
 .wizard-step.active { display: block; animation: fadeUp 0.35s ease; }
+.wizard-step.active.step-forward { animation: slideInRight 0.35s var(--ease-material, ease); }
+.wizard-step.active.step-back { animation: slideInLeft 0.35s var(--ease-material, ease); }
+
+@keyframes slideInRight { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideInLeft { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: translateX(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .wizard-step.active,
+    .wizard-step.active.step-forward,
+    .wizard-step.active.step-back { animation: none; }
+    .keang-stepper-item.is-active .keang-stepper-circle { animation: none; }
+}
 
 .wizard-step-title {
     font-size: 1.15rem;
@@ -172,6 +214,19 @@
 .keang-section .text-muted { color: #888 !important; font-size: 0.8rem; }
 
 .keang-field { margin-bottom: 18px; }
+.wizard-step.active .keang-field,
+.wizard-step.active .keang-interest-grid,
+.wizard-step.active .keang-statement,
+.wizard-step.active .keang-check {
+    animation: fadeUp 0.4s var(--ease-material, ease) backwards;
+    animation-delay: calc(var(--fi, 0) * 0.05s);
+}
+@media (prefers-reduced-motion: reduce) {
+    .wizard-step.active .keang-field,
+    .wizard-step.active .keang-interest-grid,
+    .wizard-step.active .keang-statement,
+    .wizard-step.active .keang-check { animation: none; }
+}
 .keang-field label {
     display: block;
     font-size: 0.85rem;
@@ -201,11 +256,12 @@
     padding: 12px 14px;
     cursor: pointer;
     font-size: 0.88rem;
-    transition: border-color .2s, background .2s, opacity .2s;
+    transition: border-color .2s, background .2s, opacity .2s, transform .2s;
 }
 
 .keang-interest-pill input { accent-color: var(--color-primary-500); }
-.keang-interest-pill:has(input:checked) { border-color: var(--color-primary-500); background: var(--color-primary-50); }
+.keang-interest-pill:hover:not(:has(input:disabled)) { border-color: var(--color-primary-300); transform: translateY(-1px); }
+.keang-interest-pill:has(input:checked) { border-color: var(--color-primary-500); background: var(--color-primary-50); transform: scale(1.015); }
 .keang-interest-pill:has(input:disabled:not(:checked)) { opacity: 0.45; cursor: not-allowed; }
 
 .keang-interest-hint {
@@ -253,10 +309,11 @@
     padding: 13px 22px;
     font-weight: 600;
     color: #555;
-    transition: border-color .2s, color .2s;
+    transition: border-color .2s, color .2s, transform .2s;
 }
 
-.keang-btn-back:hover { border-color: var(--color-navy-300); color: var(--color-navy-500); }
+.keang-btn-back:hover { border-color: var(--color-navy-300); color: var(--color-navy-500); transform: translateX(-2px); }
+.keang-btn-back:active { transform: translateX(-2px) scale(0.97); }
 
 .keang-btn-next,
 .keang-btn-submit {
@@ -278,9 +335,13 @@
     background: var(--color-primary-600);
     box-shadow: 0 12px 28px rgba(206,17,38,0.28);
     color: #fff;
+    transform: translateY(-2px);
 }
 
-.keang-btn-submit:disabled { cursor: not-allowed; opacity: 0.85; }
+.keang-btn-next:active,
+.keang-btn-submit:active { transform: translateY(0) scale(0.97); }
+
+.keang-btn-submit:disabled { cursor: not-allowed; opacity: 0.85; transform: none; }
 
 .keang-btn-submit-spinner {
     display: none;
@@ -329,9 +390,9 @@
 
 <section class="keang-hero">
     <div class="container">
-        <span class="section-eyebrow">{{ __('site.nav.keanggotaan') }}</span>
-        <h1>{{ __('site.keanggotaan.title') }}</h1>
-        <p>{{ __('site.keanggotaan.subtitle') }}</p>
+        <span class="section-eyebrow reveal">{{ __('site.nav.keanggotaan') }}</span>
+        <h1><x-stagger-words :text="__('site.keanggotaan.title')" /></h1>
+        <p class="reveal reveal-delay-1">{{ __('site.keanggotaan.subtitle') }}</p>
     </div>
 </section>
 
@@ -354,6 +415,8 @@
                     <button type="button" class="error-toast-close" onclick="closeErrorToast()" aria-label="Close">&times;</button>
                 </div>
             @endif
+
+            <div class="keang-progress"><div class="keang-progress-bar" id="keangProgressBar"></div></div>
 
             <div class="keang-stepper" id="keangStepper">
                 @foreach([1,2,3,4,5] as $s)
@@ -661,12 +724,16 @@ function closeErrorToast() {
     var backBtn = document.getElementById('keangBackBtn');
     var nextBtn = document.getElementById('keangNextBtn');
     var submitBtn = document.getElementById('keangSubmitBtn');
+    var progressBar = document.getElementById('keangProgressBar');
     var total = steps.length;
     var current = 1;
 
-    function render() {
+    function render(direction) {
         steps.forEach(function (panel) {
-            panel.classList.toggle('active', Number(panel.dataset.step) === current);
+            var isActive = Number(panel.dataset.step) === current;
+            panel.classList.toggle('active', isActive);
+            panel.classList.remove('step-forward', 'step-back');
+            if (isActive && direction) panel.classList.add(direction === 'forward' ? 'step-forward' : 'step-back');
         });
         stepperItems.forEach(function (item) {
             var n = Number(item.dataset.stepIndicator);
@@ -676,6 +743,7 @@ function closeErrorToast() {
         backBtn.style.display = current === 1 ? 'none' : 'inline-flex';
         nextBtn.style.display = current === total ? 'none' : 'inline-flex';
         submitBtn.style.display = current === total ? 'inline-flex' : 'none';
+        if (progressBar) progressBar.style.width = (current / total * 100) + '%';
     }
 
     function currentPanel() {
@@ -683,8 +751,9 @@ function closeErrorToast() {
     }
 
     function goTo(step) {
+        var direction = step > current ? 'forward' : 'back';
         current = Math.min(Math.max(step, 1), total);
-        render();
+        render(direction);
         form.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
