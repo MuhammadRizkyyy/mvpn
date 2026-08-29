@@ -148,14 +148,9 @@ document.addEventListener('submit', function (event) {
 document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.querySelector('.navbar-custom');
     if (navbar) {
-        const hasOverlay = navbar.classList.contains('navbar-transparent');
-        const threshold = hasOverlay ? 80 : 8;
+        const threshold = 60;
         const toggleScrolled = () => {
-            const scrolled = window.scrollY > threshold;
-            navbar.classList.toggle('navbar-scrolled', scrolled);
-            if (hasOverlay) {
-                navbar.classList.toggle('navbar-transparent', !scrolled);
-            }
+            navbar.classList.toggle('navbar-scrolled', window.scrollY > threshold);
         };
         toggleScrolled();
         window.addEventListener('scroll', toggleScrolled, { passive: true });
@@ -207,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (navMenu.classList.contains('show')) {
-                bootstrap.Collapse.getOrCreateInstance(navMenu).hide();
+                bootstrap.Offcanvas.getOrCreateInstance(navMenu).hide();
             }
         });
     });

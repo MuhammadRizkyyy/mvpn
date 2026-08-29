@@ -373,28 +373,102 @@
             text-shadow: 0 1px 6px rgba(0,0,0,0.35);
         }
 
+        .navbar-custom.navbar-transparent .navbar-brand {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1031;
+            margin: 0;
+            background: #fff;
+            padding: 16px 32px 16px 20px;
+            border-radius: 0 0 36px 0;
+            box-shadow: var(--shadow-md);
+        }
+
         .navbar-custom.navbar-transparent .navbar-brand span {
+            color: var(--color-navy-900);
+        }
+
+        /* Burger: 3 garis polos tanpa kotak (gaya Astra).
+           Gelap di atas background terang, putih hanya saat hero transparan. */
+        .navbar-custom .navbar-toggler {
+            margin-left: auto;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border: none;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .navbar-custom .navbar-toggler-icon {
+            width: 26px;
+            height: 26px;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%2305090F' stroke-width='2.5' stroke-linecap='round' d='M4 8h22M4 15h22M4 22h22'/%3e%3c/svg%3e");
+        }
+
+        /* Putih hanya di atas hero gelap; halaman lain latarnya terang jadi tetap gelap */
+        body.page-hero .navbar-custom:not(.navbar-scrolled) .navbar-toggler-icon {
+            filter: invert(1) drop-shadow(0 1px 4px rgba(0,0,0,0.45));
+        }
+
+        /* Slide-in menu panel from the right (Astra-style rounded sheet) */
+        .nav-offcanvas {
+            width: min(72vw, 900px);
+            background: var(--color-navy-900);
+            border-radius: 40px 0 0 40px;
+            padding: 28px 8px 24px;
+            border-left: none;
             color: #fff;
         }
 
-        .navbar-custom.navbar-transparent .navbar-toggler-icon {
+        .nav-offcanvas .btn-close {
             filter: invert(1);
+            opacity: .8;
         }
 
-        @media (max-width: 991.98px) {
-            .navbar-custom.navbar-transparent .navbar-collapse.show,
-            .navbar-custom.navbar-transparent .navbar-collapse.collapsing {
-                background: var(--color-navy-900);
-                border-radius: 0 0 16px 16px;
-                padding: 8px 8px 16px;
+        .nav-offcanvas .nav-link {
+            color: #fff !important;
+            text-shadow: none;
+        }
+
+        .nav-offcanvas .nav-link.active:not(.dropdown-toggle) {
+            background: rgba(255,255,255,0.12);
+            border-left-color: #fff;
+            color: #fff !important;
+        }
+
+        .nav-offcanvas .lang-nav {
+            border-top-color: rgba(255,255,255,0.15);
+        }
+
+        @media (max-width: 767.98px) {
+            .nav-offcanvas {
+                width: 100%;
+                border-radius: 0;
             }
         }
 
+        /* Brand hidden until the page is scrolled — only the hamburger shows on load */
+        .navbar-brand {
+            opacity: 0;
+            transform: translateY(-8px);
+            pointer-events: none;
+            transition: opacity .35s var(--ease-material), transform .35s var(--ease-material);
+        }
+
+        .navbar-custom.navbar-scrolled .navbar-brand {
+            opacity: 1;
+            transform: none;
+            pointer-events: auto;
+        }
+
         .navbar-nav {
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-            row-gap: 4px;
+            align-items: flex-start;
+            row-gap: 0;
         }
 
         .navbar-nav .nav-link {
@@ -404,46 +478,15 @@
             position: relative;
             transition: 0.25s;
             white-space: nowrap;
-        }
-
-        @media (min-width: 992px) and (max-width: 1399.98px) {
-            .navbar-nav .nav-link {
-                padding: 10px 6px;
-                font-size: 0.78rem;
-                letter-spacing: -0.01em;
-            }
-        }
-
-        @media (min-width: 1400px) and (max-width: 1599.98px) {
-            .navbar-nav .nav-link {
-                padding: 12px 9px;
-                font-size: 0.88rem;
-            }
-        }
-
-        /* Underline effect (excludes the dropdown toggle so its caret stays intact) */
-        .nav-link:not(.dropdown-toggle)::after {
-            content: "";
-            position: absolute;
-            left: 10px;
-            right: 10px;
-            bottom: 6px;
-            width: 0;
-            height: 2px;
-            background: var(--color-primary-500);
-            transition: .3s;
-        }
-
-        .nav-link:not(.dropdown-toggle):hover::after {
-            width: calc(100% - 20px);
+            border-radius: 8px;
+            border-left: 3px solid transparent;
         }
 
         .nav-link.active:not(.dropdown-toggle) {
             color: var(--color-primary-500) !important;
-        }
-
-        .nav-link.active:not(.dropdown-toggle)::after {
-            width: calc(100% - 20px);
+            background: var(--color-primary-50);
+            border-left-color: var(--color-primary-500);
+            font-weight: 700;
         }
 
         .lang-dropdown .dropdown-menu {
@@ -455,39 +498,10 @@
             height: auto;
         }
 
-        @media (max-width: 991.98px) {
-            .navbar-nav {
-                justify-content: flex-start;
-                row-gap: 0;
-            }
-
-            .lang-nav {
-                margin-top: 10px;
-                padding-top: 10px;
-                border-top: 1px solid rgba(0,0,0,0.08);
-            }
-
-            .nav-link:not(.dropdown-toggle)::after {
-                display: none;
-            }
-
-            .nav-link:not(.dropdown-toggle) {
-                border-radius: 8px;
-                border-left: 3px solid transparent;
-            }
-
-            .nav-link.active:not(.dropdown-toggle) {
-                background: var(--color-primary-50);
-                border-left-color: var(--color-primary-500);
-                font-weight: 700;
-            }
-
-            .navbar-custom.navbar-transparent .navbar-collapse .nav-link.active:not(.dropdown-toggle) {
-                background: rgba(255, 255, 255, 0.12);
-                border-left-color: #fff;
-                color: #fff !important;
-                text-shadow: none;
-            }
+        .lang-nav {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0,0,0,0.08);
         }
     </style>
 </head>
@@ -496,9 +510,10 @@
 
 @if(request()->routeIs('index1'))
     @include('layouts.splash')
+    @include('layouts.join-popup')
 @endif
 
-<nav class="navbar navbar-expand-lg navbar-custom {{ request()->routeIs('index1') ? 'navbar-transparent' : '' }}">
+<nav class="navbar navbar-custom navbar-transparent">
     <div class="container-fluid px-3 px-lg-4">
 
         <a class="navbar-brand d-flex align-items-center" href="/">
@@ -506,12 +521,17 @@
             <span class="fw-bold">MVP.N</span>
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navMenu" aria-controls="navMenu" aria-label="Menu">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navMenu">
-            <ul class="navbar-nav mx-auto">
+        <div class="offcanvas offcanvas-end nav-offcanvas" tabindex="-1" id="navMenu" aria-labelledby="navMenuLabel">
+            <div class="offcanvas-header pt-0">
+                <span class="visually-hidden" id="navMenuLabel">Menu</span>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body pt-0">
+            <ul class="navbar-nav">
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('index1') ? 'active' : '' }}" data-section="beranda" href="{{ request()->routeIs('index1') ? '#beranda' : '/#beranda' }}">{{ __('site.nav.beranda') }}</a>
@@ -548,6 +568,10 @@
                 <li class="nav-item">
                     <a class="nav-link" data-section="kerjasama" href="{{ request()->routeIs('index1') ? '#kerjasama' : '/#kerjasama' }}">{{ __('site.nav.kerjasama') }}</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('keanggotaan.*') ? 'active' : '' }}" href="{{ route('keanggotaan.form') }}">{{ __('site.nav.keanggotaan') }}</a>
+                </li>
             </ul>
 
             <ul class="navbar-nav lang-nav">
@@ -563,6 +587,7 @@
                     </ul>
                 </li>
             </ul>
+            </div>
         </div>
 
     </div>

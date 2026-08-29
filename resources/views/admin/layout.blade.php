@@ -168,6 +168,16 @@
                     @endif
                 </x-admin.nav-item>
 
+                <x-admin.nav-item :href="route('admin.memberships.index')" :active="request()->routeIs('admin.memberships.*')">
+                    <x-slot:icon>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="16" y1="11" x2="22" y2="11"/></svg>
+                    </x-slot:icon>
+                    Pendaftaran Anggota
+                    @if(($pendingMembershipCount ?? 0) > 0)
+                        <x-slot:trailing><span class="rounded-full bg-gold-500 px-2 py-0.5 text-[10px] font-semibold text-navy-900">{{ $pendingMembershipCount }}</span></x-slot:trailing>
+                    @endif
+                </x-admin.nav-item>
+
                 <x-admin.nav-item href="{{ url('/admin/gallery') }}" :active="request()->is('admin/gallery*')">
                     <x-slot:icon>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9.5" r="1.75"/><path d="m21 15-5-5-9 9"/></svg>
@@ -210,12 +220,20 @@
                 </nav>
             </div>
 
-            @if(($pendingReviewCount ?? 0) > 0)
-                <a href="{{ route('admin.partnerships.index') }}" class="flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-100 px-3 py-1.5 text-xs font-semibold text-gold-600 transition-colors hover:bg-gold-400/30">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    {{ $pendingReviewCount }} pengajuan menunggu review
-                </a>
-            @endif
+            <div class="flex items-center gap-2">
+                @if(($pendingReviewCount ?? 0) > 0)
+                    <a href="{{ route('admin.partnerships.index') }}" class="flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-100 px-3 py-1.5 text-xs font-semibold text-gold-600 transition-colors hover:bg-gold-400/30">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        {{ $pendingReviewCount }} pengajuan menunggu review
+                    </a>
+                @endif
+                @if(($pendingMembershipCount ?? 0) > 0)
+                    <a href="{{ route('admin.memberships.index') }}" class="flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-100 px-3 py-1.5 text-xs font-semibold text-gold-600 transition-colors hover:bg-gold-400/30">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        {{ $pendingMembershipCount }} pendaftaran anggota menunggu review
+                    </a>
+                @endif
+            </div>
         </header>
 
         <main class="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8" @if(session('success')) data-flash-success="{{ session('success') }}" @endif>

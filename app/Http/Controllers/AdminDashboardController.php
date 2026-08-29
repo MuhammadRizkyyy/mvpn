@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Partnership;
 use App\Models\Gallery;
 use App\Models\Visit;
+use App\Models\Membership;
 
 class AdminDashboardController extends Controller
 {
@@ -15,6 +16,7 @@ class AdminDashboardController extends Controller
         $totalGaleri    = Gallery::count();
         $pengunjungHariIni = Visit::todayCount();
         $totalPengunjung   = Visit::totalUniqueCount();
+        $pendingMembership = Membership::whereNotIn('status', ['accepted', 'rejected'])->count();
 
         $latestPartnerships = Partnership::latest()->take(5)->get();
 
@@ -24,6 +26,7 @@ class AdminDashboardController extends Controller
             'totalGaleri',
             'pengunjungHariIni',
             'totalPengunjung',
+            'pendingMembership',
             'latestPartnerships'
         ));
     }

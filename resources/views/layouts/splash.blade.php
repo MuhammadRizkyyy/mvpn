@@ -160,14 +160,20 @@
             document.body.classList.remove('mvpn-splash-lock');
             setTimeout(function () {
                 splash.remove();
+                done();
             }, HIDE_MS);
         }, HOLD_MS);
+    }
+
+    function done() {
+        document.dispatchEvent(new CustomEvent('mvpn:splash-done'));
     }
 
     function skip() {
         finished = true;
         splash.remove();
         document.body.classList.remove('mvpn-splash-lock');
+        done();
     }
 
     video.addEventListener('timeupdate', function () {

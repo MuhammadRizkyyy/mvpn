@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Membership;
 use App\Models\Partnership;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
@@ -28,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('admin.layout', function ($view) {
             $view->with('pendingReviewCount', Partnership::where('status', 'pending')->count());
+            $view->with('pendingMembershipCount', Membership::where('status', 'pending')->count());
         });
     }
 }
