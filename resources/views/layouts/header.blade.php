@@ -510,6 +510,7 @@
 
 @if(request()->routeIs('index1'))
     @include('layouts.splash')
+    @include('layouts.join-popup')
 @endif
 
 <nav class="navbar navbar-custom navbar-transparent">
