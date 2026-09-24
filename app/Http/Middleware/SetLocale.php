@@ -12,7 +12,7 @@ class SetLocale
     {
         $locale = session('locale', config('app.locale'));
 
-        if (in_array($locale, ['id', 'en', 'fr', 'es'])) {
+        if (in_array($locale, ['id', 'en', 'fr', 'es', 'zh', 'ko'])) {
             App::setLocale($locale);
         }
 

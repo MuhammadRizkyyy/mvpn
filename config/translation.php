@@ -15,6 +15,6 @@ return [
 
     'source_locale' => 'id',
 
-    'target_locales' => ['en', 'fr', 'es'],
+    'target_locales' => ['en', 'fr', 'es', 'zh', 'ko'],
 
 ];

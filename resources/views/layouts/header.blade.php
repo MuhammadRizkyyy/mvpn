@@ -584,6 +584,8 @@
                         <li><a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">English</a></li>
                         <li><a class="dropdown-item" href="{{ route('lang.switch', 'fr') }}">Français</a></li>
                         <li><a class="dropdown-item" href="{{ route('lang.switch', 'es') }}">Español</a></li>
+                        <li><a class="dropdown-item" href="{{ route('lang.switch', 'zh') }}">中文</a></li>
+                        <li><a class="dropdown-item" href="{{ route('lang.switch', 'ko') }}">한국어</a></li>
                     </ul>
                 </li>
             </ul>

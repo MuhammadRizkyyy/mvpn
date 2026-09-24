@@ -2,11 +2,16 @@
 
 namespace App\Console\Commands;
 
+use App\Models\About;
 use App\Models\Article;
 use App\Models\Gallery;
 use App\Models\Kegiatan;
+use App\Models\KegiatanCategory;
 use App\Models\LanguageClassCoordinator;
+use App\Models\MisiItem;
 use App\Models\Pengurus;
+use App\Models\PengurusSection;
+use App\Models\VisiMisi;
 use App\Services\TranslationService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
@@ -32,16 +37,34 @@ class BackfillContentTranslations extends Command
         $targetLocales = config('translation.target_locales');
         $sourceLocale = config('translation.source_locale');
 
-        $this->backfillArticles($translator, $targetLocales, $sourceLocale);
-        $this->backfillGalleries($translator, $targetLocales, $sourceLocale);
-        $this->backfillKegiatans($translator, $targetLocales, $sourceLocale);
+        $this->backfillRows('About', About::all(), fn ($r) => [
+            'paragraph_1' => (string) $r->paragraph_1,
+            'paragraph_2' => (string) $r->paragraph_2,
+            'paragraph_3' => (string) $r->paragraph_3,
+        ], $translator, $targetLocales, $sourceLocale);
+        $this->backfillRows('VisiMisi', VisiMisi::all(), fn ($r) => ['visi_text' => (string) $r->visi_text], $translator, $targetLocales, $sourceLocale);
+        $this->backfillRows('MisiItem', MisiItem::all(), fn ($r) => ['text' => (string) $r->text], $translator, $targetLocales, $sourceLocale);
+        $this->backfillRows('KegiatanCategory', KegiatanCategory::all(), fn ($r) => [
+            'name' => (string) $r->name,
+            'description' => (string) $r->description,
+        ], $translator, $targetLocales, $sourceLocale);
+        $this->backfillRows('PengurusSection', PengurusSection::all(), fn ($r) => ['name' => (string) $r->name], $translator, $targetLocales, $sourceLocale);
+
         $this->backfillPeople($translator, $targetLocales, $sourceLocale);
+        $this->backfillKegiatans($translator, $targetLocales, $sourceLocale);
+        $this->backfillGalleries($translator, $targetLocales, $sourceLocale);
+        $this->backfillArticles($translator, $targetLocales, $sourceLocale);
 
         Cache::forget('home.articles');
         Cache::forget('home.galleries');
         Cache::forget('home.kegiatans');
         Cache::forget('home.pengurus');
         Cache::forget('home.language_coordinators');
+        Cache::forget('home.about');
+        Cache::forget('home.visimisi');
+        Cache::forget('home.misiitems');
+        Cache::forget('home.kegiatan_categories');
+        Cache::forget('home.pengurus_sections');
 
         return self::SUCCESS;
     }
@@ -93,7 +116,7 @@ class BackfillContentTranslations extends Command
                 continue;
             }
 
-            $article->translations = $translator->translateFields($fields, $targetLocales, $sourceLocale);
+            $article->translations = $this->merge($article->translations, $translator->translateFields($fields, $targetLocales, $sourceLocale), $fields);
             $article->saveQuietly();
 
             $this->line("  translated article #{$article->id}: {$article->title}");
@@ -113,7 +136,7 @@ class BackfillContentTranslations extends Command
                 continue;
             }
 
-            $gallery->translations = $translator->translateFields($fields, $targetLocales, $sourceLocale);
+            $gallery->translations = $this->merge($gallery->translations, $translator->translateFields($fields, $targetLocales, $sourceLocale), $fields);
             $gallery->saveQuietly();
 
             $this->line("  translated gallery #{$gallery->id}: {$gallery->title}");
@@ -135,7 +158,7 @@ class BackfillContentTranslations extends Command
                 continue;
             }
 
-            $kegiatan->translations = $translator->translateFields($fields, $targetLocales, $sourceLocale);
+            $kegiatan->translations = $this->merge($kegiatan->translations, $translator->translateFields($fields, $targetLocales, $sourceLocale), $fields);
             $kegiatan->saveQuietly();
 
             $this->line("  translated kegiatan #{$kegiatan->id}: {$kegiatan->title}");
@@ -159,10 +182,50 @@ class BackfillContentTranslations extends Command
                 continue;
             }
 
-            $row->translations = $translator->translateFields($fields, $targetLocales, $sourceLocale);
+            $row->translations = $this->merge($row->translations, $translator->translateFields($fields, $targetLocales, $sourceLocale), $fields);
             $row->saveQuietly();
 
             $this->line("  translated {$row->name}: {$row->{$field}}");
         }
+    }
+
+    /**
+     * @param  iterable<\Illuminate\Database\Eloquent\Model>  $rows
+     * @param  callable(\Illuminate\Database\Eloquent\Model): array<string, string>  $fields
+     */
+    private function backfillRows(string $label, iterable $rows, callable $fields, TranslationService $translator, array $targetLocales, string $sourceLocale): void
+    {
+        $this->info("{$label}: checking ".count($rows).' rows...');
+
+        foreach ($rows as $row) {
+            $sourceFields = $fields($row);
+
+            if (! $this->needsTranslation($sourceFields, $row->translations, $targetLocales)) {
+                continue;
+            }
+
+            $row->translations = $this->merge($row->translations, $translator->translateFields($sourceFields, $targetLocales, $sourceLocale), $sourceFields);
+            $row->saveQuietly();
+
+            $this->line("  translated {$label} #{$row->id}");
+        }
+    }
+
+    /**
+     * A failed API call returns the source text; keep the old translation instead of overwriting it with that.
+     */
+    private function merge(?array $old, array $new, array $sourceFields): array
+    {
+        foreach ($new as $locale => $fields) {
+            foreach ($fields as $key => $value) {
+                $previous = $old[$locale][$key] ?? null;
+
+                if (trim($value) === trim($sourceFields[$key] ?? '') && filled($previous) && trim($previous) !== trim($value)) {
+                    $new[$locale][$key] = $previous;
+                }
+            }
+        }
+
+        return $new;
     }
 }
