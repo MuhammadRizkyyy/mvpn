@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'detail' => 'Logo detail',
     'eyebrow' => 'Our Logo Philosophy',
     'title' => 'Meaning in',
     'title_accent' => 'every wingbeat.',

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'detail' => 'Detail logo',
     'eyebrow' => 'Filosofi Logo',
     'title' => 'Makna di balik',
     'title_accent' => 'setiap kepak.',

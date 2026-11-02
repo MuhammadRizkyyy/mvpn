@@ -108,8 +108,10 @@
 .philosophy-figure figcaption strong { font-size: .88rem; font-weight: 600; }
 .philosophy-figure figcaption p { font-size: .8rem; color: #757575; margin: 8px 0 0; }
 .philosophy-item { border-bottom: 1px solid #e8e8e8; scroll-margin-top: 110px; }
+.philosophy-item.is-resizing { overflow: hidden; will-change: height; }
+.philosophy-stories { overflow-anchor: none; }
 .philosophy-item:first-child { border-top: 1px solid #e8e8e8; }
-.philosophy-item summary { display: flex; align-items: center; gap: 18px; padding: 21px 4px; cursor: pointer; list-style: none; }
+.philosophy-item summary { display: flex; align-items: center; gap: 18px; padding: 21px 4px; cursor: pointer; list-style: none; scroll-margin-top: 110px; }
 .philosophy-item summary::-webkit-details-marker { display: none; }
 .philosophy-number { align-self: flex-start; padding-top: 4px; color: #999; font-size: .75rem; font-weight: 600; font-variant-numeric: tabular-nums; }
 .philosophy-item-heading { flex: 1; min-width: 0; }
@@ -123,6 +125,7 @@
 .philosophy-item[open] .philosophy-number, .philosophy-item[open] .philosophy-item-title { color: #b00e20; }
 .philosophy-item-body { padding: 0 34px 24px; }
 .philosophy-item-body p { font-size: .97rem; line-height: 1.8; color: #626262; margin: 0; }
+.philosophy-detail-preview { display: none; }
 .philosophy-steps { display: flex; flex-wrap: wrap; gap: 6px 10px; margin: 18px 0 0; padding: 0; list-style: none; font-size: .72rem; color: #a11323; font-weight: 600; }
 .philosophy-steps li:not(:last-child)::after { content: '\2192'; margin-left: 10px; color: #a99a93; }
 .philosophy-closing { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-top: 64px; padding-top: 24px; border-top: 1px solid #eee9e7; }
@@ -133,11 +136,15 @@
 .philosophy.has-flight:not(.is-landed) .philosophy-logo { opacity: 0; }
 .philosophy.has-flight:not(.is-landed) .philosophy-connectors,
 .philosophy.has-flight:not(.is-landed) .philosophy-marker { visibility: hidden; }
-@keyframes philosophy-arrive { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.philosophy.has-flight:not(.is-introduced) .philosophy-heading,
+.philosophy.has-flight:not(.is-explained) .philosophy-stories {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(14px);
+}
 @keyframes philosophy-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: no-preference) {
-    .philosophy .is-visible { animation: philosophy-arrive .65s ease both; }
-    .philosophy-item[open] .philosophy-item-body { animation: philosophy-arrive .3s ease both; }
+    .philosophy-heading, .philosophy-stories { transition: opacity .4s ease, transform .4s ease; }
     .philosophy.is-landed .is-active .philosophy-line { stroke-dasharray: 1; animation: philosophy-draw .65s ease both; }
 }
 @media (max-width: 991.98px) {
@@ -158,6 +165,22 @@
     .philosophy-marker { width: 40px; height: 40px; }
     .philosophy-item summary { padding-block: 20px; }
     .philosophy-item-title { font-size: 1rem; }
+    .philosophy-detail-preview {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: center;
+        gap: 16px;
+        margin: 0 0 18px;
+        padding: 16px;
+        border: 1px solid #eee7e3;
+        border-radius: 14px;
+        background: #fcf7f3;
+    }
+    .philosophy-detail-preview svg { display: block; width: 100%; height: 104px; overflow: hidden; }
+    .philosophy-detail-preview figcaption span { display: block; color: #8b7062; font-size: .6rem; letter-spacing: 1px; text-transform: uppercase; }
+    .philosophy-detail-preview figcaption strong { display: block; margin-top: 7px; color: #12233b; font-size: .8rem; line-height: 1.5; font-weight: 600; }
+    .philosophy-detail-focus { fill: #ce112612; stroke: #ce1126; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+    .philosophy-detail-outline { fill: none; stroke: #ce1126; stroke-width: 1; stroke-dasharray: 4 4; vector-effect: non-scaling-stroke; }
     .philosophy-closing { display: block; margin-top: 36px; }
     .philosophy-closing > span { display: block; margin-top: 8px; }
     .philosophy-plate-label, .philosophy-plate-footer { font-size: .55rem; letter-spacing: 1px; left: 20px; right: 20px; }

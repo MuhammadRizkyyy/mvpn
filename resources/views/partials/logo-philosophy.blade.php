@@ -8,6 +8,7 @@
         ['x' => 14, 'y' => 63, 'path' => 'M70 300 V260 L150 214', 'dot' => [150, 214]],
         ['x' => 15, 'y' => 22, 'path' => 'M90 110 H120 V145 H255 V165', 'dot' => [255, 165]],
     ];
+    $philosophyCrops = ['165 160 185 180', '65 165 385 75', '210 250 95 95', '180 230 180 65', '65 160 385 185', '65 150 385 200'];
 @endphp
 
 <link rel="stylesheet" href="{{ asset('css/logo-philosophy.css') }}">
@@ -70,6 +71,30 @@
                             <span class="philosophy-toggle" aria-hidden="true"></span>
                         </summary>
                         <div class="philosophy-item-body">
+                            <figure class="philosophy-detail-preview">
+                                @php($crop = explode(' ', $philosophyCrops[$i]))
+                                <svg viewBox="{{ $philosophyCrops[$i] }}" aria-hidden="true" focusable="false">
+                                    <defs>
+                                        <clipPath id="philosophy-detail-clip-{{ $i }}">
+                                            <rect x="{{ $crop[0] }}" y="{{ $crop[1] }}" width="{{ $crop[2] }}" height="{{ $crop[3] }}" />
+                                        </clipPath>
+                                    </defs>
+                                    <g clip-path="url(#philosophy-detail-clip-{{ $i }})">
+                                    <image href="{{ asset('assets/img/mvpn.png') }}" width="500" height="500" />
+                                    @if ($i === 4)
+                                        <rect class="philosophy-detail-outline" x="70" y="170" width="375" height="165" rx="10" />
+                                    @elseif ($i === 5)
+                                        <path class="philosophy-detail-outline" d="M75 170 V155 H440 V170 M255 150 V340" />
+                                    @else
+                                        <circle class="philosophy-detail-focus" cx="{{ $philosophyMarkers[$i]['dot'][0] }}" cy="{{ $philosophyMarkers[$i]['dot'][1] }}" r="{{ $i === 2 ? 16 : 22 }}" />
+                                    @endif
+                                    </g>
+                                </svg>
+                                <figcaption>
+                                    <span>{{ __('philosophy.detail') }} / {{ sprintf('%02d', $i + 1) }}</span>
+                                    <strong>{{ $item['title'] }}</strong>
+                                </figcaption>
+                            </figure>
                             <p>{{ $item['body'] }}</p>
                             @isset($item['steps'])
                                 <ol class="philosophy-steps" aria-label="{{ $item['keyword'] }}">
