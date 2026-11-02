@@ -9,12 +9,15 @@ return [
     |
     | Content edited by admins is written in the source locale below, then
     | automatically translated into each of the target locales whenever it
-    | is saved. Keep this in sync with App\Http\Middleware\SetLocale.
+    | is saved. Supported locales also control the language switcher routes
+    | and request locale middleware.
     |
     */
 
     'source_locale' => 'id',
 
-    'target_locales' => ['en', 'fr', 'es', 'zh', 'ko'],
+    'supported_locales' => ['id', 'en', 'fr', 'es'],
+
+    'target_locales' => ['en', 'fr', 'es'],
 
 ];

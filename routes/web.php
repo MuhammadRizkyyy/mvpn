@@ -23,7 +23,7 @@ Route::get('/sitemap.xml', [\App\Http\Controllers\SeoController::class, 'sitemap
 |--------------------------------------------------------------------------
 */
 Route::get('/lang/{locale}', function (string $locale) {
-    if (in_array($locale, ['id', 'en', 'fr', 'es', 'zh', 'ko'])) {
+    if (in_array($locale, config('translation.supported_locales'), true)) {
         session(['locale' => $locale]);
     }
 

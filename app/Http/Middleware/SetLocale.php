@@ -12,9 +12,12 @@ class SetLocale
     {
         $locale = session('locale', config('app.locale'));
 
-        if (in_array($locale, ['id', 'en', 'fr', 'es', 'zh', 'ko'])) {
-            App::setLocale($locale);
+        if (! in_array($locale, config('translation.supported_locales'), true)) {
+            $locale = config('translation.source_locale');
+            session(['locale' => $locale]);
         }
+
+        App::setLocale($locale);
 
         return $next($request);
     }
