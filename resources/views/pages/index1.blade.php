@@ -346,10 +346,11 @@ html {
                 <p class="tentang-text">{{ $about->translated('paragraph_3') ?: __('site.tentang.p3') }}</p>
             </div>
 
-            <div class="col-md-5 text-center reveal reveal-delay-2">
+            <div class="col-md-5 text-center">
                 <div class="tentang-logo-wrap">
                     <img src="{{ asset('assets/img/mvpn.png') }}"
-                         alt="Logo"
+                         alt="Logo MVP.N — Muda Visioner Penggerak Nasional"
+                         width="500" height="500"
                          loading="lazy"
                          class="tentang-logo">
                 </div>
@@ -359,6 +360,8 @@ html {
     </div>
 </section>
 </div>
+
+@include('partials.logo-philosophy')
 
 {{-- ======================= VISI & MISI ======================= --}}
 <style>
