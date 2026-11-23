@@ -3,6 +3,7 @@
 @section('title', 'Detail Pendaftaran')
 
 @section('content')
+@include('admin.memberships.payment')
 
 <a href="{{ route('admin.memberships.index') }}"
    class="mb-5 inline-flex items-center gap-1.5 text-sm font-medium text-neutral-500 hover:text-neutral-800">

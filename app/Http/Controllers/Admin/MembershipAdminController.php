@@ -45,6 +45,7 @@ class MembershipAdminController extends Controller
     private function transition($id, string $status, string $message)
     {
         $membership = Membership::findOrFail($id);
+        abort_if($membership->member_number, 422, 'Gunakan pengelolaan keanggotaan untuk anggota yang sudah diaktifkan.');
         $membership->update(['status' => $status]);
         $this->notifyStatus($membership);
 
@@ -65,7 +66,9 @@ class MembershipAdminController extends Controller
 
     public function destroy($id)
     {
-        Membership::where('id', $id)->delete();
+        $membership = Membership::findOrFail($id);
+        abort_if($membership->member_number || \App\Models\MembershipPayment::where('membership_id', $id)->exists(), 422, 'Pendaftaran dengan riwayat pembayaran tidak dapat dihapus.');
+        $membership->delete();
         return redirect()->route('admin.memberships.index')->with('success', 'Pendaftaran anggota dihapus');
     }
 }

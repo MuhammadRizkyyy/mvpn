@@ -63,6 +63,8 @@ class Membership extends Model
 
     protected $casts = [
         'interest_fields' => 'array',
+        'activated_at' => 'datetime',
+        'public_consent' => 'boolean',
         'birth_date' => 'date',
         'agree_statement' => 'boolean',
         'agree_code_of_conduct' => 'boolean',

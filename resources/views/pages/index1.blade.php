@@ -752,6 +752,8 @@ html {
     </div>
 </section>
 
+@include('partials.member-directory')
+
 {{-- ======================= PROKER ======================= --}}
 <style>
 .proker-wrapper {

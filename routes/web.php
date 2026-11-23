@@ -228,3 +228,8 @@ Route::middleware(['admin'])->prefix('admin')->group(function () {
     Route::resource('gallery', AdminGalleryController::class)
         ->only(['index', 'store', 'update', 'destroy']);
 });
+
+Route::get('/anggota/akses/{membership}', [\App\Http\Controllers\MemberPortalController::class, 'show'])->middleware(['signed','throttle:30,1'])->name('member.portal');
+Route::post('/anggota/akses/{membership}', [\App\Http\Controllers\MemberPortalController::class, 'update'])->middleware(['signed','throttle:10,1'])->name('member.update');
+Route::post('/admin/memberships/{membership}/payment', [\App\Http\Controllers\MemberPortalController::class, 'manage'])->middleware('admin')->name('admin.memberships.payment');
+Route::get('/admin/memberships/{membership}/proof/{index}', [\App\Http\Controllers\MemberPortalController::class, 'proof'])->middleware('admin')->name('admin.memberships.proof');
